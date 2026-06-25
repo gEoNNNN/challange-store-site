@@ -1,0 +1,184 @@
+.footer {
+  background: #0f2d1f;
+  color: #ffffff;
+  width: 100%;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 48px;
+  padding: 64px 6vw 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logo {
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.brandDesc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.60);
+  max-width: 280px;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.socialLink:hover {
+  background: #01934A;
+  color: #ffffff;
+  border-color: #01934A;
+  transform: translateY(-2px);
+}
+
+/* ── Columns ── */
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.colTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #01934A;
+  margin: 0;
+}
+
+.colLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.colLinks li a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.60);
+  text-decoration: none;
+  transition: color 0.2s, padding-left 0.2s;
+  display: inline-block;
+}
+
+.colLinks li a:hover {
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+/* ── Contact list ── */
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contactList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.60);
+}
+
+.contactList li a {
+  color: rgba(255, 255, 255, 0.60);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contactList li a:hover {
+  color: #ffffff;
+}
+
+.contactIcon {
+  color: #01934A;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Delivery badge ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(1, 147, 74, 0.15);
+  border: 1px solid rgba(1, 147, 74, 0.30);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.80);
+  margin-top: 8px;
+}
+
+/* ── Bottom bar ── */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 6vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.madeWith {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 6vw 32px;
+  }
+
+  .bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}

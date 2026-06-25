@@ -1,6 +1,10 @@
 import Image from "next/image";
 import { BsCart3 } from "react-icons/bs";
 import styles from "./page.module.css";
+import ProductsSection from "./components/ProductsSection";
+import PartnersSection from "./components/PartnersSection";
+import ExploreSection from "./components/ExploreSection";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -79,6 +83,11 @@ export default function Home() {
         </div>
       </section>
       </div>
+
+      <ProductsSection />
+      <PartnersSection />
+      <ExploreSection />
+      <Footer />
     </div>
   );
 }
