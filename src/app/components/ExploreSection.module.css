@@ -1,7 +1,10 @@
 .section {
+  position: relative;
+  z-index: 1;
   background: #ffffff;
   padding: 60px 6vw 80px;
   width: 100%;
+  box-shadow: none;
 }
 
 /* ── Banner title ── */
@@ -45,12 +48,12 @@
   flex-direction: column;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13), 0 1.5px 6px rgba(0,0,0,0.07);
 }
 
 .cardLarge:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.16);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.20);
 }
 
 .cardTitleLarge {
@@ -89,12 +92,12 @@
   flex-direction: column;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.13), 0 1.5px 5px rgba(0,0,0,0.07);
 }
 
 .cardSmall:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.20);
 }
 
 .cardTitleSmall {

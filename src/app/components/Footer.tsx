@@ -1,14 +1,23 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { staggerContainer, staggerItem } from "./AnimateIn";
 import { BsInstagram, BsFacebook, BsTiktok, BsEnvelope, BsTelephone, BsGeoAlt } from "react-icons/bs";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <div className={styles.inner}>
+      <motion.div
+        className={styles.inner}
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+      >
 
         {/* Brand column */}
-        <div className={styles.brand}>
+        <motion.div className={styles.brand} variants={staggerItem}>
           <Image
             src="/img/logo.jpg"
             alt="Challenge Store"
@@ -32,10 +41,10 @@ export default function Footer() {
               <BsTiktok size={18} />
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Links column */}
-        <div className={styles.col}>
+        <motion.div className={styles.col} variants={staggerItem}>
           <h4 className={styles.colTitle}>Produse</h4>
           <ul className={styles.colLinks}>
             <li><a href="#produse">Top Vânzări</a></li>
@@ -45,10 +54,10 @@ export default function Footer() {
             <li><a href="#produse">Produse Japoneze</a></li>
             <li><a href="#produse">Gusturi Europene</a></li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Company column */}
-        <div className={styles.col}>
+        <motion.div className={styles.col} variants={staggerItem}>
           <h4 className={styles.colTitle}>Companie</h4>
           <ul className={styles.colLinks}>
             <li><a href="#despre">Despre noi</a></li>
@@ -58,10 +67,10 @@ export default function Footer() {
             <li><a href="#">Termeni și condiții</a></li>
             <li><a href="#">Retur & Garanție</a></li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Contact column */}
-        <div className={styles.col}>
+        <motion.div className={styles.col} variants={staggerItem}>
           <h4 className={styles.colTitle}>Contact</h4>
           <ul className={styles.contactList}>
             <li>
@@ -82,9 +91,9 @@ export default function Footer() {
             <span>🚚</span>
             <span>Livrare rapidă în toată Moldova</span>
           </div>
-        </div>
+        </motion.div>
 
-      </div>
+      </motion.div>
 
       {/* Bottom bar */}
       <div className={styles.bottom}>

@@ -39,3 +39,13 @@ magazine fizice în centre comerciale
 distribuție locală și posibil livrare
 
 
+#01934A – verde brand (logo, header, elemente principale)
+#FFFFFF – alb (fundal principal)
+#F5F7F6 – gri foarte deschis (secțiuni secundare)
+#2B2B2B – text principal
+#6B7280 – text secundar
+#FF8A3D – butoane / CTA (cumpără, adaugă în coș)
+#FF6FAF – accent (promoții, etichete, dulciuri)
+#FFD66B – highlight (oferte, noutăți)
+
+

@@ -5,6 +5,8 @@ import ProductsSection from "./components/ProductsSection";
 import PartnersSection from "./components/PartnersSection";
 import ExploreSection from "./components/ExploreSection";
 import Footer from "./components/Footer";
+import DiscountBanner from "./components/DiscountBanner";
+import CountdownSection from "./components/CountdownSection";
 
 export default function Home() {
   return (
@@ -31,9 +33,9 @@ export default function Home() {
         </div>
         <nav className={styles.navLinks}>
           <a href="#" className={styles.navLinkActive}>Acasă</a>
-          <a href="#produse">Produse</a>
-          <a href="#despre">Despre noi</a>
-          <a href="#recenzii">Recenzii</a>
+          <a href="/produse">Produse</a>
+          <a href="/despre">Despre noi</a>
+          <a href="/recenzii">Recenzii</a>
         </nav>
         <div className={styles.navActions}>
           <a className={styles.navLogin} href="#login">Log in</a>
@@ -85,9 +87,11 @@ export default function Home() {
       </div>
 
       <ProductsSection />
+      <CountdownSection />
       <PartnersSection />
       <ExploreSection />
       <Footer />
+      <DiscountBanner />
     </div>
   );
 }

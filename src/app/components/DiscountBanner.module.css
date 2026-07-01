@@ -1,0 +1,271 @@
+/* ── Full-screen overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 20, 14, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ── Card container (confetti origin) ── */
+.cardContainer {
+  position: relative;
+}
+
+/* ── Confetti ── */
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.piece {
+  position: absolute;
+  top: 0;
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* ── Voucher card ── */
+.card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: min(560px, calc(100vw - 40px));
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.32), 0 8px 24px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 26px 32px 36px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.brandName {
+  font-size: 16px;
+  font-weight: 800;
+  color: #15181f;
+  letter-spacing: -0.02em;
+}
+
+.brandLogo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.heading {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #15181f;
+  margin: 0 0 20px;
+}
+
+.highlight {
+  color: #01934A;
+}
+
+.divider {
+  border-top: 2px dashed #d7e3dc;
+  margin: 0 0 16px;
+}
+
+.sub {
+  font-size: 13.5px;
+  color: #5c6b62;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.codeBtn {
+  display: inline-flex;
+  align-items: center;
+  background: #f0faf5;
+  border: 2px dashed #01934A;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.codeBtn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 18px rgba(1, 147, 74, 0.22);
+}
+
+.codeText {
+  padding: 10px 16px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #01934A;
+  letter-spacing: 0.1em;
+}
+
+.codeDivider {
+  width: 1.5px;
+  height: 38px;
+  background: #01934A;
+  opacity: 0.25;
+  flex-shrink: 0;
+}
+
+.codeCopy {
+  padding: 10px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #01934A;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.giftImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+}
+
+/* ── Gift panel ── */
+.giftPanel {
+  position: relative;
+  flex-shrink: 0;
+  width: 148px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(155deg, #00c25e 0%, #01934A 55%, #017a3e 100%);
+}
+
+.giftPanel::before,
+.giftPanel::after {
+  content: "";
+  position: absolute;
+  left: -13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.giftPanel::before { top: -13px; }
+.giftPanel::after  { bottom: -13px; }
+
+/* ── Close / minimize button ── */
+.closeBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.07);
+  color: #4b5a52;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.13);
+  color: #15181f;
+}
+
+/* ── Mini badge (bottom-right after dismiss) ── */
+.mini {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 13px 16px;
+  box-shadow: 0 16px 48px rgba(1, 60, 30, 0.18), 0 4px 14px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(1, 147, 74, 0.12);
+}
+
+.miniCode {
+  font-size: 14px;
+  font-weight: 800;
+  color: #15181f;
+  letter-spacing: 0.06em;
+}
+
+.miniDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #d1d5db;
+  flex-shrink: 0;
+}
+
+.miniDiscount {
+  font-size: 14px;
+  font-weight: 800;
+  color: #01934A;
+  letter-spacing: -0.01em;
+}
+
+.miniCopy {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1.5px dashed #01934A;
+  background: #f0faf5;
+  color: #01934A;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.miniCopy:hover { transform: scale(1.04); }
+
+.miniClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.miniClose:hover {
+  background: #e5e7eb;
+  color: #374151;
+}

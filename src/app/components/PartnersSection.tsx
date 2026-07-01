@@ -1,4 +1,8 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import AnimateIn, { staggerContainer, staggerItem } from "./AnimateIn";
+import CountUp from "./CountUp";
 import styles from "./PartnersSection.module.css";
 
 const PARTNERS = [
@@ -13,25 +17,15 @@ const PARTNERS = [
 export default function PartnersSection() {
   return (
     <section className={styles.section}>
-      {/* Wave from green to white */}
-      <div className={styles.wave} aria-hidden="true">
-        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M0,90 C360,0 1080,0 1440,90 L1440,0 L0,0 Z"
-            fill="#006e37"
-          />
-        </svg>
-      </div>
-
       <div className={styles.inner}>
         {/* Heading */}
-        <div className={styles.heading}>
+        <AnimateIn as="div" className={styles.heading} direction="up" duration={0.7}>
           <span className={styles.label}>Colaborăm cu cele mai mari branduri</span>
           <h2 className={styles.title}>Branduri <span className={styles.accent}>Partenere</span></h2>
           <p className={styles.subtitle}>
             Aducem în Moldova produsele originale direct de la distribuitori autorizați.
           </p>
-        </div>
+        </AnimateIn>
 
         {/* Marquee strip */}
         <div className={styles.marqueeWrap}>
@@ -55,27 +49,33 @@ export default function PartnersSection() {
         </div>
 
         {/* Stats row */}
-        <div className={styles.stats}>
-          <div className={styles.stat}>
-            <span className={styles.statNum}>50+</span>
+        <motion.div
+          className={styles.stats}
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <motion.div className={styles.stat} variants={staggerItem}>
+            <span className={styles.statNum}><CountUp end={50} suffix="+" /></span>
             <span className={styles.statLabel}>Branduri importate</span>
-          </div>
+          </motion.div>
           <div className={styles.statDivider} />
-          <div className={styles.stat}>
-            <span className={styles.statNum}>12</span>
+          <motion.div className={styles.stat} variants={staggerItem}>
+            <span className={styles.statNum}><CountUp end={12} /></span>
             <span className={styles.statLabel}>Țări de origine</span>
-          </div>
+          </motion.div>
           <div className={styles.statDivider} />
-          <div className={styles.stat}>
-            <span className={styles.statNum}>500+</span>
+          <motion.div className={styles.stat} variants={staggerItem}>
+            <span className={styles.statNum}><CountUp end={500} suffix="+" /></span>
             <span className={styles.statLabel}>Produse disponibile</span>
-          </div>
+          </motion.div>
           <div className={styles.statDivider} />
-          <div className={styles.stat}>
-            <span className={styles.statNum}>3+</span>
+          <motion.div className={styles.stat} variants={staggerItem}>
+            <span className={styles.statNum}><CountUp end={3} suffix="+" /></span>
             <span className={styles.statLabel}>Ani pe piață</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,7 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import AnimateIn, { staggerContainer, staggerItem } from "./AnimateIn";
 import styles from "./ExploreSection.module.css";
 
 const CARDS = [
@@ -37,14 +40,21 @@ export default function ExploreSection() {
   return (
     <section className={styles.section}>
       {/* Banner title */}
-      <div className={styles.titleWrap}>
+      <AnimateIn as="div" className={styles.titleWrap} direction="up" duration={0.6}>
         <h2 className={styles.title}>Explorează produsele noastre!</h2>
-      </div>
+      </AnimateIn>
 
       {/* Main grid */}
       <div className={styles.grid}>
         {/* Large US card */}
-        <div className={styles.cardLarge} style={{ background: "#1DCFCF" }}>
+        <motion.div
+          className={styles.cardLarge}
+          style={{ background: "#1DCFCF" }}
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className={styles.badge}>US</div>
           <p className={styles.cardTitleLarge}>PRODUSE<br />AMERICANE</p>
           <div className={styles.cardImgLarge}>
@@ -56,15 +66,22 @@ export default function ExploreSection() {
               style={{ objectFit: "contain", objectPosition: "bottom right" }}
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* 2×2 small cards */}
-        <div className={styles.smallGrid}>
+        <motion.div
+          className={styles.smallGrid}
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+        >
           {CARDS.map((c) => (
-            <div
+            <motion.div
               key={c.id}
               className={styles.cardSmall}
               style={{ background: c.color }}
+              variants={staggerItem}
             >
               <div className={`${styles.badge} ${c.id === "kr" ? styles.badgeDark : ""}`}>
                 {c.badge}
@@ -83,9 +100,9 @@ export default function ExploreSection() {
                   style={{ objectFit: "contain", objectPosition: "bottom right" }}
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

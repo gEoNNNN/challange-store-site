@@ -43,12 +43,12 @@
 }
 
 .title {
-  font-size: 42px;
+  font-size: 64px;
   font-weight: 900;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   color: #2B2B2B;
-  line-height: 1.1;
-  margin: 0 0 16px;
+  line-height: 1.05;
+  margin: 0 0 18px;
 }
 
 .accent {
@@ -56,9 +56,9 @@
 }
 
 .subtitle {
-  font-size: 16px;
+  font-size: 18px;
   color: #6B7280;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   line-height: 1.7;
 }
@@ -68,6 +68,9 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 64px;
+  width: 80vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .marquee {
@@ -111,9 +114,9 @@
   justify-content: center;
   background: #F5F7F6;
   border-radius: 16px;
-  padding: 20px 32px;
-  min-width: 180px;
-  height: 100px;
+  padding: 24px 40px;
+  min-width: 220px;
+  height: 120px;
   border: 1.5px solid rgba(0, 0, 0, 0.06);
   transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
 }
@@ -125,14 +128,9 @@
 }
 
 .logoImg {
-  filter: grayscale(1) opacity(0.55);
-  transition: filter 0.3s;
-  max-height: 60px;
+  transition: opacity 0.3s;
+  max-height: 84px;
   width: auto;
-}
-
-.logoCard:hover .logoImg {
-  filter: grayscale(0) opacity(1);
 }
 
 /* ── Stats row ── */

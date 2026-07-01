@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import styles from "./ProductsSection.module.css";
 
@@ -16,26 +17,44 @@ const ALL_PRODUCTS: Record<Tab, { id: number; img: string; name: string; price: 
     { id: 4,  img: "/img/p4.jpg",  name: "Haribo Gold",         price: "38 MDL" },
     { id: 5,  img: "/img/p5.jpg",  name: "Oreo Classic",        price: "25 MDL" },
     { id: 6,  img: "/img/p6.jpg",  name: "Pringles Original",   price: "55 MDL" },
-  ],
-  "Noutăți": [
     { id: 7,  img: "/img/p7.jpg",  name: "Coca-Cola Zero",      price: "22 MDL" },
-    { id: 8,  img: "/img/p8.jpg",  name: "Fanta Mango",         price: "22 MDL" },
+    { id: 8,  img: "/img/p8.jpg",  name: "Fanta Exotic",        price: "22 MDL" },
     { id: 9,  img: "/img/p9.jpg",  name: "Monster Energy",      price: "65 MDL" },
-    { id: 10, img: "/img/p10.jpg", name: "Twix White",          price: "32 MDL" },
+    { id: 10, img: "/img/p10.jpg", name: "Twix Original",       price: "28 MDL" },
     { id: 11, img: "/img/p11.jpg", name: "M&M Peanut",         price: "45 MDL" },
     { id: 12, img: "/img/p12.jpg", name: "Ferrero Rocher",      price: "89 MDL" },
   ],
+  "Noutăți": [
+    { id: 11, img: "/img/p11.jpg", name: "M&M Peanut",         price: "45 MDL" },
+    { id: 12, img: "/img/p12.jpg", name: "Ferrero Rocher",      price: "89 MDL" },
+    { id: 8,  img: "/img/p8.jpg",  name: "Fanta Mango",         price: "22 MDL" },
+    { id: 7,  img: "/img/p7.jpg",  name: "Coca-Cola Zero",      price: "22 MDL" },
+    { id: 9,  img: "/img/p9.jpg",  name: "Monster Energy",      price: "65 MDL" },
+    { id: 10, img: "/img/p10.jpg", name: "Twix White",          price: "32 MDL" },
+    { id: 3,  img: "/img/p3.jpg",  name: "Kinder Joy",          price: "39 MDL" },
+    { id: 4,  img: "/img/p4.jpg",  name: "Haribo Tropifrutti",  price: "40 MDL" },
+    { id: 5,  img: "/img/p5.jpg",  name: "Oreo Double Stuf",    price: "30 MDL" },
+    { id: 2,  img: "/img/p2.jpg",  name: "Snickers White",      price: "38 MDL" },
+    { id: 1,  img: "/img/p1.jpg",  name: "KitKat Matcha",       price: "45 MDL" },
+    { id: 6,  img: "/img/p6.jpg",  name: "Pringles Pizza",      price: "58 MDL" },
+  ],
   "Exclusive": [
-    { id: 5,  img: "/img/p5.jpg",  name: "Oreo Golden",         price: "48 MDL" },
+    { id: 12, img: "/img/p12.jpg", name: "Ferrero Collection",  price: "120 MDL" },
     { id: 6,  img: "/img/p6.jpg",  name: "Pringles BBQ",        price: "60 MDL" },
     { id: 11, img: "/img/p11.jpg", name: "M&M Crispy",         price: "50 MDL" },
-    { id: 12, img: "/img/p12.jpg", name: "Ferrero Collection",  price: "120 MDL" },
+    { id: 5,  img: "/img/p5.jpg",  name: "Oreo Golden",         price: "48 MDL" },
     { id: 1,  img: "/img/p1.jpg",  name: "KitKat Dark",         price: "35 MDL" },
     { id: 3,  img: "/img/p3.jpg",  name: "Kinder Surprise",     price: "39 MDL" },
+    { id: 9,  img: "/img/p9.jpg",  name: "Monster Ultra",       price: "75 MDL" },
+    { id: 2,  img: "/img/p2.jpg",  name: "Snickers Protein",    price: "55 MDL" },
+    { id: 7,  img: "/img/p7.jpg",  name: "Coca-Cola Limited",   price: "45 MDL" },
+    { id: 4,  img: "/img/p4.jpg",  name: "Haribo Limited",      price: "65 MDL" },
+    { id: 8,  img: "/img/p8.jpg",  name: "Fanta Peach",         price: "28 MDL" },
+    { id: 10, img: "/img/p10.jpg", name: "Twix Gold",           price: "42 MDL" },
   ],
 };
 
-const VISIBLE = 4;
+const VISIBLE = 5;
 const AUTO_INTERVAL = 3500;
 
 export default function ProductsSection() {
@@ -63,30 +82,69 @@ export default function ProductsSection() {
   }, [next]);
 
   return (
-    <section className={styles.section} id="produse">
-      {/* Wave top */}
+    <motion.section
+      className={styles.section}
+      id="produse"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Green background with wavy top edge (transparent above) */}
+      <div className={styles.greenBg} aria-hidden="true" />
       <div className={styles.wave} aria-hidden="true">
-        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M0,0 C360,90 1080,90 1440,0 L1440,90 L0,90 Z"
-            fill="#01934A"
-          />
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,30 C360,100 1080,100 1440,30 L1440,100 L0,100 Z" fill="#01934A" />
         </svg>
+      </div>
+
+      {/* Decorative mascot left */}
+      <div className={styles.mascotWrap} aria-hidden="true">
+        <Image
+          src="/img/m1.png.png"
+          alt=""
+          width={320}
+          height={480}
+          className={styles.mascot}
+          priority={false}
+        />
+      </div>
+
+      {/* Decorative mascot right */}
+      <div className={styles.mascotWrapRight} aria-hidden="true">
+        <Image
+          src="/img/m2.png"
+          alt=""
+          width={320}
+          height={480}
+          className={styles.mascot}
+          priority={false}
+        />
       </div>
 
       <div className={styles.inner}>
         {/* Tabs */}
-        <div className={styles.tabs}>
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              className={`${styles.tab} ${activeTab === tab ? styles.tabActive : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <motion.div
+          className={styles.tabsWrap}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className={styles.sectionLabel}>Colecția noastră</span>
+          <h2 className={styles.sectionTitle}>Produse <span className={styles.sectionAccent}>Alese</span></h2>
+          <div className={styles.tabs}>
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                className={`${styles.tab} ${activeTab === tab ? styles.tabActive : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                <span className={styles.tabName}>{tab}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Carousel */}
         <div className={styles.carouselWrap}>
@@ -132,6 +190,6 @@ export default function ProductsSection() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
