@@ -283,17 +283,25 @@
 
 /* ── Responsive ── */
 @media (max-width: 960px) {
-  .track {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .track { grid-template-columns: repeat(2, 1fr); }
+  .sectionTitle { font-size: 36px; }
+}
+
+@media (max-width: 680px) {
+  .section { padding-top: 72px; padding-bottom: 56px; }
+  .mascotWrap, .mascotWrapRight { display: none; }
+  .track { grid-template-columns: repeat(2, 1fr); }
+  .arrow { display: none; }
+  .carouselWrap { gap: 0; }
 }
 
 @media (max-width: 560px) {
-  .track {
-    grid-template-columns: repeat(1, 1fr);
-  }
+  .track { grid-template-columns: repeat(2, 1fr); }
+  .tabs { flex-wrap: wrap; justify-content: center; }
+  .tab { padding: 9px 18px; font-size: 14px; }
+  .sectionTitle { font-size: 28px; }
+}
 
-  .tabs {
-    flex-wrap: wrap;
-  }
+@media (max-width: 400px) {
+  .track { grid-template-columns: 1fr; }
 }

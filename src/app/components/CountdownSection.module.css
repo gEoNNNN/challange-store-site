@@ -82,7 +82,7 @@
   line-height: 1.1;
   color: #2b2b2b;
   margin: 0;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .accent {
@@ -188,6 +188,23 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 768px) {
+  .section { padding: 72px 6vw 80px; }
+  .title { font-size: clamp(22px, 6vw, 38px); }
+}
+
 @media (max-width: 600px) {
-  .countdown { gap: 16px; }
+  .section { padding: 60px 5vw 68px; }
+  .countdown { gap: 12px; }
+  .card {
+    width: clamp(72px, 20vw, 110px);
+    height: clamp(72px, 20vw, 110px);
+  }
+  .number { font-size: clamp(28px, 8vw, 50px); }
+  .label { font-size: 12px; }
+}
+
+@media (max-width: 400px) {
+  .title { font-size: 20px; }
+  .sub { font-size: 15px; }
 }

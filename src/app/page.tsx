@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { BsCart3 } from "react-icons/bs";
 import styles from "./page.module.css";
 import ProductsSection from "./components/ProductsSection";
 import PartnersSection from "./components/PartnersSection";
@@ -7,6 +6,7 @@ import ExploreSection from "./components/ExploreSection";
 import Footer from "./components/Footer";
 import DiscountBanner from "./components/DiscountBanner";
 import CountdownSection from "./components/CountdownSection";
+import HomeNav from "./components/HomeNav";
 
 export default function Home() {
   return (
@@ -20,31 +20,7 @@ export default function Home() {
 
       <div className={styles.glassLayer}>
       {/* Navbar */}
-      <header className={styles.nav}>
-        <div className={styles.navLogo}>
-          <Image
-            src="/img/logo.jpg"
-            alt="Challenge Store logo"
-            width={140}
-            height={48}
-            className={styles.navLogoImg}
-            priority
-          />
-        </div>
-        <nav className={styles.navLinks}>
-          <a href="#" className={styles.navLinkActive}>Acasă</a>
-          <a href="/produse">Produse</a>
-          <a href="/despre">Despre noi</a>
-          <a href="/recenzii">Recenzii</a>
-        </nav>
-        <div className={styles.navActions}>
-          <a className={styles.navLogin} href="#login">Log in</a>
-          <a className={styles.navCart} href="#cos" aria-label="Coș de cumpărături">
-            <BsCart3 size={22} />
-          </a>
-          <a className={styles.navCta} href="#contact">Comandă</a>
-        </div>
-      </header>
+      <HomeNav />
 
       {/* Hero */}
       <section className={styles.hero}>

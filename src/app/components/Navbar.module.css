@@ -116,3 +116,91 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 26px rgba(255, 138, 61, 0.42);
 }
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(1, 147, 74, 0.08);
+  color: #2f3d36;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.hamburger:hover { background: rgba(1, 147, 74, 0.18); }
+
+/* ── Mobile menu dropdown ── */
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 6vw 20px;
+  gap: 2px;
+  z-index: 99;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+}
+
+.mobileLink,
+.mobileLinkActive {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3a4a42;
+  text-decoration: none;
+  padding: 13px 16px;
+  border-radius: 12px;
+  transition: background 0.18s, color 0.18s;
+}
+.mobileLink:hover { background: rgba(1, 147, 74, 0.08); color: #01934A; }
+.mobileLinkActive {
+  color: #01934A;
+  background: rgba(1, 147, 74, 0.10);
+  font-weight: 700;
+}
+
+.mobileDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.07);
+  margin: 8px 0;
+}
+
+.mobileCta {
+  display: block;
+  padding: 15px 20px;
+  border-radius: 12px;
+  background: #FF8A3D;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(255, 138, 61, 0.28);
+  transition: background 0.2s;
+}
+.mobileCta:hover { background: #f07a2b; }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .nav { position: relative; }
+  .navLinks { display: none; }
+  .navLogin { display: none; }
+  .hamburger { display: inline-flex; }
+}
+
+@media (max-width: 600px) {
+  .nav { padding: 14px 18px; }
+  .navLogoImg { height: 38px; max-width: 120px; }
+  .navCta { display: none; }
+  .navCart { width: 38px; height: 38px; }
+}

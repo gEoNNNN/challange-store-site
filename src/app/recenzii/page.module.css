@@ -409,4 +409,25 @@
   .reviewList { grid-template-columns: 1fr; }
   .toolbar { flex-direction: column; align-items: stretch; }
   .toolbarControls { justify-content: space-between; }
+  .header { padding: 32px 0 28px; }
+  .title { font-size: 28px; }
+}
+
+@media (max-width: 480px) {
+  .header { padding: 24px 0 20px; }
+  .title { font-size: 22px; }
+  .subtitle { font-size: 13px; }
+  .bigScore { font-size: 48px; }
+  .summary { padding: 20px 20px; }
+  .toolbarControls { flex-direction: column; }
+  .selectWrap { width: 100%; }
+  .select { width: 100%; }
+  .verifiedToggle { width: 100%; justify-content: center; }
+  .card { padding: 20px 18px; }
+  .layout { padding: 24px 4vw 56px; }
+}
+
+@media (max-width: 360px) {
+  .title { font-size: 18px; }
+  .bigScore { font-size: 40px; }
 }

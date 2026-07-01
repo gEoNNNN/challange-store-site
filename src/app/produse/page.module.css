@@ -665,12 +665,22 @@
 }
 
 @media (max-width: 768px) {
+  .catBar { top: 67px; }
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: static; }
   .grid { grid-template-columns: repeat(2, 1fr); }
+  .heroBar { padding: 40px 0 36px; }
+  .pageSubtitle { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
+  .heroBar { padding: 32px 0 28px; }
+  .catBar { top: 60px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .cardList { grid-template-columns: 120px 1fr; }
+  .layout { padding-top: 20px; }
+}
+
+@media (max-width: 360px) {
   .grid { grid-template-columns: 1fr; }
-  .cardList { grid-template-columns: 130px 1fr; }
 }

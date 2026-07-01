@@ -539,19 +539,36 @@
 /* ════════ RESPONSIVE ════════ */
 @media (max-width: 960px) {
   .heroTitle { font-size: 40px; }
+  .heroInner { padding: 60px 6vw; }
   .statsStrip { grid-template-columns: repeat(2, 1fr); gap: 28px 0; }
   .stat:nth-child(2) { border-right: none; }
+  .story { padding: 72px 6vw; }
   .story, .commitments { grid-template-columns: 1fr; gap: 40px; }
   .storyImg { order: -1; }
   .valuesGrid { grid-template-columns: repeat(2, 1fr); }
   .uniqueInner { grid-template-columns: 1fr; gap: 40px; }
   .timelineTrack { grid-template-columns: repeat(2, 1fr); gap: 40px; }
   .timelineTrack::before { display: none; }
+  .timeline { padding: 72px 6vw; }
 }
 
 @media (max-width: 560px) {
-  .heroTitle { font-size: 32px; }
-  .sectionTitle, .uniqueTitle, .ctaTitle { font-size: 28px; }
+  .heroTitle { font-size: 28px; }
+  .heroInner { padding: 48px 5vw; }
+  .heroBtns { flex-direction: column; gap: 12px; }
+  .sectionTitle, .uniqueTitle, .ctaTitle { font-size: 24px; }
   .valuesGrid, .uniqueGrid, .commitList, .timelineTrack { grid-template-columns: 1fr; }
   .stat { border-right: none; }
+  .story { padding: 56px 5vw; }
+  .timeline { padding: 56px 5vw; }
+  .storyText p { font-size: 15px; }
+  .milestoneYear { font-size: 12px; padding: 3px 10px; }
+  .milestoneTitle { font-size: 14px; }
+  .milestoneText { font-size: 13px; }
+}
+
+@media (max-width: 400px) {
+  .heroTitle { font-size: 24px; }
+  .statsStrip { grid-template-columns: 1fr; }
+  .statNum { font-size: 32px; }
 }
