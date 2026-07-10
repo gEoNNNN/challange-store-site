@@ -3,9 +3,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "./AnimateIn";
 import { BsInstagram, BsFacebook, BsTiktok, BsEnvelope, BsTelephone, BsGeoAlt } from "react-icons/bs";
+import { useTranslations } from "../context/LanguageContext";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
+  const t = useTranslations();
   return (
     <footer className={styles.footer}>
       <motion.div
@@ -19,17 +21,14 @@ export default function Footer() {
         {/* Brand column */}
         <motion.div className={styles.brand} variants={staggerItem}>
           <Image
-            src="/img/logo.jpg"
+            src="/img/logo alb.png"
             alt="Challenge Store"
             width={130}
             height={44}
             style={{ objectFit: "contain" }}
             className={styles.logo}
           />
-          <p className={styles.brandDesc}>
-            Aducem în Moldova cele mai îndrăgite dulciuri și băuturi
-            internaționale — direct de la distribuitori autorizați.
-          </p>
+          <p className={styles.brandDesc}>{t.footer.brandDesc}</p>
           <div className={styles.socials}>
             <a href="#" aria-label="Instagram" className={styles.socialLink}>
               <BsInstagram size={18} />
@@ -45,37 +44,37 @@ export default function Footer() {
 
         {/* Links column */}
         <motion.div className={styles.col} variants={staggerItem}>
-          <h4 className={styles.colTitle}>Produse</h4>
+          <h4 className={styles.colTitle}>{t.footer.colProducts}</h4>
           <ul className={styles.colLinks}>
-            <li><a href="#produse">Top Vânzări</a></li>
-            <li><a href="#produse">Noutăți</a></li>
-            <li><a href="#produse">Exclusive</a></li>
-            <li><a href="#produse">Produse Americane</a></li>
-            <li><a href="#produse">Produse Japoneze</a></li>
-            <li><a href="#produse">Gusturi Europene</a></li>
+            <li><a href="#produse">{t.footer.linkTopSales}</a></li>
+            <li><a href="#produse">{t.footer.linkNews}</a></li>
+            <li><a href="#produse">{t.footer.linkExclusive}</a></li>
+            <li><a href="#produse">{t.footer.linkAmerican}</a></li>
+            <li><a href="#produse">{t.footer.linkJapanese}</a></li>
+            <li><a href="#produse">{t.footer.linkEuropean}</a></li>
           </ul>
         </motion.div>
 
         {/* Company column */}
         <motion.div className={styles.col} variants={staggerItem}>
-          <h4 className={styles.colTitle}>Companie</h4>
+          <h4 className={styles.colTitle}>{t.footer.colCompany}</h4>
           <ul className={styles.colLinks}>
-            <li><a href="#despre">Despre noi</a></li>
-            <li><a href="#recenzii">Recenzii</a></li>
-            <li><a href="#">Parteneri</a></li>
-            <li><a href="#">Politica de confidențialitate</a></li>
-            <li><a href="#">Termeni și condiții</a></li>
-            <li><a href="#">Retur & Garanție</a></li>
+            <li><a href="#despre">{t.footer.linkAbout}</a></li>
+            <li><a href="#recenzii">{t.footer.linkReviews}</a></li>
+            <li><a href="#">{t.footer.linkPartners}</a></li>
+            <li><a href="#">{t.footer.linkPrivacy}</a></li>
+            <li><a href="#">{t.footer.linkTerms}</a></li>
+            <li><a href="#">{t.footer.linkReturn}</a></li>
           </ul>
         </motion.div>
 
         {/* Contact column */}
         <motion.div className={styles.col} variants={staggerItem}>
-          <h4 className={styles.colTitle}>Contact</h4>
+          <h4 className={styles.colTitle}>{t.footer.colContact}</h4>
           <ul className={styles.contactList}>
             <li>
               <BsGeoAlt size={15} className={styles.contactIcon} />
-              <span>Chișinău, Republica Moldova</span>
+              <span>{t.footer.address}</span>
             </li>
             <li>
               <BsTelephone size={15} className={styles.contactIcon} />
@@ -89,7 +88,7 @@ export default function Footer() {
 
           <div className={styles.badge}>
             <span>🚚</span>
-            <span>Livrare rapidă în toată Moldova</span>
+            <span>{t.footer.deliveryBadge}</span>
           </div>
         </motion.div>
 
@@ -97,8 +96,8 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className={styles.bottom}>
-        <span>© {new Date().getFullYear()} Challenge Store. Toate drepturile rezervate.</span>
-        <span className={styles.madeWith}>Făcut cu ❤️ în Moldova</span>
+        <span>© {new Date().getFullYear()} Challenge Store. {t.footer.copyright}</span>
+        <span className={styles.madeWith}>{t.footer.madeWith}</span>
       </div>
     </footer>
   );

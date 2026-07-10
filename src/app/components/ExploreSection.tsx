@@ -2,46 +2,32 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimateIn, { staggerContainer, staggerItem } from "./AnimateIn";
+import { useTranslations } from "../context/LanguageContext";
 import styles from "./ExploreSection.module.css";
 
 const CARDS = [
-  {
-    id: "jp",
-    color: "#FF4F4F",
-    badge: "JP",
-    title: "EXPLOREAZĂ\nJAPONIA",
-    img: "/img/jp.png",
-  },
-  {
-    id: "eu",
-    color: "#8B3FD9",
-    badge: "EU",
-    title: "GUSTURI\nEUROPENE",
-    img: "/img/eu.png",
-  },
-  {
-    id: "kr",
-    color: "#C9E820",
-    badge: "KR",
-    title: "KOREA\nEXPRESS",
-    img: "/img/kr.png",
-    dark: false,
-  },
-  {
-    id: "cn",
-    color: "#2EC95C",
-    badge: "CN",
-    title: "DULCIURI\nDIN CHINA",
-    img: "/img/cn.png",
-  },
-];
+  { id: "jp", color: "#FF4F4F", badge: "JP", img: "/img/jp.png" },
+  { id: "eu", color: "#8B3FD9", badge: "EU", img: "/img/eu.png" },
+  { id: "kr", color: "#C9E820", badge: "KR", img: "/img/kr.png" },
+  { id: "cn", color: "#2EC95C", badge: "CN", img: "/img/cn.png" },
+] as const;
+type CardId = typeof CARDS[number]["id"];
 
 export default function ExploreSection() {
+  const t = useTranslations();
+
+  const CARD_TITLES: Record<CardId, string> = {
+    jp: t.explore.cardJp,
+    eu: t.explore.cardEu,
+    kr: t.explore.cardKr,
+    cn: t.explore.cardCn,
+  };
+
   return (
     <section className={styles.section}>
       {/* Banner title */}
       <AnimateIn as="div" className={styles.titleWrap} direction="up" duration={0.6}>
-        <h2 className={styles.title}>Explorează produsele noastre!</h2>
+        <h2 className={styles.title}>{t.explore.sectionTitle}</h2>
       </AnimateIn>
 
       {/* Main grid */}
@@ -56,7 +42,10 @@ export default function ExploreSection() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className={styles.badge}>US</div>
-          <p className={styles.cardTitleLarge}>PRODUSE<br />AMERICANE</p>
+          <p className={styles.cardTitleLarge}>
+            {t.explore.cardUs.split(" ").slice(0, 1).join(" ")}<br />
+            {t.explore.cardUs.split(" ").slice(1).join(" ")}
+          </p>
           <div className={styles.cardImgLarge}>
             <Image
               src="/img/us.png"
@@ -83,18 +72,17 @@ export default function ExploreSection() {
               style={{ background: c.color }}
               variants={staggerItem}
             >
-              <div className={`${styles.badge} ${c.id === "kr" ? styles.badgeDark : ""}`}>
+              <div className={styles.badge}>
                 {c.badge}
               </div>
               <p className={`${styles.cardTitleSmall} ${c.id === "kr" ? styles.textDark : ""}`}>
-                {c.title.split("\n").map((line, i) => (
-                  <span key={i}>{line}<br /></span>
-                ))}
+                {CARD_TITLES[c.id].split(" ").slice(0, Math.ceil(CARD_TITLES[c.id].split(" ").length / 2)).join(" ")}<br />
+                {CARD_TITLES[c.id].split(" ").slice(Math.ceil(CARD_TITLES[c.id].split(" ").length / 2)).join(" ")}
               </p>
               <div className={styles.cardImgSmall}>
                 <Image
                   src={c.img}
-                  alt={c.title.replace("\n", " ")}
+                  alt={CARD_TITLES[c.id]}
                   fill
                   sizes="220px"
                   style={{ objectFit: "contain", objectPosition: "bottom right" }}

@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import Providers from "./components/Providers";
+import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +25,12 @@ export const metadata: Metadata = {
   description: "Challenge Store - retailer și distribuitor local din Republica Moldova de produse internaționale importate: dulciuri, snacks-uri, băuturi și FMCG.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}`}>
-      <body>{children}</body>
+      <body><Providers><Navbar />{children}</Providers></body>
     </html>
   );
 }

@@ -17,7 +17,7 @@
 .bgBlobs {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -70,7 +70,6 @@
 ───────────────────────────────────────── */
 .glassLayer {
   position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -160,6 +159,7 @@
 }
 
 .navCart {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -170,6 +170,7 @@
   text-decoration: none;
   background: rgba(1, 147, 74, 0.06);
   border: 1px solid rgba(1, 147, 74, 0.12);
+  cursor: pointer;
   transition: background 0.25s ease, color 0.25s ease,
               border-color 0.25s ease, transform 0.25s ease;
 }
@@ -179,6 +180,25 @@
   color: #ffffff;
   border-color: #01934A;
   transform: translateY(-2px);
+}
+
+.cartBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #FF8A3D;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #fff;
+  pointer-events: none;
 }
 
 .navCta {
@@ -298,8 +318,14 @@
   grid-template-columns: 1fr 1fr;
   flex: 1;
   min-height: calc(100vh - 80px);
+  /* Bottom clearance so the overlapping wave from ProductsSection
+     never covers hero content at the edges. */
+  padding-bottom: 60px;
   background: transparent;
   overflow: hidden;
+  /* Keep inner z-indexes (aura, candy image) contained so they don't
+     leak into the root stacking context and paint over the wave. */
+  isolation: isolate;
 }
 
 /* ── Left column ── */
@@ -443,72 +469,97 @@
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
+    padding-bottom: 0;
   }
 
   .heroRight {
     order: -1;
-    min-height: 45vw;
+    height: 46vw;
+    min-height: 0;
+    max-height: 440px;
+    overflow: hidden;
   }
 
   .heroLeft {
     align-items: center;
     text-align: center;
-    padding: 48px 32px;
+    padding: 36px 6vw 72px;
   }
 
   .heroLeft h1 {
-    font-size: 60px;
+    font-size: clamp(42px, 7vw, 64px);
+    margin-bottom: 20px;
   }
 
   .heroLeft p {
-    max-width: 100%;
+    max-width: 560px;
+    margin-bottom: 32px;
+  }
+
+  .heroBtns {
+    justify-content: center;
   }
 }
 
 @media (max-width: 600px) {
   .nav {
-    padding: 14px 18px;
+    padding: 12px 16px;
   }
 
   .navLogoImg {
-    height: 38px;
-    max-width: 120px;
+    height: 36px;
+    max-width: 110px;
   }
 
   .navActions {
-    gap: 8px;
+    gap: 6px;
   }
 
   .navLogin { display: none; }
   .navCta { display: none; }
   .navCart { width: 38px; height: 38px; }
 
+  .heroRight {
+    height: 58vw;
+    max-height: 300px;
+  }
+
+  .candyImg {
+    width: 90%;
+  }
+
   .heroLeft {
-    padding: 40px 20px;
+    padding: 28px 20px 56px;
   }
 
   .heroLeft h1 {
-    font-size: 46px;
+    font-size: clamp(30px, 10vw, 44px);
+    margin-bottom: 16px;
   }
 
   .heroLeft p {
-    font-size: 16px;
-  }
-
-  .btnPrimary,
-  .btnSecondary {
-    padding: 14px 24px;
-    font-size: 16px;
-    width: 100%;
-    justify-content: center;
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 24px;
+    max-width: 100%;
   }
 
   .heroBtns {
     flex-direction: column;
     width: 100%;
+    gap: 10px;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    padding: 14px 20px;
+    font-size: 16px;
+    width: 100%;
+    justify-content: center;
   }
 }
 
 @media (max-width: 400px) {
-  .heroLeft h1 { font-size: 38px; }
+  .heroLeft h1 { font-size: 28px; }
+  .heroRight { height: 62vw; }
 }

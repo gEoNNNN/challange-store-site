@@ -1,98 +1,104 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "../context/LanguageContext";
 import {
   BsGlobe2, BsTruck, BsShieldCheck, BsHeart, BsStars, BsBoxSeam,
   BsAward, BsPeople, BsLightningCharge, BsCheckCircleFill, BsArrowRight,
 } from "react-icons/bs";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import styles from "./page.module.css";
 
-const VALUES = [
-  { icon: <BsGlobe2 size={26} />,        title: "Autenticitate", text: "Aducem produse originale direct de la distribuitori autorizați din întreaga lume." },
-  { icon: <BsShieldCheck size={26} />,   title: "Calitate garantată", text: "Fiecare produs trece prin verificări stricte de prospețime și conformitate." },
-  { icon: <BsLightningCharge size={26} />, title: "Rapiditate", text: "Livrare rapidă în toată Moldova, direct la ușa ta în cel mai scurt timp." },
-  { icon: <BsHeart size={26} />,         title: "Pasiune", text: "Iubim ceea ce facem — împărtășim gusturi care aduc bucurie clienților noștri." },
-];
+const VALUE_ICONS = [<BsGlobe2 size={26} />, <BsShieldCheck size={26} />, <BsLightningCharge size={26} />, <BsHeart size={26} />];
+const UNIQUE_ICONS = [<BsBoxSeam size={22} />, <BsGlobe2 size={22} />, <BsTruck size={22} />, <BsAward size={22} />];
 
-const UNIQUE = [
-  { icon: <BsBoxSeam size={22} />,    title: "500+ produse internaționale", text: "De la KitKat și Snickers până la băuturi exotice asiatice." },
-  { icon: <BsGlobe2 size={22} />,     title: "12 țări de origine", text: "SUA, Japonia, Coreea, China și cele mai bune branduri europene." },
-  { icon: <BsTruck size={22} />,      title: "Livrare în toată Moldova", text: "Curierat rapid și ambalaj sigur pentru fiecare comandă." },
-  { icon: <BsAward size={22} />,      title: "Distribuitori autorizați", text: "Colaborăm doar cu parteneri oficiali pentru produse 100% originale." },
-];
-
-const TIMELINE = [
-  { year: "1 aug 2025",  title: "Primul magazin — Portmall", text: "Ne-am deschis porțile cu primul magazin Challenge Store în Portmall, Chișinău." },
-  { year: "12 dec 2025", title: "Magazin în centrul Chișinăului", text: "Am adus dulciurile preferate în inima capitalei, în centrul orașului." },
-  { year: "29 mai 2026", title: "Ne extindem la Bălți", text: "Am deschis un nou magazin în orașul Bălți, mai aproape de copiii de acolo." },
-  { year: "1 aug 2026",  title: "1 an de Challenge Store", text: "Sărbătorim împlinirea unui an de la înființare, alături de voi." },
-];
-
-const COMMITMENTS = [
-  "Produse 100% originale și verificate",
-  "Termen de valabilitate garantat",
-  "Ambalaj sigur pentru transport",
-  "Suport clienți dedicat",
-  "Retur simplu în 14 zile",
-  "Prețuri corecte, fără surprize",
-];
 
 export default function DesprePage() {
+  const t = useTranslations();
+
+  const VALUES = [
+    { icon: VALUE_ICONS[0], title: t.aboutPage.value1Title, text: t.aboutPage.value1Text },
+    { icon: VALUE_ICONS[1], title: t.aboutPage.value2Title, text: t.aboutPage.value2Text },
+    { icon: VALUE_ICONS[2], title: t.aboutPage.value3Title, text: t.aboutPage.value3Text },
+    { icon: VALUE_ICONS[3], title: t.aboutPage.value4Title, text: t.aboutPage.value4Text },
+  ];
+  const UNIQUE = [
+    { icon: UNIQUE_ICONS[0], title: t.aboutPage.unique1Title, text: t.aboutPage.unique1Text },
+    { icon: UNIQUE_ICONS[1], title: t.aboutPage.unique2Title, text: t.aboutPage.unique2Text },
+    { icon: UNIQUE_ICONS[2], title: t.aboutPage.unique3Title, text: t.aboutPage.unique3Text },
+    { icon: UNIQUE_ICONS[3], title: t.aboutPage.unique4Title, text: t.aboutPage.unique4Text },
+  ];
+  const TIMELINE = [
+    { year: t.aboutPage.timeline1Year, title: t.aboutPage.timeline1Title, text: t.aboutPage.timeline1Text },
+    { year: t.aboutPage.timeline2Year, title: t.aboutPage.timeline2Title, text: t.aboutPage.timeline2Text },
+    { year: t.aboutPage.timeline3Year, title: t.aboutPage.timeline3Title, text: t.aboutPage.timeline3Text },
+    { year: t.aboutPage.timeline4Year, title: t.aboutPage.timeline4Title, text: t.aboutPage.timeline4Text },
+  ];
+  const COMMITMENTS = [
+    t.aboutPage.commit1, t.aboutPage.commit2, t.aboutPage.commit3,
+    t.aboutPage.commit4, t.aboutPage.commit5, t.aboutPage.commit6,
+  ];
+
   return (
     <div className={styles.page}>
-      <Navbar />
-
-      {/* ── HERO ── */}
-      <section className={styles.hero}>
-        <div className={styles.heroBlob1} aria-hidden="true" />
-        <div className={styles.heroBlob2} aria-hidden="true" />
-        <div className={styles.heroInner}>
-          <span className={styles.heroLabel}>Despre Challenge Store</span>
+      {/* ── HERO SECTION WITH VIDEO BACKGROUND ── */}
+      <div className={styles.heroSection}>
+        <video
+          className={styles.heroVideo}
+          src="/img/vid1.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ filter: 'blur(8px)', opacity: 0.3 }}
+        />
+        <div className={styles.heroOverlay} aria-hidden="true" />
+        
+        {/* ── HERO ── */}
+        <section className={styles.hero}>
+          <div className={styles.heroInner}>
+          <span className={styles.heroLabel}>{t.aboutPage.heroLabel}</span>
           <h1 className={styles.heroTitle}>
-            Aducem <span className={styles.accent}>gusturile lumii</span><br />
-            mai aproape de tine
+            {t.aboutPage.heroTitle} <span className={styles.accent}>{t.aboutPage.heroTitleAccent}</span><br />
+            {t.aboutPage.heroTitleEnd}
           </h1>
-          <p className={styles.heroText}>
-            Suntem pasionați de descoperirea celor mai îndrăgite dulciuri și
-            băuturi internaționale, pe care le aducem direct în Republica Moldova
-            — autentice, proaspete și gata să-ți încânte simțurile.
-          </p>
+          <p className={styles.heroText}>{t.aboutPage.heroText}</p>
           <div className={styles.heroBtns}>
             <Link href="/produse" className={styles.btnPrimary}>
-              Explorează produsele <BsArrowRight size={16} />
+              {t.aboutPage.heroCta} <BsArrowRight size={16} />
             </Link>
-            <a href="#poveste" className={styles.btnSecondary}>Povestea noastră</a>
+            <a href="#poveste" className={styles.btnSecondary}>{t.aboutPage.heroCtaSecondary}</a>
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* ── STATS STRIP ── */}
-      <section className={styles.statsStrip}>
+        {/* ── STATS STRIP ── */}
+        <section className={styles.statsStrip}>
         <div className={styles.stat}>
           <BsPeople size={24} className={styles.statIcon} />
           <span className={styles.statNum}>10.000+</span>
-          <span className={styles.statLabel}>Clienți fericiți</span>
+          <span className={styles.statLabel}>{t.aboutPage.statClients}</span>
         </div>
         <div className={styles.stat}>
           <BsBoxSeam size={24} className={styles.statIcon} />
           <span className={styles.statNum}>500+</span>
-          <span className={styles.statLabel}>Produse importate</span>
+          <span className={styles.statLabel}>{t.aboutPage.statProducts}</span>
         </div>
         <div className={styles.stat}>
           <BsGlobe2 size={24} className={styles.statIcon} />
           <span className={styles.statNum}>12</span>
-          <span className={styles.statLabel}>Țări de origine</span>
+          <span className={styles.statLabel}>{t.aboutPage.statCountries}</span>
         </div>
         <div className={styles.stat}>
           <BsStars size={24} className={styles.statIcon} />
           <span className={styles.statNum}>4.9</span>
-          <span className={styles.statLabel}>Rating mediu</span>
+          <span className={styles.statLabel}>{t.aboutPage.statRating}</span>
         </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── BRAND STORY ── */}
-      <section className={styles.story} id="poveste">
+      <section className={styles.storyFullWidth} id="poveste">
         <div className={styles.storyImg}>
           <div className={styles.storyImgAura} aria-hidden="true" />
           <video
@@ -105,54 +111,56 @@ export default function DesprePage() {
           />
         </div>
         <div className={styles.storyText}>
-          <span className={styles.sectionLabel}>Povestea noastră</span>
-          <h2 className={styles.sectionTitle}>Totul a început<br />de la copiii noștri</h2>
-          <p>
-            Totul a pornit de la copiii noștri. Ca toți cei mici, își doreau
-            mereu cele mai colorate și gustoase dulciuri — exact acele batoane,
-            bomboane și băuturi speciale pe care le vedeau în desene animate sau
-            la prietenii întorși din vacanțe. Problema era că acestea erau
-            aproape imposibil de găsit în Moldova.
-          </p>
-          <p>
-            Căutam prin zeci de magazine și tot nu găseam gusturile pe care și
-            le doreau ai noștri copii. Atunci ne-a venit ideea: dacă noi ne
-            dorim atât de mult aceste dulciuri pentru copiii noștri, cu
-            siguranță și alți părinți și copii își doresc același lucru.
-          </p>
-          <p>
-            Așa s-a născut <strong>Challenge Store</strong> — dintr-o dorință
-            simplă și sinceră de a aduce bucuria dulciurilor din toată lumea
-            mai aproape de familiile din Moldova. Astăzi aducem sute de produse
-            originale din SUA, Japonia, Coreea, China și Europa, alese cu
-            grijă, ca fiecare copil (și fiecare părinte) să-și găsească
-            gustul preferat.
-          </p>
+          <span className={styles.sectionLabel}>{t.aboutPage.storyLabel}</span>
+          <h2 className={styles.sectionTitle}>{t.aboutPage.storyTitle}<br />{t.aboutPage.storyTitleAccent}</h2>
+          <p>{t.aboutPage.storyP1}</p>
+          <p>{t.aboutPage.storyP2}</p>
+          <p>{t.aboutPage.storyP3}</p>
           <div className={styles.signature}>
-            <span className={styles.sigName}>Echipa Challenge Store</span>
-            <span className={styles.sigRole}>Chișinău, Republica Moldova</span>
+            <span className={styles.sigName}>{t.aboutPage.sigName}</span>
+            <span className={styles.sigRole}>{t.aboutPage.sigCity}</span>
           </div>
         </div>
       </section>
 
-      {/* ── MISSION & VALUES ── */}
-      <section className={styles.values}>
-        <div className={styles.valuesHead}>
-          <span className={styles.sectionLabel}>Misiune & Valori</span>
-          <h2 className={styles.sectionTitle}>Ce ne ghidează în fiecare zi</h2>
-          <p className={styles.valuesSub}>
-            Principiile care stau la baza fiecărei decizii și a fiecărui produs
-            pe care îl aducem la tine.
-          </p>
+      {/* ── OUR LOCATIONS ── */}
+      <section className={styles.locations}>
+        <div className={styles.locationsHead}>
+          <span className={styles.sectionLabel}>Magazinele Noastre</span>
+          <h2 className={styles.sectionTitle}>Vino să ne vizitezi</h2>
+          <p className={styles.locationsSub}>Avem 3 filiale în Chișinău, gata să te servească cu cele mai bune produse</p>
         </div>
-        <div className={styles.valuesGrid}>
-          {VALUES.map((v) => (
-            <div key={v.title} className={styles.valueCard}>
-              <div className={styles.valueIcon}>{v.icon}</div>
-              <h3 className={styles.valueTitle}>{v.title}</h3>
-              <p className={styles.valueText}>{v.text}</p>
+        <div className={styles.locationsGrid}>
+          <div className={styles.locationCard}>
+            <div className={styles.locationImg}>
+              <Image src="/img/photo1.jpg" alt="Filiala 1" fill style={{ objectFit: 'cover' }} />
             </div>
-          ))}
+            <div className={styles.locationInfo}>
+              <h3 className={styles.locationName}>Filiala Centru</h3>
+              <p className={styles.locationAddress}>Str. Ștefan cel Mare 123, Chișinău</p>
+              <p className={styles.locationHours}>Luni-Duminică: 08:00 - 22:00</p>
+            </div>
+          </div>
+          <div className={styles.locationCard}>
+            <div className={styles.locationImg}>
+              <Image src="/img/photo2.jpg" alt="Filiala 2" fill style={{ objectFit: 'cover' }} />
+            </div>
+            <div className={styles.locationInfo}>
+              <h3 className={styles.locationName}>Filiala Botanica</h3>
+              <p className={styles.locationAddress}>Bd. Dacia 45, Chișinău</p>
+              <p className={styles.locationHours}>Luni-Duminică: 08:00 - 22:00</p>
+            </div>
+          </div>
+          <div className={styles.locationCard}>
+            <div className={styles.locationImg}>
+              <Image src="/img/photo3.jpg" alt="Filiala 3" fill style={{ objectFit: 'cover' }} />
+            </div>
+            <div className={styles.locationInfo}>
+              <h3 className={styles.locationName}>Filiala Rîșcani</h3>
+              <p className={styles.locationAddress}>Str. Kiev 8, Chișinău</p>
+              <p className={styles.locationHours}>Luni-Duminică: 08:00 - 22:00</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -160,14 +168,11 @@ export default function DesprePage() {
       <section className={styles.unique}>
         <div className={styles.uniqueInner}>
           <div className={styles.uniqueLeft}>
-            <span className={styles.sectionLabelLight}>De ce Challenge Store</span>
-            <h2 className={styles.uniqueTitle}>Ce ne face<br />diferiți</h2>
-            <p className={styles.uniqueText}>
-              Nu suntem doar un magazin — suntem poarta ta către gusturile
-              autentice ale lumii, cu garanția calității la fiecare pas.
-            </p>
-            <Link href="/produse" className={styles.btnWhite}>
-              Vezi produsele <BsArrowRight size={16} />
+            <span className={styles.sectionLabelLight}>{t.aboutPage.uniqueLabel}</span>
+            <h2 className={styles.uniqueTitle}>{t.aboutPage.uniqueTitle} {t.aboutPage.uniqueTitleAccent}</h2>
+            <p className={styles.uniqueText}>{t.aboutPage.uniqueText}</p>
+            <Link href="/produse" className={styles.btnPrimary}>
+              {t.aboutPage.uniqueCta} <BsArrowRight size={16} />
             </Link>
           </div>
           <div className={styles.uniqueGrid}>
@@ -185,16 +190,16 @@ export default function DesprePage() {
       {/* ── TIMELINE ── */}
       <section className={styles.timeline}>
         <div className={styles.timelineHead}>
-          <span className={styles.sectionLabel}>Parcursul nostru</span>
-          <h2 className={styles.sectionTitle}>Momente importante</h2>
+          <span className={styles.sectionLabel}>{t.aboutPage.timelineLabel}</span>
+          <h2 className={styles.sectionTitle}>{t.aboutPage.timelineTitle}</h2>
         </div>
         <div className={styles.timelineTrack}>
-          {TIMELINE.map((t, i) => (
-            <div key={t.year} className={styles.milestone}>
+          {TIMELINE.map((item, i) => (
+            <div key={item.year} className={styles.milestone}>
               <div className={styles.milestoneDot}>{i + 1}</div>
-              <span className={styles.milestoneYear}>{t.year}</span>
-              <h4 className={styles.milestoneTitle}>{t.title}</h4>
-              <p className={styles.milestoneText}>{t.text}</p>
+              <span className={styles.milestoneYear}>{item.year}</span>
+              <h4 className={styles.milestoneTitle}>{item.title}</h4>
+              <p className={styles.milestoneText}>{item.text}</p>
             </div>
           ))}
         </div>
@@ -203,16 +208,13 @@ export default function DesprePage() {
       {/* ── QUALITY COMMITMENTS ── */}
       <section className={styles.commitments}>
         <div className={styles.commitImg}>
-          <Image src="/img/us.png" alt="Calitate garantată"
-            width={480} height={480} style={{ objectFit: "contain" }} />
+          <Image src="/img/photo1.jpg" alt="Calitate garantată"
+            width={480} height={480} style={{ objectFit: "cover", borderRadius: 28 }} />
         </div>
         <div className={styles.commitText}>
-          <span className={styles.sectionLabel}>Angajamentul nostru</span>
-          <h2 className={styles.sectionTitle}>Calitate în care<br />poți avea încredere</h2>
-          <p className={styles.commitIntro}>
-            Fiecare produs din magazinul nostru respectă cele mai înalte
-            standarde de calitate și autenticitate.
-          </p>
+          <span className={styles.sectionLabel}>{t.aboutPage.commitLabel}</span>
+          <h2 className={styles.sectionTitle}>{t.aboutPage.commitTitle}<br />{t.aboutPage.commitTitleAccent}</h2>
+          <p className={styles.commitIntro}>{t.aboutPage.commitIntro}</p>
           <ul className={styles.commitList}>
             {COMMITMENTS.map((c) => (
               <li key={c}>
@@ -227,16 +229,13 @@ export default function DesprePage() {
       {/* ── CTA ── */}
       <section className={styles.cta}>
         <div className={styles.ctaInner}>
-          <h2 className={styles.ctaTitle}>Gata să descoperi gusturi noi?</h2>
-          <p className={styles.ctaText}>
-            Explorează colecția noastră de dulciuri și băuturi internaționale
-            și lasă-te surprins de aromele lumii.
-          </p>
+          <h2 className={styles.ctaTitle}>{t.aboutPage.ctaTitle}</h2>
+          <p className={styles.ctaText}>{t.aboutPage.ctaText}</p>
           <div className={styles.ctaBtns}>
             <Link href="/produse" className={styles.ctaPrimary}>
-              Explorează produsele <BsArrowRight size={18} />
+              {t.aboutPage.ctaPrimary} <BsArrowRight size={18} />
             </Link>
-            <Link href="#contact" className={styles.ctaSecondary}>Contactează-ne</Link>
+            <Link href="#contact" className={styles.ctaSecondary}>{t.aboutPage.ctaSecondary}</Link>
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { BsCart3, BsList, BsX } from "react-icons/bs";
+import { useCart } from "../context/CartContext";
 import styles from "../page.module.css";
 
 const LINKS = [
@@ -13,6 +14,7 @@ const LINKS = [
 
 export default function HomeNav() {
   const [open, setOpen] = useState(false);
+  const { totalItems, openDrawer } = useCart();
   return (
     <header className={styles.nav}>
       <div className={styles.navLogo}>
@@ -33,9 +35,10 @@ export default function HomeNav() {
       </nav>
       <div className={styles.navActions}>
         <a className={styles.navLogin} href="#login">Log in</a>
-        <a className={styles.navCart} href="#cos" aria-label="Coș de cumpărături">
+        <button className={styles.navCart} onClick={openDrawer} aria-label="Coș de cumpărături">
           <BsCart3 size={22} />
-        </a>
+          {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
+        </button>
         <a className={styles.navCta} href="#contact">Comandă</a>
         <button
           className={styles.hamburger}

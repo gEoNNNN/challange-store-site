@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "../context/LanguageContext";
 import styles from "./CountdownSection.module.css";
 
 const TARGET = new Date("2026-08-01T00:00:00");
@@ -21,24 +22,45 @@ function pad(n: number) {
 }
 
 const UNITS = [
-  { key: "days",    label: "Zile",    color: "#FF6FAF", emoji: "\uD83C\uDF6D" },
-  { key: "hours",   label: "Ore",     color: "#FF8A3D", emoji: "\uD83C\uDF6B" },
-  { key: "minutes", label: "Minute",  color: "#01934A", emoji: "\uD83C\uDF6C" },
-  { key: "seconds", label: "Secunde", color: "#8B5CF6", emoji: "\uD83C\uDF88" },
+  { key: "days",    color: "#FF6FAF", emoji: "\uD83C\uDF6D" },
+  { key: "hours",   color: "#FF8A3D", emoji: "\uD83C\uDF6B" },
+  { key: "minutes", color: "#01934A", emoji: "\uD83C\uDF6C" },
+  { key: "seconds", color: "#8B5CF6", emoji: "\uD83C\uDF88" },
 ] as const;
 
 const FLOATERS = ["\uD83C\uDF6D", "\uD83C\uDF6C", "\uD83C\uDF88", "\uD83C\uDF89", "\uD83C\uDF6B", "\uD83E\uDDC1", "\uD83C\uDF6A", "\u2B50", "\uD83C\uDF7C", "\uD83C\uDF88", "\uD83C\uDF6D", "\uD83C\uDF89"];
 
 export default function CountdownSection() {
-  const [time, setTime] = useState(getTimeLeft());
+  const t = useTranslations();
+  const [time, setTime] = useState<ReturnType<typeof getTimeLeft> | null>(null);
+
+  const UNIT_LABELS: Record<typeof UNITS[number]["key"], string> = {
+    days:    t.countdown.days,
+    hours:   t.countdown.hours,
+    minutes: t.countdown.minutes,
+    seconds: t.countdown.seconds,
+  };
 
   useEffect(() => {
+    setTime(getTimeLeft());
     const id = setInterval(() => setTime(getTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
 
   return (
     <section className={styles.section} id="aniversare">
+      {/* Wave from green ProductsSection above – fills CountdownSection colour
+          below the curve; transparent above shows ProductsSection green */}
+      <div className={styles.waveTop} aria-hidden="true">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,30 C360,100 1080,100 1440,30 L1440,100 L0,100 Z" fill="#fef6fb" />
+        </svg>
+      </div>
+
+      {/* Section background fill – starts below the wave so the transparent
+          wave area can reveal ProductsSection's green behind it */}
+      <div className={styles.bgFill} aria-hidden="true" />
+
       {/* Floating candy background */}
       <div className={styles.floaters} aria-hidden="true">
         {FLOATERS.map((emoji, i) => (
@@ -56,7 +78,7 @@ export default function CountdownSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, type: "spring", bounce: 0.5 }}
         >
-          <span className={styles.badgeCake}>🎂</span> Petrecere de 1 an!
+          <span className={styles.badgeCake}>🎂</span> {t.countdown.badge}
         </motion.div>
 
         <motion.h2
@@ -66,7 +88,7 @@ export default function CountdownSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.1, type: "spring", bounce: 0.45 }}
         >
-          Challenge Store împlinește <span className={styles.accent}>1&nbsp;An!</span>
+          {t.countdown.title} <span className={styles.accent}>{t.countdown.titleAccent}</span>
         </motion.h2>
 
         <motion.p
@@ -76,8 +98,7 @@ export default function CountdownSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Pe <strong>1 August 2026</strong> facem o mare petrecere cu surprize,
-          dulciuri și cadouri! Numărăm împreună 🎉
+          {t.countdown.sub}
         </motion.p>
 
         {/* Countdown */}
@@ -88,7 +109,7 @@ export default function CountdownSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          {UNITS.map(({ key, label, color, emoji }, idx) => (
+          {UNITS.map(({ key, color, emoji }, idx) => (
             <motion.div
               key={key}
               className={styles.unit}
@@ -99,22 +120,25 @@ export default function CountdownSection() {
                 <span className={styles.cardEmoji}>{emoji}</span>
                 <AnimatePresence mode="popLayout">
                   <motion.span
-                    key={time[key]}
+                    key={time?.[key] ?? 0}
                     className={styles.number}
                     initial={{ y: "-100%", opacity: 0, scale: 0.6 }}
                     animate={{ y: 0, opacity: 1, scale: 1 }}
                     exit={{ y: "100%", opacity: 0, scale: 0.6 }}
                     transition={{ type: "spring", bounce: 0.5, duration: 0.5 }}
                   >
-                    {pad(time[key])}
+                    {pad(time?.[key] ?? 0)}
                   </motion.span>
                 </AnimatePresence>
               </div>
-              <span className={styles.label}>{label}</span>
+              <span className={styles.label}>{UNIT_LABELS[key]}</span>
             </motion.div>
           ))}
         </motion.div>
       </div>
+
+      {/* Bottom mist — fades the section background into the white PartnersSection */}
+      <div className={styles.mistBottom} aria-hidden="true" />
     </section>
   );
 }

@@ -4,18 +4,31 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BsCart3, BsList, BsX } from "react-icons/bs";
+import { useCart } from "../context/CartContext";
+import { useLanguage, useTranslations } from "../context/LanguageContext";
+import type { Locale } from "../i18n";
 import styles from "./Navbar.module.css";
 
-const LINKS = [
-  { href: "/", label: "Acasă" },
-  { href: "/produse", label: "Produse" },
-  { href: "/despre", label: "Despre noi" },
-  { href: "/recenzii", label: "Recenzii" },
+const LOCALES: { code: Locale; label: string }[] = [
+  { code: "ro", label: "RO" },
+  { code: "ru", label: "RU" },
+  { code: "en", label: "EN" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { totalItems, openDrawer } = useCart();
+  const { locale, setLocale } = useLanguage();
+  const t = useTranslations();
+
+  const LINKS = [
+    { href: "/",         label: t.nav.home },
+    { href: "/produse",  label: t.nav.products },
+    { href: "/despre",   label: t.nav.about },
+    { href: "/recenzii", label: t.nav.reviews },
+  ];
+
   return (
     <header className={styles.nav}>
       <div className={styles.navLogo}>
@@ -30,6 +43,7 @@ export default function Navbar() {
           />
         </Link>
       </div>
+
       <nav className={styles.navLinks}>
         {LINKS.map((l) => {
           const active =
@@ -45,12 +59,27 @@ export default function Navbar() {
           );
         })}
       </nav>
+
       <div className={styles.navActions}>
-        <Link className={styles.navLogin} href="#login">Log in</Link>
-        <Link className={styles.navCart} href="#cos" aria-label="Coș de cumpărături">
+        {/* Language switcher */}
+        <div className={styles.langSwitcher} role="group" aria-label="Selectează limba">
+          {LOCALES.map(({ code, label }) => (
+            <button
+              key={code}
+              className={`${styles.langBtn} ${locale === code ? styles.langBtnActive : ""}`}
+              onClick={() => setLocale(code)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <Link className={styles.navLogin} href="#login">{t.nav.login}</Link>
+        <button className={styles.navCart} onClick={openDrawer} aria-label="Coș de cumpărături">
           <BsCart3 size={22} />
-        </Link>
-        <Link className={styles.navCta} href="#contact">Comandă</Link>
+          {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
+        </button>
+        <Link className={styles.navCta} href="#contact">{t.nav.order}</Link>
         <button
           className={styles.hamburger}
           onClick={() => setOpen(!open)}
@@ -60,6 +89,7 @@ export default function Navbar() {
           {open ? <BsX size={26} /> : <BsList size={26} />}
         </button>
       </div>
+
       {open && (
         <div className={styles.mobileMenu}>
           {LINKS.map((l) => {
@@ -76,13 +106,28 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Language switcher in mobile menu */}
+          <div className={styles.mobileDivider} />
+          <div className={styles.mobileLangRow}>
+            {LOCALES.map(({ code, label }) => (
+              <button
+                key={code}
+                className={`${styles.mobileLangBtn} ${locale === code ? styles.mobileLangBtnActive : ""}`}
+                onClick={() => { setLocale(code); setOpen(false); }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
           <div className={styles.mobileDivider} />
           <Link
             className={styles.mobileCta}
             href="#contact"
             onClick={() => setOpen(false)}
           >
-            Comandă acum
+            {t.nav.order}
           </Link>
         </div>
       )}

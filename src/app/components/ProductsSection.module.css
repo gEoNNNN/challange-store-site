@@ -1,15 +1,26 @@
 .section {
   position: relative;
   background: transparent;
-  padding-top: 100px;
+  /* Pull the section up so the wave overlaps the hero's empty bottom.
+     The transparent part of the wave then reveals the hero itself,
+     making the transition seamless (no white/contrast strip).
+     Paints above the hero via DOM order (it comes later in the page). */
+  margin-top: -80px;
+  padding-top: 120px;
   padding-bottom: 80px;
   overflow: hidden;
+  /* Own stacking context so internal z-indexes stay contained and the
+     whole section paints above the hero (DOM order) but below the nav. */
+  isolation: isolate;
+  font-family: var(--font-poppins), sans-serif;
 }
 
-/* Green background with wavy top edge (transparent above the wave) */
+/* Solid green fill below the wave. Starts a few px ABOVE the wave's
+   bottom (wave is 100px tall) so the two greens overlap and there is
+   never a sub-pixel transparent gap between them. */
 .greenBg {
   position: absolute;
-  top: 96px;
+  top: 88px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -128,7 +139,7 @@
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.65);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-poppins), sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -283,25 +294,58 @@
 
 /* ── Responsive ── */
 @media (max-width: 960px) {
-  .track { grid-template-columns: repeat(2, 1fr); }
+  .track { grid-template-columns: repeat(3, 1fr); }
   .sectionTitle { font-size: 36px; }
 }
 
-@media (max-width: 680px) {
-  .section { padding-top: 72px; padding-bottom: 56px; }
-  .mascotWrap, .mascotWrapRight { display: none; }
+@media (max-width: 768px) {
   .track { grid-template-columns: repeat(2, 1fr); }
+  .sectionTitle { font-size: 30px; }
+}
+
+@media (max-width: 680px) {
+  .section { margin-top: -40px; padding-top: 80px; padding-bottom: 56px; }
+  .mascotWrap, .mascotWrapRight { display: none; }
   .arrow { display: none; }
-  .carouselWrap { gap: 0; }
+
+  .carouselWrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 16px;
+    gap: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .carouselWrap::-webkit-scrollbar { display: none; }
+
+  .track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: auto;
+    grid-template-columns: unset;
+    padding: 0 20px;
+  }
+
+  .card {
+    scroll-snap-align: start;
+    flex: 0 0 calc(46vw - 16px);
+    min-width: 140px;
+    max-width: 195px;
+  }
 }
 
 @media (max-width: 560px) {
-  .track { grid-template-columns: repeat(2, 1fr); }
   .tabs { flex-wrap: wrap; justify-content: center; }
   .tab { padding: 9px 18px; font-size: 14px; }
-  .sectionTitle { font-size: 28px; }
+  .sectionTitle { font-size: 26px; }
+  .card {
+    flex: 0 0 calc(48vw - 16px);
+  }
 }
 
 @media (max-width: 400px) {
-  .track { grid-template-columns: 1fr; }
+  .card { flex: 0 0 calc(70vw - 16px); }
 }
