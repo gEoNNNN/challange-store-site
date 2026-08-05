@@ -1,6 +1,11 @@
+/* ── Base color tokens ── */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Default font theme: Poppins */
+  --app-font-heading: var(--font-poppins), sans-serif;
+  --app-font-body:    var(--font-poppins), sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -8,6 +13,32 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+/* ── Font theme overrides ── */
+html.font-theme-poppins {
+  --app-font-heading: var(--font-poppins), sans-serif;
+  --app-font-body:    var(--font-poppins), sans-serif;
+}
+html.font-theme-alfa-chivo {
+  --app-font-heading: var(--font-alfa-slab-one), serif;
+  --app-font-body:    var(--font-chivo), sans-serif;
+}
+html.font-theme-dm-nunito {
+  --app-font-heading: var(--font-dm-serif-display), serif;
+  --app-font-body:    var(--font-nunito), sans-serif;
+}
+html.font-theme-alegreya {
+  --app-font-heading: var(--font-alegreya-sans), sans-serif;
+  --app-font-body:    var(--font-alegreya), serif;
+}
+html.font-theme-geometric {
+  --app-font-heading: var(--font-raleway), sans-serif;
+  --app-font-body:    var(--font-raleway), sans-serif;
+}
+html.font-theme-editorial {
+  --app-font-heading: var(--font-fira-sans), sans-serif;
+  --app-font-body:    var(--font-pt-serif), serif;
 }
 
 html {
@@ -26,9 +57,13 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--app-font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--app-font-heading);
 }
 
 * {

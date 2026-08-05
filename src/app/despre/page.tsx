@@ -146,7 +146,7 @@ export default function DesprePage() {
               <Image src="/img/photo2.jpg" alt="Filiala 2" fill style={{ objectFit: 'cover' }} />
             </div>
             <div className={styles.locationInfo}>
-              <h3 className={styles.locationName}>Filiala Botanica</h3>
+              <h3 className={styles.locationName}>Filiala Balti</h3>
               <p className={styles.locationAddress}>Bd. Dacia 45, Chișinău</p>
               <p className={styles.locationHours}>Luni-Duminică: 08:00 - 22:00</p>
             </div>

@@ -11,7 +11,7 @@ import {
 } from "react-icons/bs";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import { PRODUCTS, CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
+import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
 import { useTranslations } from "../context/LanguageContext";
 import styles from "./page.module.css";
 
@@ -76,6 +76,25 @@ export default function ProduseePage() {
   const [displayCount, setDisplayCount]   = useState(12);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  const [liveProducts, setLiveProducts] = useState<Product[] | null>(null);
+  const [syncReady, setSyncReady] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then((r) => r.json())
+      .then((data: Product[]) => {
+        setLiveProducts(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        setLiveProducts([]);
+      })
+      .finally(() => setSyncReady(true));
+  }, []);
+
+  // Before the first fetch completes show nothing (avoids flash of 1400 fake products)
+  // After fetch: use ONLY live data from SalesExpert
+  const allProducts = syncReady ? (liveProducts ?? []) : [];
+
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -117,7 +136,7 @@ export default function ProduseePage() {
 
   /* ── Filtered & sorted products ── */
   const filtered = useMemo(() => {
-    let list = PRODUCTS.filter((p) => {
+    let list = allProducts.filter((p) => {
       if (search && !p.name.toLowerCase().includes(search.toLowerCase()) &&
           !p.brand.toLowerCase().includes(search.toLowerCase())) return false;
       if (activeCategory !== "Toate" && p.category !== activeCategory) return false;
@@ -135,7 +154,7 @@ export default function ProduseePage() {
       case "new":        list = [...list].filter((p) => p.isNew).concat(list.filter((p) => !p.isNew)); break;
     }
     return list;
-  }, [search, activeCategory, selCategories, selBrands, selCountries, selAttributes, priceRange, sortBy]);
+  }, [allProducts, search, activeCategory, selCategories, selBrands, selCountries, selAttributes, priceRange, sortBy]);
 
   const displayed = filtered.slice(0, displayCount);
   const hasMore = displayCount < filtered.length;
@@ -371,7 +390,18 @@ export default function ProduseePage() {
           )}
 
           {/* Product grid/list */}
-          {displayed.length === 0 ? (
+          {!syncReady ? (
+            <div className={styles.empty}>
+              <div className={styles.spinner} />
+              <p style={{ marginTop: 16 }}>Se încarcă catalogul…</p>
+            </div>
+          ) : allProducts.length === 0 ? (
+            <div className={styles.empty}>
+              <span className={styles.emptyIcon}>🔄</span>
+              <p><strong>Catalogul este gol.</strong><br />Sincronizarea cu SalesExpert nu a reușit sau nu există produse în stoc.</p>
+              <p style={{ fontSize: 13, opacity: 0.65, marginTop: 8 }}>Porniți SalesExpert și reporniți serverul pentru a sincroniza produsele.</p>
+            </div>
+          ) : displayed.length === 0 ? (
             <div className={styles.empty}>
               <span className={styles.emptyIcon}><BsSearch size={40} /></span>
               <p>Nu am găsit produse pentru filtrele selectate.</p>

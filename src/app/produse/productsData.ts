@@ -17,6 +17,8 @@ export interface Product {
   inStock: boolean;
   isNew: boolean;
   attributes: string[];
+  uid?: string;
+  remain?: number;
 }
 
 export const PRODUCTS: Product[] = rawProducts as unknown as Product[];

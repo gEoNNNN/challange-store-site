@@ -62,9 +62,9 @@ export default function Footer() {
             <li><a href="#despre">{t.footer.linkAbout}</a></li>
             <li><a href="#recenzii">{t.footer.linkReviews}</a></li>
             <li><a href="#">{t.footer.linkPartners}</a></li>
-            <li><a href="#">{t.footer.linkPrivacy}</a></li>
-            <li><a href="#">{t.footer.linkTerms}</a></li>
-            <li><a href="#">{t.footer.linkReturn}</a></li>
+            <li><a href="/politica-de-confidentialitate">{t.footer.linkPrivacy}</a></li>
+            <li><a href="/termeni-si-conditii">{t.footer.linkTerms}</a></li>
+            <li><a href="/termeni-si-conditii#retur">{t.footer.linkReturn}</a></li>
           </ul>
         </motion.div>
 

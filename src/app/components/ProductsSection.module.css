@@ -12,7 +12,7 @@
   /* Own stacking context so internal z-indexes stay contained and the
      whole section paints above the hero (DOM order) but below the nav. */
   isolation: isolate;
-  font-family: var(--font-poppins), sans-serif;
+  font-family: inherit;
 }
 
 /* Solid green fill below the wave. Starts a few px ABOVE the wave's

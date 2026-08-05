@@ -27,7 +27,9 @@ export default function CheckoutPage() {
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [orderNum] = useState(() => Math.floor(10000 + Math.random() * 90000));
+  const [orderCode, setOrderCode] = useState<string | null>(null);
 
   const SHIPPING = totalPrice >= 500 ? 0 : 50;
   const TOTAL = totalPrice + SHIPPING;
@@ -42,10 +44,36 @@ export default function CheckoutPage() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitting(true);
+
+    const lines = items
+      .filter((i) => !!i.product.uid)
+      .map((i, idx) => ({ uid: i.product.uid as string, qty: i.qty, lineNumber: idx + 1 }));
+
+    if (lines.length > 0) {
+      try {
+        const res = await fetch("/api/order", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({
+            phone:   form.phone,
+            address: form.address,
+            city:    form.city,
+            name:    form.name,
+            comment: form.notes,
+            items:   lines,
+          }),
+        });
+        const data = await res.json() as { ok: boolean; code?: string };
+        if (data.ok && data.code) setOrderCode(data.code);
+      } catch {}
+    }
+
     clearCart();
+    setSubmitting(false);
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -65,7 +93,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className={styles.successTitle}>Comandă plasată!</h1>
           <p className={styles.successSub}>
-            Comanda <strong>#{orderNum}</strong> a fost înregistrată cu succes.
+            Comanda <strong>#{orderCode ?? orderNum}</strong> a fost înregistrată cu succes.
             Te vom contacta în cel mai scurt timp pentru confirmare.
           </p>
           <div className={styles.successMeta}>
@@ -292,9 +320,9 @@ export default function CheckoutPage() {
               />
             </div>
 
-            <button type="submit" className={styles.submitBtn}>
+            <button type="submit" className={styles.submitBtn} disabled={submitting}>
               <BsCheckCircleFill size={17} />
-              Plasează comanda — {TOTAL} MDL
+              {submitting ? "Se procesează…" : `Plasează comanda — ${TOTAL} MDL`}
             </button>
           </form>
 
