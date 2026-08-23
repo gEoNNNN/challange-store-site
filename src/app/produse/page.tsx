@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BsSearch, BsHeart, BsHeartFill, BsStarFill, BsStar,
@@ -11,13 +12,15 @@ import {
 } from "react-icons/bs";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
+import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, PRODUCTS, Product } from "./productsData";
 import { useTranslations } from "../context/LanguageContext";
 import styles from "./page.module.css";
 
+const PRICE_MAX_DEFAULT = 5000;
+
 const SORT_VALUES = ["featured", "price-asc", "price-desc", "rating", "new"] as const;
 
-const PRICE_MAX = 200;
+const PRICE_MAX = PRICE_MAX_DEFAULT;
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -76,24 +79,18 @@ export default function ProduseePage() {
   const [displayCount, setDisplayCount]   = useState(12);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const [liveProducts, setLiveProducts] = useState<Product[] | null>(null);
-  const [syncReady, setSyncReady] = useState(false);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/products")
       .then((r) => r.json())
       .then((data: Product[]) => {
-        setLiveProducts(Array.isArray(data) ? data : []);
+        setAllProducts(Array.isArray(data) && data.length > 0 ? data : PRODUCTS);
       })
-      .catch(() => {
-        setLiveProducts([]);
-      })
-      .finally(() => setSyncReady(true));
+      .catch(() => setAllProducts(PRODUCTS))
+      .finally(() => setLoading(false));
   }, []);
-
-  // Before the first fetch completes show nothing (avoids flash of 1400 fake products)
-  // After fetch: use ONLY live data from SalesExpert
-  const allProducts = syncReady ? (liveProducts ?? []) : [];
 
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -176,8 +173,70 @@ export default function ProduseePage() {
     return () => observer.disconnect();
   }, [hasMore]);
 
+  const pathname = usePathname();
+  const showOverlay = pathname === "/produse";
+
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ position: "relative" }}>
+
+      {/* ── În Lucru Overlay (doar pe /produse) ── */}
+      {showOverlay && <div style={{
+        position:        "fixed",
+        inset:           0,
+        zIndex:          9999,
+        backdropFilter:  "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        backgroundColor: "rgba(0,0,0,0.65)",
+        display:         "flex",
+        flexDirection:   "column",
+        alignItems:      "center",
+        justifyContent:  "center",
+        gap:             "20px",
+        pointerEvents:   "all",
+      }}>
+        <div style={{
+          background:    "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
+          border:        "1px solid rgba(255,255,255,0.1)",
+          borderRadius:  "24px",
+          padding:       "48px 56px",
+          textAlign:     "center",
+          maxWidth:      "480px",
+          boxShadow:     "0 32px 80px rgba(0,0,0,0.5)",
+        }}>
+          <div style={{ fontSize: "64px", marginBottom: "16px" }}>🛠️</div>
+          <h2 style={{
+            color:       "#ffffff",
+            fontSize:    "28px",
+            fontWeight:  "700",
+            marginBottom:"12px",
+            letterSpacing:"-0.5px",
+          }}>
+            Pagina este în lucru
+          </h2>
+          <p style={{
+            color:       "rgba(255,255,255,0.6)",
+            fontSize:    "16px",
+            lineHeight:  "1.6",
+            marginBottom:"28px",
+          }}>
+            Lucrăm la actualizarea catalogului de produse.<br />
+            Reveniți în curând!
+          </p>
+          <a href="/" style={{
+            display:         "inline-block",
+            background:      "linear-gradient(135deg, #ff6b6b, #ff8e53)",
+            color:           "#fff",
+            padding:         "12px 32px",
+            borderRadius:    "50px",
+            textDecoration:  "none",
+            fontWeight:      "600",
+            fontSize:        "15px",
+          }}>
+            ← Înapoi la pagina principală
+          </a>
+        </div>
+      </div>}
+
       {/* ── Hero ── */}
       <div className={styles.heroBar}>
         <div className={styles.heroBarInner}>
@@ -390,16 +449,10 @@ export default function ProduseePage() {
           )}
 
           {/* Product grid/list */}
-          {!syncReady ? (
+          {loading ? (
             <div className={styles.empty}>
               <div className={styles.spinner} />
-              <p style={{ marginTop: 16 }}>Se încarcă catalogul…</p>
-            </div>
-          ) : allProducts.length === 0 ? (
-            <div className={styles.empty}>
-              <span className={styles.emptyIcon}>🔄</span>
-              <p><strong>Catalogul este gol.</strong><br />Sincronizarea cu SalesExpert nu a reușit sau nu există produse în stoc.</p>
-              <p style={{ fontSize: 13, opacity: 0.65, marginTop: 8 }}>Porniți SalesExpert și reporniți serverul pentru a sincroniza produsele.</p>
+              <p style={{ marginTop: 16 }}>Se încarcă produsele…</p>
             </div>
           ) : displayed.length === 0 ? (
             <div className={styles.empty}>

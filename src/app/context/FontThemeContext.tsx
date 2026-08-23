@@ -83,13 +83,8 @@ export function FontThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<FontThemeId>("poppins");
 
   useEffect(() => {
-    const saved = localStorage.getItem("cs_font_theme") as FontThemeId | null;
-    if (saved && FONT_THEMES.some((f) => f.id === saved)) {
-      applyTheme(saved);
-      setThemeState(saved);
-    } else {
-      applyTheme("poppins");
-    }
+    applyTheme("poppins");
+    localStorage.removeItem("cs_font_theme");
   }, []);
 
   const setTheme = (t: FontThemeId) => {
