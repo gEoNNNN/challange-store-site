@@ -150,6 +150,17 @@ export function normalizeProductName(sourceName: string) {
   return name;
 }
 
+export function inferProductCategory(sourceName: string) {
+  const value = decodeProductText(sourceName).toLowerCase();
+  if (/\b(ramen|noodles?|buldak|tangle|udon|yakisoba|instant\s+pasta)\b/.test(value)) return "Instant & Ramen";
+  if (/\b(chips?|crisps?|pringles|takis|lays?|cheetos|cheez[\s-]*it|popcorn|pretzels?|snacks?)\b/.test(value)) return "Snacks & Chips";
+  if (/\b(biscuits?|cookies?|oreo|wafers?|waffles?|toast['’]?em|pop[\s-]*tarts?|cakes?|croissants?|crackers?)\b/.test(value)) return "Biscuiți";
+  if (/\b(drinks?|soda|cola|lemonade|juice|tea|ramune|root\s+beer|energy|hydration|coffee|latte)\b/.test(value) || /\b(7up|fanta|pepsi|arizona|calypso|bundaberg|mogu\s+mogu)\b/.test(value)) return "Băuturi";
+  if (/\b(gummies|gummy|gum|jelly|jellies|peelerz|haribo|fruit\s+chews?)\b/.test(value)) return "Gumă & Jeleuri";
+  if (/\b(chocolate|choco|cocoa|cacao|hershey['’]?s|cadbury|reese['’]?s|kit\s*kat|twix|snickers|bounty|aero|butterfinger)\b/.test(value)) return "Ciocolată";
+  return "Bomboane";
+}
+
 export function inferProductBrand(sourceName: string, suppliedBrand?: string | null) {
   const cleanName = normalizeProductName(sourceName);
   const fromName = matchingBrandRule(cleanName);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { getDb, ensureSchema } from "@/lib/db";
-import { inferProductBrand, normalizeProductName } from "@/lib/productNormalization";
+import { inferProductBrand, inferProductCategory, normalizeProductName } from "@/lib/productNormalization";
 import productMedia from "@/lib/productMedia.json";
 
 interface MediaEntry {
@@ -134,10 +134,11 @@ async function runSync() {
             const sourceName = p.Name.trim();
             const normalizedName = normalizeProductName(sourceName);
             const brand = inferProductBrand(sourceName, p.Brand);
+            const category = inferProductCategory(sourceName);
 
             await sql`
-              INSERT INTO products (uid, name, source_name, code, price, promotion_price, depot_stock, brand, description, unit_name, has_image, image_url, barcodes, updated_at)
-              VALUES (${p.Uid}, ${normalizedName}, ${sourceName}, ${p.Code ?? null}, ${p.Price ?? 0}, ${p.PromotionPrice ?? 0}, ${depotStock}, ${brand}, ${media?.description || p.Description || null}, ${p.UnitName ?? null}, ${p.Images?.Image1 === true}, ${media?.image || null}, ${JSON.stringify(p.Barcodes ?? [])}, NOW())
+              INSERT INTO products (uid, name, source_name, code, price, promotion_price, depot_stock, brand, category, description, unit_name, has_image, image_url, barcodes, updated_at)
+              VALUES (${p.Uid}, ${normalizedName}, ${sourceName}, ${p.Code ?? null}, ${p.Price ?? 0}, ${p.PromotionPrice ?? 0}, ${depotStock}, ${brand}, ${category}, ${media?.description || p.Description || null}, ${p.UnitName ?? null}, ${p.Images?.Image1 === true}, ${media?.image || null}, ${JSON.stringify(p.Barcodes ?? [])}, NOW())
               ON CONFLICT (uid) DO UPDATE SET
                 name            = EXCLUDED.name,
                 source_name     = EXCLUDED.source_name,
@@ -146,6 +147,7 @@ async function runSync() {
                 promotion_price = EXCLUDED.promotion_price,
                 depot_stock     = EXCLUDED.depot_stock,
                 brand           = EXCLUDED.brand,
+                category        = EXCLUDED.category,
                 description     = EXCLUDED.description,
                 unit_name       = EXCLUDED.unit_name,
                 has_image       = EXCLUDED.has_image,

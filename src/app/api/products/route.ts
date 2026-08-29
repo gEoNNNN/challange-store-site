@@ -30,7 +30,7 @@ function mapRow(p: DbProduct, i: number, offset = 0) {
     img:              getImageUrl(p),
     description:      p.description || p.name,
     fullDescription:  p.description || p.name,
-    category:         "Produse",
+    category:         p.category || "Bomboane",
     brand:            p.brand || "Generic",
     country:          "Moldova",
     countryCode:      "MD",
@@ -75,6 +75,7 @@ export async function GET(req: NextRequest) {
     const offset = Math.max(Number(req.nextUrl.searchParams.get("offset")) || 0, 0);
     const search = req.nextUrl.searchParams.get("search")?.trim();
     const brands = req.nextUrl.searchParams.getAll("brand").filter(Boolean);
+    const categories = req.nextUrl.searchParams.getAll("category").filter(Boolean);
     const minPriceParam = req.nextUrl.searchParams.get("minPrice");
     const maxPriceParam = req.nextUrl.searchParams.get("maxPrice");
     const minPrice = minPriceParam === null ? Number.NaN : Number(minPriceParam);
@@ -93,6 +94,7 @@ export async function GET(req: NextRequest) {
       conditions.push(`(name ILIKE ${placeholder} OR COALESCE(brand, '') ILIKE ${placeholder})`);
     }
     if (brands.length > 0) conditions.push(`brand = ANY(${addParam(brands)}::text[])`);
+    if (categories.length > 0) conditions.push(`category = ANY(${addParam(categories)}::text[])`);
     if (Number.isFinite(minPrice) && minPrice > 0) conditions.push(`${PRICE_EXPRESSION} >= ${addParam(minPrice)}`);
     if (Number.isFinite(maxPrice) && maxPrice >= 0) conditions.push(`${PRICE_EXPRESSION} <= ${addParam(maxPrice)}`);
 

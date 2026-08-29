@@ -17,6 +17,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
       promotion_price NUMERIC(12,2) NOT NULL DEFAULT 0,
       depot_stock   NUMERIC(12,3) NOT NULL DEFAULT 0,
       brand         TEXT,
+      category      TEXT,
       description   TEXT,
       unit_name     TEXT,
       has_image     BOOLEAN     NOT NULL DEFAULT FALSE,
@@ -26,6 +27,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
     )
   `;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS source_name TEXT`;
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS category TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url TEXT`;
   await sql`CREATE INDEX IF NOT EXISTS idx_products_stock ON products (depot_stock) WHERE depot_stock > 0`;
@@ -40,6 +42,7 @@ export interface DbProduct {
   promotion_price: string;
   depot_stock:     string;
   brand:           string | null;
+  category:        string | null;
   description:     string | null;
   unit_name:       string | null;
   has_image:       boolean;

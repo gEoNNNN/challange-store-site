@@ -1,5 +1,5 @@
 const { neon } = require("@neondatabase/serverless");
-const { inferProductBrand, normalizeProductName } = require("../src/lib/productNormalization.ts");
+const { inferProductBrand, inferProductCategory, normalizeProductName } = require("../src/lib/productNormalization.ts");
 
 const APPLY = process.argv.includes("--apply");
 const CONCURRENCY = 20;
@@ -19,9 +19,10 @@ async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL lipsește");
   const sql = neon(process.env.DATABASE_URL);
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS source_name TEXT`;
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS category TEXT`;
 
   const products = await sql`
-    SELECT uid, name, source_name, brand
+    SELECT uid, name, source_name, brand, category
     FROM products
     ORDER BY name ASC
   `;
@@ -32,17 +33,19 @@ async function main() {
       sourceName,
       normalizedName: normalizeProductName(sourceName),
       normalizedBrand: inferProductBrand(sourceName, product.brand),
+      normalizedCategory: inferProductCategory(sourceName),
     };
   }).filter((product) =>
     product.source_name !== product.sourceName ||
     product.name !== product.normalizedName ||
-    product.brand !== product.normalizedBrand
+    product.brand !== product.normalizedBrand ||
+    product.category !== product.normalizedCategory
   );
 
   const knownBrands = changes.filter((product) => product.normalizedBrand !== "Generic").length;
   console.log(`Produse: ${products.length}; de actualizat: ${changes.length}; branduri deduse: ${knownBrands}`);
   changes.slice(0, 20).forEach((product) => {
-    console.log(`${product.name} -> ${product.normalizedName} [${product.normalizedBrand}]`);
+    console.log(`${product.name} -> ${product.normalizedName} [${product.normalizedBrand}; ${product.normalizedCategory}]`);
   });
   if (!APPLY) {
     console.log("Mod verificare: baza de date nu a fost modificată");
@@ -53,7 +56,7 @@ async function main() {
   await mapConcurrent(changes, CONCURRENCY, async (product) => {
     await sql`
       UPDATE products
-      SET source_name = ${product.sourceName}, name = ${product.normalizedName}, brand = ${product.normalizedBrand}, updated_at = NOW()
+      SET source_name = ${product.sourceName}, name = ${product.normalizedName}, brand = ${product.normalizedBrand}, category = ${product.normalizedCategory}, updated_at = NOW()
       WHERE uid = ${product.uid}
     `;
     updated++;

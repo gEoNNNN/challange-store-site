@@ -105,8 +105,7 @@ export default function ProduseePage() {
   }, []);
 
   const loadProducts = useCallback(async (offset: number, append: boolean, signal?: AbortSignal) => {
-    const unsupportedFilter = activeCategory !== "Toate" || selCategories.length > 0 ||
-      selCountries.length > 0 || selAttributes.length > 0;
+    const unsupportedFilter = selCountries.length > 0 || selAttributes.length > 0;
     if (unsupportedFilter) {
       setAllProducts([]);
       setTotal(0);
@@ -119,6 +118,9 @@ export default function ProduseePage() {
     const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(offset), sort: sortBy });
     if (search.trim()) params.set("search", search.trim());
     selBrands.forEach((brand) => params.append("brand", brand));
+    const categories = new Set(selCategories);
+    if (activeCategory !== "Toate") categories.add(activeCategory);
+    categories.forEach((category) => params.append("category", category));
     if (priceRange[0] > 0) params.set("minPrice", String(priceRange[0]));
     if (priceRange[1] < PRICE_MAX) params.set("maxPrice", String(priceRange[1]));
 
