@@ -49,6 +49,18 @@ export async function GET(req: NextRequest) {
     const sql = getDb();
     await ensureSchema(sql);
 
+    const facets = req.nextUrl.searchParams.get("facets");
+    if (facets === "brands") {
+      const rows = await sql`
+        SELECT brand, COUNT(*)::int AS count
+        FROM products
+        WHERE depot_stock > 0 AND brand IS NOT NULL AND brand <> 'Generic'
+        GROUP BY brand
+        ORDER BY brand ASC
+      ` as { brand: string; count: number }[];
+      return NextResponse.json({ brands: rows });
+    }
+
     const uid = req.nextUrl.searchParams.get("uid")?.trim();
     if (uid) {
       const rows = (await sql`

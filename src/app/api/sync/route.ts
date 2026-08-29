@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { getDb, ensureSchema } from "@/lib/db";
+import { inferProductBrand, normalizeProductName } from "@/lib/productNormalization";
 import productMedia from "@/lib/productMedia.json";
 
 interface MediaEntry {
@@ -130,12 +131,16 @@ async function runSync() {
             );
             const depotStock = centru && centru.Count > 0 ? centru.Count : 0;
             const media = MEDIA[p.Uid];
+            const sourceName = p.Name.trim();
+            const normalizedName = normalizeProductName(sourceName);
+            const brand = inferProductBrand(sourceName, p.Brand);
 
             await sql`
-              INSERT INTO products (uid, name, code, price, promotion_price, depot_stock, brand, description, unit_name, has_image, image_url, barcodes, updated_at)
-              VALUES (${p.Uid}, ${p.Name.trim()}, ${p.Code ?? null}, ${p.Price ?? 0}, ${p.PromotionPrice ?? 0}, ${depotStock}, ${p.Brand?.trim() || null}, ${media?.description || p.Description || null}, ${p.UnitName ?? null}, ${p.Images?.Image1 === true}, ${media?.image || null}, ${JSON.stringify(p.Barcodes ?? [])}, NOW())
+              INSERT INTO products (uid, name, source_name, code, price, promotion_price, depot_stock, brand, description, unit_name, has_image, image_url, barcodes, updated_at)
+              VALUES (${p.Uid}, ${normalizedName}, ${sourceName}, ${p.Code ?? null}, ${p.Price ?? 0}, ${p.PromotionPrice ?? 0}, ${depotStock}, ${brand}, ${media?.description || p.Description || null}, ${p.UnitName ?? null}, ${p.Images?.Image1 === true}, ${media?.image || null}, ${JSON.stringify(p.Barcodes ?? [])}, NOW())
               ON CONFLICT (uid) DO UPDATE SET
                 name            = EXCLUDED.name,
+                source_name     = EXCLUDED.source_name,
                 code            = EXCLUDED.code,
                 price           = EXCLUDED.price,
                 promotion_price = EXCLUDED.promotion_price,

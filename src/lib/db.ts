@@ -11,6 +11,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
     CREATE TABLE IF NOT EXISTS products (
       uid           TEXT PRIMARY KEY,
       name          TEXT        NOT NULL,
+      source_name   TEXT,
       code          TEXT,
       price         NUMERIC(12,2) NOT NULL DEFAULT 0,
       promotion_price NUMERIC(12,2) NOT NULL DEFAULT 0,
@@ -24,6 +25,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
       updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS source_name TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url TEXT`;
   await sql`CREATE INDEX IF NOT EXISTS idx_products_stock ON products (depot_stock) WHERE depot_stock > 0`;
@@ -32,6 +34,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
 export interface DbProduct {
   uid:             string;
   name:            string;
+  source_name:     string | null;
   code:            string | null;
   price:           string;
   promotion_price: string;

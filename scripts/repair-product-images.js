@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { neon } = require("@neondatabase/serverless");
 
 const PLACEHOLDER = "/img/candypack.png";
@@ -6,9 +7,11 @@ const MISSING_ONLY = process.argv.includes("--missing-only");
 const limitArg = process.argv.find((arg) => arg.startsWith("--limit="));
 const uidArg = process.argv.find((arg) => arg.startsWith("--uid="));
 const queryArg = process.argv.find((arg) => arg.startsWith("--query="));
+const restoreArg = process.argv.find((arg) => arg.startsWith("--restore-log="));
 const LIMIT = limitArg ? Number(limitArg.split("=")[1]) : Infinity;
 const TARGET_UID = uidArg?.slice("--uid=".length);
 const SEARCH_QUERY = queryArg?.slice("--query=".length);
+const RESTORE_LOG = restoreArg?.slice("--restore-log=".length);
 const CHECK_CONCURRENCY = 20;
 const SEARCH_CONCURRENCY = 5;
 const REQUEST_TIMEOUT = 12000;
@@ -114,9 +117,35 @@ async function mapConcurrent(items, concurrency, worker) {
   return results;
 }
 
+async function restoreFromLog(sql, products) {
+  const entries = fs.readFileSync(RESTORE_LOG, "utf8")
+    .split(/\r?\n/)
+    .map((line) => line.match(/^\[\d+\/\d+\] (.+) -> (https?:\/\/.+)$/))
+    .filter(Boolean)
+    .map((match) => ({ name: match[1], imageUrl: match[2] }));
+  const productsByName = new Map(products.map((product) => [product.name, product]));
+  const changes = entries
+    .map((entry) => ({ ...entry, product: productsByName.get(entry.name) }))
+    .filter((entry) => entry.product && entry.product.image_url !== entry.imageUrl);
+  const unmatched = entries.filter((entry) => !productsByName.has(entry.name));
+
+  console.log(`Log: ${entries.length}; de restaurat: ${changes.length}; nematch-uite: ${unmatched.length}`);
+  if (!APPLY) return;
+
+  await mapConcurrent(changes, CHECK_CONCURRENCY, async ({ product, imageUrl }) => {
+    await sql`
+      UPDATE products
+      SET image_url = ${imageUrl}, updated_at = NOW()
+      WHERE uid = ${product.uid}
+    `;
+  });
+  console.log(`Restaurate în DB: ${changes.length}`);
+  if (unmatched.length > 0) unmatched.forEach((entry) => console.log(`Nematch-uit: ${entry.name}`));
+}
+
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL lipsește");
-  if (!process.env.SERPER_API_KEY) throw new Error("SERPER_API_KEY lipsește");
+  if (!RESTORE_LOG && !process.env.SERPER_API_KEY) throw new Error("SERPER_API_KEY lipsește");
   const sql = neon(process.env.DATABASE_URL);
   const products = await sql`
     SELECT uid, name, image_url
@@ -124,6 +153,11 @@ async function main() {
     WHERE depot_stock > 0
     ORDER BY name ASC
   `;
+
+  if (RESTORE_LOG) {
+    await restoreFromLog(sql, products);
+    return;
+  }
 
   const selectedProducts = TARGET_UID
     ? products.filter((product) => product.uid === TARGET_UID).map((product) => ({ ...product, searchName: SEARCH_QUERY }))

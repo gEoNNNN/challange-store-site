@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
+import { CATEGORIES, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
 import { useTranslations } from "../context/LanguageContext";
 import styles from "./page.module.css";
 
@@ -27,6 +27,11 @@ interface ProductsResponse {
   items: Product[];
   total: number;
   hasMore: boolean;
+}
+
+interface BrandFacet {
+  brand: string;
+  count: number;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -90,6 +95,14 @@ export default function ProduseePage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
+  const [availableBrands, setAvailableBrands] = useState<BrandFacet[]>([]);
+
+  useEffect(() => {
+    fetch("/api/products?facets=brands")
+      .then((response) => response.ok ? response.json() : { brands: [] })
+      .then((data: { brands: BrandFacet[] }) => setAvailableBrands(data.brands))
+      .catch(() => setAvailableBrands([]));
+  }, []);
 
   const loadProducts = useCallback(async (offset: number, append: boolean, signal?: AbortSignal) => {
     const unsupportedFilter = activeCategory !== "Toate" || selCategories.length > 0 ||
@@ -375,11 +388,11 @@ export default function ProduseePage() {
           </FilterSection>
 
           <FilterSection title={t.productsPage.filterBrand} id="brand" collapsed={collapsed.includes("brand")} toggle={toggleCollapse}>
-            {BRANDS.map((b) => (
-              <label key={b} className={styles.checkRow}>
-                <input type="checkbox" checked={selBrands.includes(b)}
-                  onChange={() => toggleArr(selBrands, b, setSelBrands)} />
-                <span>{b}</span>
+            {availableBrands.map(({ brand, count }) => (
+              <label key={brand} className={styles.checkRow}>
+                <input type="checkbox" checked={selBrands.includes(brand)}
+                  onChange={() => toggleArr(selBrands, brand, setSelBrands)} />
+                <span>{brand} ({count})</span>
               </label>
             ))}
           </FilterSection>
