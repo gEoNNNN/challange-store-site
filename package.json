@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "images:check": "node --env-file=.env.local scripts/repair-product-images.js",
+    "images:repair": "node --env-file=.env.local scripts/repair-product-images.js --apply"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

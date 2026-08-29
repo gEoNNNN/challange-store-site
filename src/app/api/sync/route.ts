@@ -144,7 +144,7 @@ async function runSync() {
                 description     = EXCLUDED.description,
                 unit_name       = EXCLUDED.unit_name,
                 has_image       = EXCLUDED.has_image,
-                image_url       = EXCLUDED.image_url,
+                image_url       = COALESCE(products.image_url, EXCLUDED.image_url),
                 barcodes        = EXCLUDED.barcodes,
                 updated_at      = NOW()
             `;

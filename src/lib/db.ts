@@ -24,6 +24,7 @@ export async function ensureSchema(sql: ReturnType<typeof getDb>) {
       updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS description TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url TEXT`;
   await sql`CREATE INDEX IF NOT EXISTS idx_products_stock ON products (depot_stock) WHERE depot_stock > 0`;
 }

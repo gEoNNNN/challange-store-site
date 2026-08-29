@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
-import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, PRODUCTS, Product } from "./productsData";
+import { CATEGORIES, BRANDS, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
 import { useTranslations } from "../context/LanguageContext";
 import styles from "./page.module.css";
 
@@ -21,6 +21,13 @@ const PRICE_MAX_DEFAULT = 5000;
 const SORT_VALUES = ["featured", "price-asc", "price-desc", "rating", "new"] as const;
 
 const PRICE_MAX = PRICE_MAX_DEFAULT;
+const PAGE_SIZE = 16;
+
+interface ProductsResponse {
+  items: Product[];
+  total: number;
+  hasMore: boolean;
+}
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -76,21 +83,59 @@ export default function ProduseePage() {
   const [selCountries, setSelCountries]   = useState<string[]>([]);
   const [selAttributes, setSelAttributes] = useState<string[]>([]);
   const [priceRange, setPriceRange]       = useState<[number, number]>([0, PRICE_MAX]);
-  const [displayCount, setDisplayCount]   = useState(12);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  const loadProducts = useCallback(async (offset: number, append: boolean, signal?: AbortSignal) => {
+    const unsupportedFilter = activeCategory !== "Toate" || selCategories.length > 0 ||
+      selCountries.length > 0 || selAttributes.length > 0;
+    if (unsupportedFilter) {
+      setAllProducts([]);
+      setTotal(0);
+      setHasMore(false);
+      setLoading(false);
+      return;
+    }
+
+    append ? setLoadingMore(true) : setLoading(true);
+    const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(offset), sort: sortBy });
+    if (search.trim()) params.set("search", search.trim());
+    selBrands.forEach((brand) => params.append("brand", brand));
+    if (priceRange[0] > 0) params.set("minPrice", String(priceRange[0]));
+    if (priceRange[1] < PRICE_MAX) params.set("maxPrice", String(priceRange[1]));
+
+    try {
+      const response = await fetch(`/api/products?${params}`, { signal });
+      if (!response.ok) throw new Error("Produsele nu au putut fi încărcate");
+      const data = await response.json() as ProductsResponse;
+      setAllProducts((current) => append ? [...current, ...data.items] : data.items);
+      setTotal(data.total);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      if (!append) setAllProducts([]);
+      setHasMore(false);
+    } finally {
+      if (!signal?.aborted) {
+        setLoading(false);
+        setLoadingMore(false);
+      }
+    }
+  }, [activeCategory, priceRange, search, selAttributes, selBrands, selCategories, selCountries, sortBy]);
 
   useEffect(() => {
-    fetch("/api/products")
-      .then((r) => r.json())
-      .then((data: Product[]) => {
-        setAllProducts(Array.isArray(data) && data.length > 0 ? data : PRODUCTS);
-      })
-      .catch(() => setAllProducts(PRODUCTS))
-      .finally(() => setLoading(false));
-  }, []);
+    const controller = new AbortController();
+    const timer = setTimeout(() => loadProducts(0, false, controller.signal), search ? 300 : 0);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [loadProducts, search]);
 
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -123,7 +168,7 @@ export default function ProduseePage() {
   const clearAll = () => {
     setSelCategories([]); setSelBrands([]); setSelCountries([]);
     setSelAttributes([]); setPriceRange([0, PRICE_MAX]);
-    setActiveCategory("Toate"); setSearch(""); setDisplayCount(12);
+    setActiveCategory("Toate"); setSearch("");
   };
 
   const handleAddToCart = (product: Product) => {
@@ -132,46 +177,21 @@ export default function ProduseePage() {
   };
 
   /* ── Filtered & sorted products ── */
-  const filtered = useMemo(() => {
-    let list = allProducts.filter((p) => {
-      if (search && !p.name.toLowerCase().includes(search.toLowerCase()) &&
-          !p.brand.toLowerCase().includes(search.toLowerCase())) return false;
-      if (activeCategory !== "Toate" && p.category !== activeCategory) return false;
-      if (selCategories.length && !selCategories.includes(p.category)) return false;
-      if (selBrands.length    && !selBrands.includes(p.brand))         return false;
-      if (selCountries.length && !selCountries.includes(p.country))    return false;
-      if (selAttributes.length && !selAttributes.every((a) => p.attributes.includes(a))) return false;
-      if (p.price < priceRange[0] || p.price > priceRange[1]) return false;
-      return true;
-    });
-    switch (sortBy) {
-      case "price-asc":  list = [...list].sort((a, b) => a.price - b.price); break;
-      case "price-desc": list = [...list].sort((a, b) => b.price - a.price); break;
-      case "rating":     list = [...list].sort((a, b) => b.rating - a.rating); break;
-      case "new":        list = [...list].filter((p) => p.isNew).concat(list.filter((p) => !p.isNew)); break;
-    }
-    return list;
-  }, [allProducts, search, activeCategory, selCategories, selBrands, selCountries, selAttributes, priceRange, sortBy]);
-
-  const displayed = filtered.slice(0, displayCount);
-  const hasMore = displayCount < filtered.length;
-
-  useEffect(() => {
-    setDisplayCount(12);
-  }, [search, activeCategory, selCategories, selBrands, selCountries, selAttributes, priceRange, sortBy]);
+  const filtered = allProducts;
+  const displayed = filtered;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setDisplayCount((prev) => prev + 12);
+        if (entries[0].isIntersecting && hasMore && !loading && !loadingMore) {
+          loadProducts(allProducts.length, true);
         }
       },
       { rootMargin: "200px" }
     );
     if (loadMoreRef.current) observer.observe(loadMoreRef.current);
     return () => observer.disconnect();
-  }, [hasMore]);
+  }, [allProducts.length, hasMore, loadProducts, loading, loadingMore]);
 
   const pathname = usePathname();
   const showOverlay = pathname === "/produse";
@@ -266,7 +286,7 @@ export default function ProduseePage() {
             <motion.p className={styles.pageSubtitle}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.18 }}>
-              {t.productsPage.pageSubtitle.replace("{count}", String(filtered.length))}
+              {t.productsPage.pageSubtitle.replace("{count}", String(total))}
             </motion.p>
 
             <motion.div className={styles.heroSearchWrap}
@@ -419,7 +439,7 @@ export default function ProduseePage() {
               />
             </div>
             <div className={styles.toolbarRight}>
-              <span className={styles.countLabel}>{filtered.length} produse</span>
+              <span className={styles.countLabel}>{total} produse</span>
               <div className={styles.sortWrap}>
                 <BsFunnel size={14} />
                 <select className={styles.sortSelect} value={sortBy}
@@ -464,7 +484,7 @@ export default function ProduseePage() {
             <>
               <div className={viewMode === "grid" ? styles.grid : styles.listView}>
                 {displayed.map((p: Product, i: number) => (
-                  <ProductCard key={p.id} index={i} product={p}
+                  <ProductCard key={p.uid ?? p.id} index={i} product={p}
                     isFav={isFavorite(p.id)}
                     onFav={() => toggleFavorite(p.id)}
                     onAddToCart={() => handleAddToCart(p)}
@@ -473,7 +493,7 @@ export default function ProduseePage() {
               </div>
               {/* Infinite scroll sentinel */}
               <div ref={loadMoreRef} style={{ height: "20px", margin: "20px 0" }} />
-              {hasMore && (
+              {loadingMore && (
                 <div className={styles.loading}>
                   <div className={styles.spinner} />
                   <span>Se încarcă mai multe produse...</span>
@@ -522,7 +542,7 @@ function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }:
       transition={{ duration: 0.42, delay: (index % 8) * 0.06, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
     >
-      <Link href={`/produse/${p.id}`} className={styles.cardImgWrap}>
+      <Link href={`/produse/${p.uid ?? p.id}`} className={styles.cardImgWrap}>
         {discount && <span className={styles.discountBadge}>-{discount}%</span>}
         {p.isNew && <span className={styles.newBadge}>NOU</span>}
         <Image src={p.img} alt={p.name} fill
@@ -534,7 +554,7 @@ function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }:
       </Link>
       <div className={styles.cardBody}>
         <span className={styles.cardBrand}>{p.brand}</span>
-        <Link href={`/produse/${p.id}`} className={styles.cardNameLink}>
+        <Link href={`/produse/${p.uid ?? p.id}`} className={styles.cardNameLink}>
         <h3 className={styles.cardName}>{p.name}</h3>
         </Link>
         <p className={styles.cardDesc}>{p.description}</p>

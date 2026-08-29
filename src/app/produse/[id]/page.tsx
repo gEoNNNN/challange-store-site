@@ -1,17 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   BsArrowLeft, BsCart3, BsStarFill, BsStar, BsHeart, BsHeartFill,
-  BsGeoAlt, BsTag, BsBoxSeam, BsShare, BsListCheck, BsGraphUp,
+  BsGeoAlt, BsTag, BsBoxSeam, BsListCheck, BsGraphUp,
 } from "react-icons/bs";
 import { useCart } from "../../context/CartContext";
 import { useFavorites } from "../../context/FavoritesContext";
-import { PRODUCTS } from "../productsData";
+import { PRODUCTS, Product } from "../productsData";
 import styles from "./page.module.css";
 
 function StarRating({ rating }: { rating: number }) {
@@ -30,24 +30,57 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const { addToCart } = useCart();
   const { toggleFavorite, isFavorite } = useFavorites();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const productId = parseInt(String(params.id), 10);
-  const product = PRODUCTS.find((p) => p.id === productId);
+  const productIdentifier = String(params.id);
 
-  const related = useMemo(
-    () =>
-      product
-        ? PRODUCTS.filter(
-            (p) => p.category === product.category && p.id !== product.id
-          ).slice(0, 4)
-        : [],
-    [product]
-  );
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(`/api/products?uid=${encodeURIComponent(productIdentifier)}`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("Produsul nu a putut fi încărcat");
+        return response.json();
+      })
+      .then(async (data: { item: Product | null }) => {
+        const fallback = PRODUCTS.find((item) => String(item.id) === productIdentifier) ?? null;
+        const loadedProduct = data.item ?? fallback;
+        setProduct(loadedProduct);
+        if (!loadedProduct) return;
+
+        const query = new URLSearchParams({ limit: "5" });
+        if (loadedProduct.brand) query.append("brand", loadedProduct.brand);
+        const response = await fetch(`/api/products?${query}`, { signal: controller.signal });
+        if (!response.ok) return;
+        const relatedData = await response.json() as { items: Product[] };
+        setRelated(relatedData.items.filter((item) => item.uid !== loadedProduct.uid).slice(0, 4));
+      })
+      .catch((error) => {
+        if (error instanceof Error && error.name === "AbortError") return;
+        setProduct(PRODUCTS.find((item) => String(item.id) === productIdentifier) ?? null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [productIdentifier]);
+
+  if (loading) {
+    return (
+      <div className={styles.notFound}>
+        <div className={styles.notFoundInner}>
+          <p>Se încarcă produsul…</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -279,7 +312,7 @@ export default function ProductDetailPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.07 }}
                 >
-                  <Link href={`/produse/${p.id}`} className={styles.relatedCard}>
+                  <Link href={`/produse/${p.uid ?? p.id}`} className={styles.relatedCard}>
                     <div className={styles.relatedImg}>
                       <Image
                         src={p.img}
