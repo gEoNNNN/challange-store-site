@@ -42,23 +42,24 @@ export default function CountdownSection() {
   };
 
   useEffect(() => {
-    setTime(getTimeLeft());
+    const initialId = setTimeout(() => setTime(getTimeLeft()), 0);
     const id = setInterval(() => setTime(getTimeLeft()), 1000);
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(initialId);
+      clearInterval(id);
+    };
   }, []);
 
   return (
     <section className={styles.section} id="aniversare">
-      {/* Wave from green ProductsSection above – fills CountdownSection colour
-          below the curve; transparent above shows ProductsSection green */}
+      {/* Wave transition from the green ProductsSection above */}
       <div className={styles.waveTop} aria-hidden="true">
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,30 C360,100 1080,100 1440,30 L1440,100 L0,100 Z" fill="#fef6fb" />
+        <svg viewBox="0 0 1440 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,0 H1440 V12 C1080,64 360,64 0,12 Z" fill="#01934A" />
         </svg>
       </div>
 
-      {/* Section background fill – starts below the wave so the transparent
-          wave area can reveal ProductsSection's green behind it */}
+      {/* Section background fill */}
       <div className={styles.bgFill} aria-hidden="true" />
 
       {/* Floating candy background */}

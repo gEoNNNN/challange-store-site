@@ -169,7 +169,7 @@ export default function CheckoutPage() {
           <AnimatePresence>
             {items.map((item) => (
               <motion.div
-                key={item.product.id}
+                key={item.product.uid ?? item.product.id}
                 className={styles.cartItem}
                 layout
                 initial={{ opacity: 0, y: 16 }}
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.28 }}
               >
-                <Link href={`/produse/${item.product.id}`} className={styles.itemImgLink}>
+                <Link href={`/produse/${item.product.uid ?? item.product.id}`} className={styles.itemImgLink}>
                   <div className={styles.itemImg}>
                     <Image
                       src={item.product.img}
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
                 </Link>
                 <div className={styles.itemInfo}>
                   <span className={styles.itemBrand}>{item.product.brand}</span>
-                  <Link href={`/produse/${item.product.id}`} className={styles.itemName}>
+                  <Link href={`/produse/${item.product.uid ?? item.product.id}`} className={styles.itemName}>
                     {item.product.name}
                   </Link>
                   <span className={styles.itemUnitPrice}>{item.product.price} MDL / buc.</span>
@@ -198,14 +198,15 @@ export default function CheckoutPage() {
                 <div className={styles.itemQty}>
                   <button
                     className={styles.qtyBtn}
-                    onClick={() => updateQty(item.product.id, item.qty - 1)}
+                    onClick={() => updateQty(item.product.uid ?? item.product.id, item.qty - 1)}
                   >
                     <BsDash size={14} />
                   </button>
                   <span className={styles.qtyVal}>{item.qty}</span>
                   <button
                     className={styles.qtyBtn}
-                    onClick={() => updateQty(item.product.id, item.qty + 1)}
+                    onClick={() => updateQty(item.product.uid ?? item.product.id, item.qty + 1)}
+                    disabled={item.product.remain !== undefined && item.qty >= item.product.remain}
                   >
                     <BsPlus size={14} />
                   </button>
@@ -216,7 +217,7 @@ export default function CheckoutPage() {
                   </strong>
                   <button
                     className={styles.removeBtn}
-                    onClick={() => removeFromCart(item.product.id)}
+                    onClick={() => removeFromCart(item.product.uid ?? item.product.id)}
                     aria-label="Șterge"
                   >
                     <BsTrash size={15} />

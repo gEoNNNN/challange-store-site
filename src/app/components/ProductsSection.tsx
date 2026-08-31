@@ -2,58 +2,21 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { useCart } from "../context/CartContext";
 import { useTranslations } from "../context/LanguageContext";
+import { Product } from "../produse/productsData";
 import styles from "./ProductsSection.module.css";
 
 const TABS = ["Top Vânzări", "Noutăți", "Exclusive"] as const;
 type Tab = (typeof TABS)[number];
-type TabIndex = 0 | 1 | 2;
 
-const ALL_PRODUCTS: Record<Tab, { id: number; img: string; name: string; price: string }[]> = {
-  "Top Vânzări": [
-    { id: 9,  img: "https://del.barbarich.be/DbImage/BigImage/99ecd62e-bf0f-4d27-926d-6de153806124",                          name: "Mega Gummies Milkshake 120g",        price: "120 MDL" },
-    { id: 21, img: "https://sweetandglory.com/images/product/xl/ICEB002.jpg?t=1761123898",                                    name: "Ice Breakers Sours 42g",             price: "75 MDL"  },
-    { id: 22, img: "https://americanfoodmart.co.uk/wp-content/uploads/2022/03/AFM00491.jpg",                                  name: "Ice Breakers Sours Berry 42g",       price: "75 MDL"  },
-    { id: 10, img: "https://sweetandglory.com/images/product/xl/HARI012.jpg?t=1761124474",                                   name: "Haribo Smurfs Sour 113g",           price: "90 MDL"  },
-    { id: 27, img: "https://sweetandglory.com/images/product/xl/TOPP016.jpg?t=1761123917",                                   name: "Bazooka Throwback Mini 42g",        price: "45 MDL"  },
-    { id: 23, img: "https://sweetandglory.com/images/product/xl/CHEW008L.jpg?t=1761124591",                                  name: "Chewits Cola Stick 30g",            price: "35 MDL"  },
-    { id: 17, img: "https://api.hancocks.co.uk/media/catalog/product/3/1/316094_a.png",                                      name: "Chewits Cherry Stick 30g",          price: "25 MDL"  },
-    { id: 11, img: "https://api.hancocks.co.uk/media/catalog/product/3/1/318623_1.jpg",                                      name: "Más+ Messi Limón Lime 500ml",       price: "40 MDL"  },
-    { id: 4,  img: "https://sweetandglory.com/images/product/xl/BYUM013.jpg?t=1761124002",                                   name: "Bubble Yum Cotton Candy 79g",       price: "73 MDL"  },
-    { id: 20, img: "https://sweetandglory.com/images/product/xl/CHEW010L.jpg?t=1761124549",                                  name: "Chewits Fruit Salad Stick 30g",     price: "25 MDL"  },
-    { id: 8,  img: "https://avatars.mds.yandex.net/get-mpic/15434382/2a0000019817bba486c7c442dd2a67524a77/optimize",         name: "Bebeto Cherry 50p 70g",             price: "25 MDL"  },
-    { id: 1,  img: "https://sweetandglory.com/images/product/xl/JOLL091.jpg?t=1761123886",                                   name: "Jolly Rancher Gummies Sours 109g",  price: "80 MDL"  },
-  ],
-  "Noutăți": [
-    { id: 12, img: "https://joessweetiebarn.co.uk/cdn/shop/files/Screenshot2025-09-06at14.22.32.png?v=1757164965&width=1800", name: "Mega Gummies Hotdog 120g",          price: "120 MDL" },
-    { id: 13, img: "https://ameelcandyworld.be/product/image/large/54774_1.jpg",                                              name: "Mega Gummies Pizza 120g",           price: "120 MDL" },
-    { id: 14, img: "https://www.sweetsandcandy.co.uk/media/amasty/webp/catalog/product/cache/cf8544c830259d2d4e126894de8f4ae9/w/a/warheads-blue-raspberry-cubes-99g-american-sweets_jpg.webp", name: "Warheads Blue Raspberry 85g", price: "90 MDL" },
-    { id: 16, img: "https://americansweets.co.uk/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/s/o/sour-patch-tropical-theatre-box-3.5oz.png", name: "Sour Patch Kids Tropical 99g", price: "90 MDL" },
-    { id: 15, img: "https://i5.walmartimages.com/asr/a3efe2f2-abec-4a6f-92d1-06b877641ceb.c2a318af37a775a1243dec326b73c5bc.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF", name: "Warheads Sour Jelly Beans 113g", price: "90 MDL" },
-    { id: 19, img: "https://jdmdistributors.co.uk/cdn/shop/products/HotTamalesCinnamon_1800x1800.png?v=1754471905",          name: "Hot Tamales Cinnamon 120g",         price: "80 MDL"  },
-    { id: 34, img: "https://candycave.ie/cdn/shop/files/sour-patch-watermelon-king-size-canada-96g-453926_26ab23a5-9b78-4102-856c-e133ff752ee7.jpg?v=1770399714&width=1946", name: "Sour Patch Watermelon 96g", price: "75 MDL" },
-    { id: 18, img: "https://sweetseeker.com.au/cdn/shop/files/berry-copa-crush-1.webp?v=1759223940&width=990",               name: "Más+ Messi Berry Copa 500ml",       price: "75 MDL"  },
-    { id: 32, img: "https://www.sodapopbros.com/cdn/shop/products/big-league-chew-blue-raspberry-bubble-gum-575949.jpg?v=1694528283", name: "Big League Chew Blue Raspberry 60g", price: "70 MDL" },
-    { id: 33, img: "https://americanfizz.co.uk/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/b/i/big-league-cotton-candy.png", name: "Big League Chew Cotton Candy 60g", price: "70 MDL" },
-    { id: 25, img: "https://sweetandglory.com/images/product/m/BYUM002.jpg?t=1761124002",                                    name: "Bubble Yum Cotton Candy 39g",       price: "42 MDL"  },
-    { id: 24, img: "https://sweetandglory.com/images/product/xl/NEWB020L.jpg?t=1761124329",                                  name: "Toxic Waste Goop Gum 44g",          price: "50 MDL"  },
-  ],
-  "Exclusive": [
-    { id: 9,  img: "https://del.barbarich.be/DbImage/BigImage/99ecd62e-bf0f-4d27-926d-6de153806124",                          name: "Mega Gummies Milkshake 120g",        price: "120 MDL" },
-    { id: 13, img: "https://ameelcandyworld.be/product/image/large/54774_1.jpg",                                              name: "Mega Gummies Pizza 120g",           price: "120 MDL" },
-    { id: 14, img: "https://www.sweetsandcandy.co.uk/media/amasty/webp/catalog/product/cache/cf8544c830259d2d4e126894de8f4ae9/w/a/warheads-blue-raspberry-cubes-99g-american-sweets_jpg.webp", name: "Warheads Blue Raspberry 85g", price: "90 MDL" },
-    { id: 10, img: "https://sweetandglory.com/images/product/xl/HARI012.jpg?t=1761124474",                                   name: "Haribo Smurfs Sour 113g",           price: "90 MDL"  },
-    { id: 16, img: "https://americansweets.co.uk/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/s/o/sour-patch-tropical-theatre-box-3.5oz.png", name: "Sour Patch Kids Tropical 99g", price: "90 MDL" },
-    { id: 1,  img: "https://sweetandglory.com/images/product/xl/JOLL091.jpg?t=1761123886",                                   name: "Jolly Rancher Gummies Sours 109g",  price: "80 MDL"  },
-    { id: 19, img: "https://jdmdistributors.co.uk/cdn/shop/products/HotTamalesCinnamon_1800x1800.png?v=1754471905",          name: "Hot Tamales Cinnamon 120g",         price: "80 MDL"  },
-    { id: 18, img: "https://sweetseeker.com.au/cdn/shop/files/berry-copa-crush-1.webp?v=1759223940&width=990",               name: "Más+ Messi Berry Copa 500ml",       price: "75 MDL"  },
-    { id: 21, img: "https://sweetandglory.com/images/product/xl/ICEB002.jpg?t=1761123898",                                   name: "Ice Breakers Sours 42g",            price: "75 MDL"  },
-    { id: 34, img: "https://candycave.ie/cdn/shop/files/sour-patch-watermelon-king-size-canada-96g-453926_26ab23a5-9b78-4102-856c-e133ff752ee7.jpg?v=1770399714&width=1946", name: "Sour Patch Watermelon 96g", price: "75 MDL" },
-    { id: 32, img: "https://www.sodapopbros.com/cdn/shop/products/big-league-chew-blue-raspberry-bubble-gum-575949.jpg?v=1694528283", name: "Big League Chew Blue Raspberry 60g", price: "70 MDL" },
-    { id: 28, img: "https://sweetandglory.com/images/product/xl/EFB032L.jpg?t=1761124104",                                   name: "Hershey's Cookies 'n' Creme 40g",   price: "50 MDL"  },
-  ],
+const EMPTY_PRODUCTS: Record<Tab, Product[]> = {
+  "Top Vânzări": [],
+  "Noutăți": [],
+  "Exclusive": [],
 };
 
 const VISIBLE = 5;
@@ -61,7 +24,9 @@ const AUTO_INTERVAL = 3500;
 
 export default function ProductsSection() {
   const t = useTranslations();
+  const { addToCart } = useCart();
   const [activeTab, setActiveTab] = useState<Tab>("Top Vânzări");
+  const [productsByTab, setProductsByTab] = useState<Record<Tab, Product[]>>(EMPTY_PRODUCTS);
   const [index, setIndex] = useState(0);
 
   const TAB_LABELS: Record<Tab, string> = {
@@ -70,8 +35,8 @@ export default function ProductsSection() {
     "Exclusive":  t.productsSection.tabExclusive,
   };
 
-  const products = ALL_PRODUCTS[activeTab];
-  const maxIndex = products.length - VISIBLE;
+  const products = productsByTab[activeTab];
+  const maxIndex = Math.max(products.length - VISIBLE, 0);
 
   const next = useCallback(() => {
     setIndex((i) => (i >= maxIndex ? 0 : i + 1));
@@ -82,8 +47,28 @@ export default function ProductsSection() {
   };
 
   useEffect(() => {
-    setIndex(0);
-  }, [activeTab]);
+    const controller = new AbortController();
+    const requests = [
+      "/api/products?limit=16&sort=featured",
+      "/api/products?limit=16&offset=16&sort=featured",
+      "/api/products?limit=16&sort=price-desc",
+    ].map((url) => fetch(url, { signal: controller.signal }).then((response) => {
+      if (!response.ok) throw new Error("Produsele nu au putut fi încărcate");
+      return response.json() as Promise<{ items: Product[] }>;
+    }));
+
+    Promise.all(requests)
+      .then(([top, news, exclusive]) => setProductsByTab({
+        "Top Vânzări": top.items,
+        "Noutăți": news.items.length > 0 ? news.items : top.items,
+        "Exclusive": exclusive.items,
+      }))
+      .catch((error) => {
+        if (!(error instanceof Error && error.name === "AbortError")) setProductsByTab(EMPTY_PRODUCTS);
+      });
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(next, AUTO_INTERVAL);
@@ -147,7 +132,10 @@ export default function ProductsSection() {
               <button
                 key={tab}
                 className={`${styles.tab} ${activeTab === tab ? styles.tabActive : ""}`}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setIndex(0);
+                }}
               >
                 <span className={styles.tabName}>{TAB_LABELS[tab]}</span>
               </button>
@@ -163,21 +151,23 @@ export default function ProductsSection() {
 
           <div className={styles.track}>
             {products.slice(index, index + VISIBLE).map((p) => (
-              <div key={`${p.id}-${index}`} className={styles.card}>
-                <div className={styles.cardImg}>
-                  <Image
-                    src={p.img}
-                    alt={p.name}
-                    fill
-                    sizes="220px"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-                <div className={styles.cardBody}>
-                  <span className={styles.cardName}>{p.name}</span>
-                  <span className={styles.cardPrice}>{p.price}</span>
-                </div>
-                <button className={styles.cardBtn}>{t.productsSection.addToCart}</button>
+              <div key={`${p.uid ?? p.id}-${index}`} className={styles.card}>
+                <Link href={`/produse/${p.uid ?? p.id}`} className={styles.cardLink}>
+                  <div className={styles.cardImg}>
+                    <Image
+                      src={p.img}
+                      alt={p.name}
+                      fill
+                      sizes="220px"
+                      style={{ objectFit: "contain", padding: "14px" }}
+                    />
+                  </div>
+                  <div className={styles.cardBody}>
+                    <span className={styles.cardName}>{p.name}</span>
+                    <span className={styles.cardPrice}>{p.price} MDL</span>
+                  </div>
+                </Link>
+                <button className={styles.cardBtn} onClick={() => addToCart(p)}>{t.productsSection.addToCart}</button>
               </div>
             ))}
           </div>

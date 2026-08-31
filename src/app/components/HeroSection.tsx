@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useTranslations } from "../context/LanguageContext";
 import styles from "../page.module.css";
 
@@ -16,8 +17,8 @@ export default function HeroSection() {
         </h1>
         <p>{t.hero.desc}</p>
         <div className={styles.heroBtns}>
-          <a className={styles.btnPrimary} href="#produse">{t.hero.ctaBuy}</a>
-          <a className={styles.btnSecondary} href="#produse">{t.hero.ctaView}</a>
+          <Link className={styles.btnPrimary} href="/produse">{t.hero.ctaBuy}</Link>
+          <Link className={styles.btnSecondary} href="/produse">{t.hero.ctaView}</Link>
         </div>
       </div>
       <div className={styles.heroRight}>

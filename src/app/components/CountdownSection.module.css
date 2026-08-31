@@ -1,10 +1,8 @@
 .section {
   position: relative;
-  /* Transparent so the wave can reveal ProductsSection green above */
   background: transparent;
-  /* Pull up 80 px to overlap the green section above — wave handles the seam */
-  margin-top: -80px;
-  padding: 120px 6vw 120px;
+  margin-top: 0;
+  padding: 88px 6vw 120px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -15,21 +13,20 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 64px;
   z-index: 1;
   line-height: 0;
 }
 .waveTop svg {
   display: block;
   width: 100%;
-  height: 100px;
+  height: 64px;
 }
 
-/* ── Section background fill (starts below the wave curve so the
-       transparent wave top can show ProductsSection green) ── */
+/* ── Section background fill ── */
 .bgFill {
   position: absolute;
-  top: 88px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -61,12 +58,10 @@
 /* ── Floating candy background ── */
 .floaters {
   position: absolute;
-  top: 100px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 64px 0 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 0;
 }
 
 .floater {
@@ -75,16 +70,18 @@
   left: calc(4% + (var(--i) * 92% / 12));
   font-size: clamp(24px, 3vw, 44px);
   opacity: 0;
-  animation: floatUp 12s linear infinite;
-  animation-delay: calc(var(--i) * -1.6s);
+  animation: floatUp 18s linear infinite;
+  animation-delay: calc(var(--i) * -2.2s);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+  will-change: bottom, transform, opacity;
 }
 
 @keyframes floatUp {
-  0%   { transform: translateY(0) rotate(0deg);    opacity: 0; }
-  10%  { opacity: 0.85; }
-  90%  { opacity: 0.85; }
-  100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+  0%   { bottom: -60px; opacity: 0; transform: rotate(0deg) scale(0.9); }
+  12%  { opacity: 0.65; }
+  68%  { opacity: 0.65; }
+  92%  { opacity: 0; }
+  100% { bottom: calc(100% + 80px); opacity: 0; transform: rotate(300deg) scale(1.05); }
 }
 
 /* ── Inner layout ── */
@@ -241,13 +238,12 @@
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  /* Keep margin-top overlap but reduce padding; padding-top must stay ≥ 100px (wave) */
-  .section { margin-top: -60px; padding: 110px 6vw 90px; }
+  .section { margin-top: 0; padding: 82px 6vw 90px; }
   .title { font-size: clamp(22px, 6vw, 38px); }
 }
 
 @media (max-width: 600px) {
-  .section { margin-top: -40px; padding: 108px 5vw 80px; }
+  .section { margin-top: 0; padding: 78px 5vw 80px; }
   .countdown { gap: 12px; }
   .card {
     width: clamp(72px, 20vw, 110px);

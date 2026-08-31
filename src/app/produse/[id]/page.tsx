@@ -97,8 +97,12 @@ export default function ProductDetailPage() {
     );
   }
 
+  const maxQty = typeof product.remain === "number"
+    ? Math.max(0, Math.floor(product.remain))
+    : product.inStock ? Number.MAX_SAFE_INTEGER : 0;
+
   const handleAddToCart = () => {
-    for (let i = 0; i < qty; i++) addToCart(product);
+    addToCart(product, Math.min(qty, maxQty));
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -183,15 +187,16 @@ export default function ProductDetailPage() {
             </div>
 
             <div className={styles.qtyRow}>
-              <button className={styles.qtyBtn} onClick={() => setQty((q) => Math.max(1, q - 1))}>−</button>
+              <button className={styles.qtyBtn} onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1}>−</button>
               <span className={styles.qtyVal}>{qty}</span>
-              <button className={styles.qtyBtn} onClick={() => setQty((q) => q + 1)}>+</button>
+              <button className={styles.qtyBtn} onClick={() => setQty((q) => Math.min(maxQty, q + 1))} disabled={qty >= maxQty}>+</button>
             </div>
 
             <div className={styles.actions}>
               <button
                 className={`${styles.addBtn} ${added ? styles.addBtnAdded : ""}`}
                 onClick={handleAddToCart}
+                disabled={maxQty === 0}
               >
                 <BsCart3 size={18} />
                 {added ? "Adăugat în coș ✓" : "Adaugă în coș"}
@@ -210,7 +215,9 @@ export default function ProductDetailPage() {
                 <BsBoxSeam size={16} className={styles.metaIcon} />
                 <div>
                   <span className={styles.metaLabel}>Disponibilitate</span>
-                  <span className={styles.metaValue} style={{ color: "#01934A" }}>În stoc</span>
+                  <span className={styles.metaValue} style={{ color: maxQty > 0 ? "#01934A" : "#DC2626" }}>
+                    {maxQty > 0 ? `În stoc${product.remain !== undefined ? `: ${maxQty} buc.` : ""}` : "Stoc epuizat"}
+                  </span>
                 </div>
               </div>
               <div className={styles.metaItem}>

@@ -41,7 +41,7 @@ export default function CartDrawer() {
             </div>
           ) : (
             items.map(({ product: p, qty }) => (
-              <div key={p.id} className={styles.item}>
+              <div key={p.uid ?? p.id} className={styles.item}>
                 <div className={styles.itemImg}>
                   <Image
                     src={p.img}
@@ -58,11 +58,15 @@ export default function CartDrawer() {
                 </div>
                 <div className={styles.itemActions}>
                   <div className={styles.qtyRow}>
-                    <button className={styles.qtyBtn} onClick={() => updateQty(p.id, qty - 1)}>−</button>
+                    <button className={styles.qtyBtn} onClick={() => updateQty(p.uid ?? p.id, qty - 1)}>−</button>
                     <span className={styles.qtyNum}>{qty}</span>
-                    <button className={styles.qtyBtn} onClick={() => updateQty(p.id, qty + 1)}>+</button>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() => updateQty(p.uid ?? p.id, qty + 1)}
+                      disabled={p.remain !== undefined && qty >= p.remain}
+                    >+</button>
                   </div>
-                  <button className={styles.removeBtn} onClick={() => removeFromCart(p.id)}>
+                  <button className={styles.removeBtn} onClick={() => removeFromCart(p.uid ?? p.id)}>
                     <BsTrash size={13} /> Șterge
                   </button>
                 </div>
