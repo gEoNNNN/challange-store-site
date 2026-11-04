@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BsSearch, BsHeart, BsHeartFill, BsStarFill, BsStar,
@@ -17,8 +16,6 @@ import { useTranslations } from "../context/LanguageContext";
 import styles from "./page.module.css";
 
 const PRICE_MAX_DEFAULT = 5000;
-
-const SORT_VALUES = ["featured", "price-asc", "price-desc", "rating", "new"] as const;
 
 const PRICE_MAX = PRICE_MAX_DEFAULT;
 const PAGE_SIZE = 16;
@@ -52,13 +49,23 @@ function FilterSection({
   title: string; children: React.ReactNode; id: string;
   collapsed: boolean; toggle: (id: string) => void;
 }) {
+  const bodyId = `filter-${id}`;
+
   return (
-    <div className={styles.filterSection}>
-      <button className={styles.filterHeader} onClick={() => toggle(id)}>
+    <div className={`${styles.filterSection} ${!collapsed ? styles.filterSectionOpen : ""}`}>
+      <button
+        type="button"
+        className={styles.filterHeader}
+        onClick={() => toggle(id)}
+        aria-expanded={!collapsed}
+        aria-controls={bodyId}
+      >
         <span>{title}</span>
-        {collapsed ? <BsChevronDown size={14} /> : <BsChevronUp size={14} />}
+        <span className={styles.filterChevron}>
+          {collapsed ? <BsChevronDown size={13} /> : <BsChevronUp size={13} />}
+        </span>
       </button>
-      {!collapsed && <div className={styles.filterBody}>{children}</div>}
+      {!collapsed && <div id={bodyId} className={styles.filterBody}>{children}</div>}
     </div>
   );
 }
@@ -79,8 +86,8 @@ export default function ProduseePage() {
   const [search, setSearch]           = useState("");
   const [sortBy, setSortBy]           = useState("featured");
   const [viewMode, setViewMode]       = useState<"grid" | "list">("grid");
-  const [collapsed, setCollapsed]     = useState<string[]>([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed]     = useState<string[]>(["cat", "brand", "price", "country", "attr"]);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeCategory, setActiveCategory] = useState("Toate");
 
   const [selCategories, setSelCategories] = useState<string[]>([]);
@@ -114,7 +121,8 @@ export default function ProduseePage() {
       return;
     }
 
-    append ? setLoadingMore(true) : setLoading(true);
+    if (append) setLoadingMore(true);
+    else setLoading(true);
     const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(offset), sort: sortBy });
     if (search.trim()) params.set("search", search.trim());
     selBrands.forEach((brand) => params.append("brand", brand));
@@ -208,69 +216,8 @@ export default function ProduseePage() {
     return () => observer.disconnect();
   }, [allProducts.length, hasMore, loadProducts, loading, loadingMore]);
 
-  const pathname = usePathname();
-  const showOverlay = pathname === "/produse";
-
   return (
-    <div className={styles.page} style={{ position: "relative" }}>
-
-      {/* ── În Lucru Overlay (doar pe /produse) ── */}
-      {showOverlay && <div style={{
-        position:        "fixed",
-        inset:           0,
-        zIndex:          9999,
-        backdropFilter:  "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
-        backgroundColor: "rgba(0,0,0,0.65)",
-        display:         "flex",
-        flexDirection:   "column",
-        alignItems:      "center",
-        justifyContent:  "center",
-        gap:             "20px",
-        pointerEvents:   "all",
-      }}>
-        <div style={{
-          background:    "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
-          border:        "1px solid rgba(255,255,255,0.1)",
-          borderRadius:  "24px",
-          padding:       "48px 56px",
-          textAlign:     "center",
-          maxWidth:      "480px",
-          boxShadow:     "0 32px 80px rgba(0,0,0,0.5)",
-        }}>
-          <div style={{ fontSize: "64px", marginBottom: "16px" }}>🛠️</div>
-          <h2 style={{
-            color:       "#ffffff",
-            fontSize:    "28px",
-            fontWeight:  "700",
-            marginBottom:"12px",
-            letterSpacing:"-0.5px",
-          }}>
-            Pagina este în lucru
-          </h2>
-          <p style={{
-            color:       "rgba(255,255,255,0.6)",
-            fontSize:    "16px",
-            lineHeight:  "1.6",
-            marginBottom:"28px",
-          }}>
-            Lucrăm la actualizarea catalogului de produse.<br />
-            Reveniți în curând!
-          </p>
-          <a href="/" style={{
-            display:         "inline-block",
-            background:      "linear-gradient(135deg, #ff6b6b, #ff8e53)",
-            color:           "#fff",
-            padding:         "12px 32px",
-            borderRadius:    "50px",
-            textDecoration:  "none",
-            fontWeight:      "600",
-            fontSize:        "15px",
-          }}>
-            ← Înapoi la pagina principală
-          </a>
-        </div>
-      </div>}
+    <div className={styles.page}>
 
       {/* ── Hero ── */}
       <div className={styles.heroBar}>
@@ -372,10 +319,13 @@ export default function ProduseePage() {
         {/* SIDEBAR */}
         <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.sidebarHidden : ""}`}>
           <div className={styles.sidebarHeader}>
-            <BsSliders size={16} />
-            <span>{t.productsPage.filtersSidebarTitle}</span>
+            <span className={styles.filterIcon}><BsSliders size={16} /></span>
+            <span className={styles.filterIntro}>
+              <span className={styles.sidebarTitle}>{t.productsPage.filtersSidebarTitle}</span>
+              <span className={styles.sidebarSubtitle}>Alege exact ce îți place</span>
+            </span>
             {chips.length > 0 && (
-              <button className={styles.clearAll} onClick={clearAll}>{t.productsPage.clearAll}</button>
+              <button type="button" className={styles.clearAll} onClick={clearAll}>{t.productsPage.clearAll}</button>
             )}
           </div>
 

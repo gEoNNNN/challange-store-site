@@ -12,6 +12,7 @@ import Providers from "./components/Providers";
 import Navbar from "./components/Navbar";
 import JsonLd from "./components/JsonLd";
 import { SITE_URL } from "../lib/site";
+import { isSiteLocked } from "../lib/siteLock";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -151,16 +152,18 @@ export const metadata: Metadata = {
       "Snacks-uri și dulciuri importate din SUA, Japonia, Coreea. Livrare în toată Moldova.",
     images: ["/img/logo alb.png"],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  robots: isSiteLocked()
+    ? { index: false, follow: false }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
   category: "shopping",
   other: {
     "geo.region": "MD-CU",

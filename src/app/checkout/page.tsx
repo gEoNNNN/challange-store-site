@@ -7,27 +7,46 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   BsTrash, BsDash, BsPlus, BsCheckCircleFill,
   BsBag, BsArrowLeft, BsTruck, BsShield, BsTelephone,
+  BsCashCoin, BsCreditCard2Front, BsQrCode,
 } from "react-icons/bs";
 import { useCart } from "../context/CartContext";
+import { useLanguage } from "../context/LanguageContext";
+import { ordersEnabled } from "../../lib/siteLock";
 import styles from "./page.module.css";
+
+// Next staticly replaces the NEXT_PUBLIC_ env at build time, so this is safe client-side.
+const ORDERS_OPEN = ordersEnabled();
 
 interface FormData {
   name: string;
+  email: string;
   phone: string;
   address: string;
   city: string;
   notes: string;
 }
 
+type OrderResponse = {
+  ok: boolean;
+  code?: string;
+  total?: number;
+  paymentMethod?: "cod" | "maib";
+  checkoutUrl?: string;
+  error?: string;
+};
+
 export default function CheckoutPage() {
   const { items, removeFromCart, updateQty, totalPrice, clearCart } = useCart();
+  const { locale } = useLanguage();
 
   const [form, setForm] = useState<FormData>({
-    name: "", phone: "", address: "", city: "", notes: "",
+    name: "", email: "", phone: "", address: "", city: "", notes: "",
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [submitError, setSubmitError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "maib">("maib");
   const [orderNum] = useState(() => Math.floor(10000 + Math.random() * 90000));
   const [orderCode, setOrderCode] = useState<string | null>(null);
 
@@ -36,46 +55,70 @@ export default function CheckoutPage() {
 
   function validate() {
     const e: Partial<FormData> = {};
-    if (!form.name.trim())    e.name    = "Câmpul este obligatoriu";
-    if (!form.phone.trim())   e.phone   = "Câmpul este obligatoriu";
-    if (!form.address.trim()) e.address = "Câmpul este obligatoriu";
-    if (!form.city.trim())    e.city    = "Câmpul este obligatoriu";
+    const email = form.email.trim();
+    if (form.name.trim().length < 2) e.name = "Introdu un nume valid";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) e.email = "Introdu o adresă de email validă";
+    if (!/^\+?[0-9 ()-]{7,24}$/.test(form.phone.trim())) e.phone = "Introdu un număr de telefon valid";
+    if (form.address.trim().length < 5) e.address = "Introdu adresa completă";
+    if (form.city.trim().length < 2) e.city = "Introdu localitatea";
+    if (form.notes.length > 500) e.notes = "Maximum 500 de caractere";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!ORDERS_OPEN) return;
+    setSubmitError("");
     if (!validate()) return;
-    setSubmitting(true);
 
     const lines = items
       .filter((i) => !!i.product.uid)
-      .map((i, idx) => ({ uid: i.product.uid as string, qty: i.qty, lineNumber: idx + 1 }));
-
-    if (lines.length > 0) {
-      try {
-        const res = await fetch("/api/order", {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({
-            phone:   form.phone,
-            address: form.address,
-            city:    form.city,
-            name:    form.name,
-            comment: form.notes,
-            items:   lines,
-          }),
-        });
-        const data = await res.json() as { ok: boolean; code?: string };
-        if (data.ok && data.code) setOrderCode(data.code);
-      } catch {}
+      .map((i) => ({ uid: i.product.uid as string, qty: i.qty }));
+    if (lines.length !== items.length || lines.length === 0) {
+      setSubmitError("Coșul conține un produs care nu mai poate fi comandat. Elimină-l și încearcă din nou.");
+      return;
     }
 
-    clearCart();
-    setSubmitting(false);
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: form.phone,
+          email: form.email,
+          address: form.address,
+          city: form.city,
+          name: form.name,
+          comment: form.notes,
+          paymentMethod,
+          language: locale,
+          items: lines,
+        }),
+      });
+      const data = await res.json() as OrderResponse;
+      if (!res.ok || !data.ok || !data.code) {
+        setSubmitError(data.error || "Comanda nu a putut fi procesată. Încearcă din nou.");
+        return;
+      }
+      if (paymentMethod === "maib") {
+        if (!data.checkoutUrl) {
+          setSubmitError("Pagina securizată de plată nu a putut fi deschisă.");
+          return;
+        }
+        window.location.assign(data.checkoutUrl);
+        return;
+      }
+      setOrderCode(data.code);
+      clearCart();
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      setSubmitError("Nu ne-am putut conecta la server. Verifică conexiunea și încearcă din nou.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   /* ── Success state ── */
@@ -151,8 +194,16 @@ export default function CheckoutPage() {
             <BsArrowLeft size={15} /> Înapoi la produse
           </Link>
           <div className={styles.headerTitle}>
-            <h1>Finalizează comanda</h1>
-            <span className={styles.headerCount}>{items.reduce((s, i) => s + i.qty, 0)} produse</span>
+            <span className={styles.eyebrow}>Checkout securizat</span>
+            <h1>Ultimul pas până la bunătăți</h1>
+            <p>Verifică produsele și completează datele pentru livrare.</p>
+          </div>
+          <div className={styles.checkoutSteps} aria-label="Progres comandă">
+            <span className={styles.stepDone}><b>1</b> Coș</span>
+            <span className={styles.stepLine} />
+            <span className={styles.stepActive}><b>2</b> Livrare</span>
+            <span className={styles.stepLine} />
+            <span><b>3</b> Confirmare</span>
           </div>
         </div>
       </div>
@@ -163,7 +214,11 @@ export default function CheckoutPage() {
         {/* LEFT — cart items */}
         <div className={styles.cartCol}>
           <div className={styles.colHeader}>
-            <h2>Coșul tău</h2>
+            <span className={styles.sectionIndex}>01</span>
+            <div>
+              <h2>Coșul tău</h2>
+              <p>{items.reduce((sum, item) => sum + item.qty, 0)} produse pregătite pentru comandă</p>
+            </div>
           </div>
 
           <AnimatePresence>
@@ -233,7 +288,10 @@ export default function CheckoutPage() {
 
           {/* Order summary */}
           <div className={styles.summaryBox}>
-            <h2>Sumar comandă</h2>
+            <div className={styles.summaryHeading}>
+              <span className={styles.sectionIndex}>02</span>
+              <div><span>Sumar</span><h2>Total comandă</h2></div>
+            </div>
             <div className={styles.summaryRow}>
               <span>Subtotal</span>
               <span>{totalPrice} MDL</span>
@@ -255,43 +313,81 @@ export default function CheckoutPage() {
               <strong>{TOTAL} MDL</strong>
             </div>
             <div className={styles.trustRow}>
-              <span className={styles.trustItem}><BsShield size={13} /> Plată la livrare</span>
+              <span className={styles.trustItem}><BsShield size={13} /> Plată securizată</span>
               <span className={styles.trustItem}><BsTruck size={13} /> Livrare rapidă</span>
             </div>
           </div>
 
           {/* Delivery form */}
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
-            <h2>Date livrare</h2>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Nume și Prenume *</label>
-              <input
-                className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
-                placeholder="Ion Popescu"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
-              {errors.name && <span className={styles.error}>{errors.name}</span>}
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>Număr de telefon *</label>
-              <input
-                className={`${styles.input} ${errors.phone ? styles.inputError : ""}`}
-                placeholder="+373 60 000 000"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              />
-              {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+            <div className={styles.formHeading}>
+              <span className={styles.sectionIndex}>03</span>
+              <div>
+                <span>Destinația comenzii</span>
+                <h2>Date de livrare</h2>
+              </div>
             </div>
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
-                <label className={styles.label}>Oraș *</label>
+                <label className={styles.label} htmlFor="checkout-name">Nume și prenume *</label>
                 <input
+                  id="checkout-name"
+                  className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
+                  placeholder="Ion Popescu"
+                  autoComplete="name"
+                  maxLength={100}
+                  aria-invalid={!!errors.name}
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                {errors.name && <span className={styles.error}>{errors.name}</span>}
+              </div>
+
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor="checkout-email">Email *</label>
+                <input
+                  id="checkout-email"
+                  type="email"
+                  className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
+                  placeholder="ion@email.md"
+                  autoComplete="email"
+                  maxLength={254}
+                  aria-invalid={!!errors.email}
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                {errors.email && <span className={styles.error}>{errors.email}</span>}
+              </div>
+            </div>
+
+            <div className={styles.fieldRow}>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor="checkout-phone">Număr de telefon *</label>
+                <input
+                  id="checkout-phone"
+                  type="tel"
+                  className={`${styles.input} ${errors.phone ? styles.inputError : ""}`}
+                  placeholder="+373 60 000 000"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  maxLength={24}
+                  aria-invalid={!!errors.phone}
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                />
+                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+              </div>
+
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor="checkout-city">Localitate *</label>
+                <input
+                  id="checkout-city"
                   className={`${styles.input} ${errors.city ? styles.inputError : ""}`}
                   placeholder="Chișinău"
+                  autoComplete="address-level2"
+                  maxLength={80}
+                  aria-invalid={!!errors.city}
                   value={form.city}
                   onChange={(e) => setForm({ ...form, city: e.target.value })}
                 />
@@ -300,10 +396,14 @@ export default function CheckoutPage() {
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Adresă de livrare *</label>
+              <label className={styles.label} htmlFor="checkout-address">Adresă de livrare *</label>
               <input
+                id="checkout-address"
                 className={`${styles.input} ${errors.address ? styles.inputError : ""}`}
                 placeholder="Str. Ștefan cel Mare, nr. 1, ap. 5"
+                autoComplete="street-address"
+                maxLength={200}
+                aria-invalid={!!errors.address}
                 value={form.address}
                 onChange={(e) => setForm({ ...form, address: e.target.value })}
               />
@@ -311,20 +411,74 @@ export default function CheckoutPage() {
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Mențiuni (opțional)</label>
+              <div className={styles.optionalLabel}>
+                <label className={styles.label} htmlFor="checkout-notes">Mențiuni</label>
+                <span>{form.notes.length}/500</span>
+              </div>
               <textarea
-                className={styles.textarea}
-                placeholder="Instrucțiuni speciale, etaj, interfon..."
+                id="checkout-notes"
+                className={`${styles.textarea} ${errors.notes ? styles.inputError : ""}`}
+                placeholder="Etaj, interfon sau alte instrucțiuni pentru curier"
                 rows={3}
+                maxLength={500}
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
               />
+              {errors.notes && <span className={styles.error}>{errors.notes}</span>}
             </div>
 
-            <button type="submit" className={styles.submitBtn} disabled={submitting}>
-              <BsCheckCircleFill size={17} />
-              {submitting ? "Se procesează…" : `Plasează comanda — ${TOTAL} MDL`}
+            <fieldset className={styles.paymentFieldset}>
+              <legend>Metoda de plată</legend>
+              <label className={`${styles.paymentOption} ${paymentMethod === "maib" ? styles.paymentOptionActive : ""}`}>
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="maib"
+                  checked={paymentMethod === "maib"}
+                  onChange={() => setPaymentMethod("maib")}
+                />
+                <span className={styles.paymentIcon}><BsCreditCard2Front size={21} /></span>
+                <span className={styles.paymentCopy}>
+                  <strong>Plată online prin maib</strong>
+                  <small><BsQrCode size={12} /> Card bancar sau MIA QR · checkout securizat</small>
+                </span>
+                <span className={styles.paymentBadge}>Recomandat</span>
+              </label>
+              <label className={`${styles.paymentOption} ${paymentMethod === "cod" ? styles.paymentOptionActive : ""}`}>
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={() => setPaymentMethod("cod")}
+                />
+                <span className={styles.paymentIcon}><BsCashCoin size={21} /></span>
+                <span className={styles.paymentCopy}>
+                  <strong>Plată la livrare</strong>
+                  <small>Achită comanda curierului la primire</small>
+                </span>
+              </label>
+            </fieldset>
+
+            {!ORDERS_OPEN && (
+              <div className={styles.submitError} role="alert">
+                Comenzile sunt temporar suspendate — catalogul poate fi răsfoit, dar plasarea comenzilor va fi activată în curând.
+              </div>
+            )}
+            {submitError && <div className={styles.submitError} role="alert">{submitError}</div>}
+
+            <button type="submit" className={styles.submitBtn} disabled={submitting || !ORDERS_OPEN}>
+              {paymentMethod === "maib" ? <BsCreditCard2Front size={18} /> : <BsCheckCircleFill size={17} />}
+              {submitting
+                ? paymentMethod === "maib" ? "Se deschide plata securizată…" : "Se verifică prețul și stocul…"
+                : paymentMethod === "maib" ? `Continuă spre plată — ${TOTAL} MDL` : `Plasează comanda — ${TOTAL} MDL`}
             </button>
+            <p className={styles.secureNote}>
+              <BsShield size={13} />
+              {paymentMethod === "maib"
+                ? "Datele de plată sunt procesate direct de maib și nu ajung pe site."
+                : "Prețul și stocul sunt reverificate securizat înainte de confirmare."}
+            </p>
           </form>
 
         </div>

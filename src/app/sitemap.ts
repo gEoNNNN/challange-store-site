@@ -1,8 +1,12 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "../lib/site";
+import { isSiteLocked } from "../lib/siteLock";
 import { PRODUCTS } from "./produse/productsData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // An empty sitemap while the site is locked; crawlers must not find gated URLs.
+  if (isSiteLocked()) return [];
+
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [

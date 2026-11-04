@@ -1,6 +1,6 @@
 const { createHash } = require("crypto");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const { neon } = require("@neondatabase/serverless");
+const { getDb } = require("../src/lib/db.ts");
 const sharp = require("sharp");
 
 const APPLY = process.argv.includes("--apply");
@@ -85,13 +85,12 @@ async function verifyPublicImage(url) {
 }
 
 async function main() {
-  const databaseUrl = requiredEnv("DATABASE_URL");
   const accountId = requiredEnv("R2_ACCOUNT_ID");
   const accessKeyId = requiredEnv("R2_ACCESS_KEY_ID");
   const secretAccessKey = requiredEnv("R2_SECRET_ACCESS_KEY");
   const bucket = requiredEnv("R2_BUCKET_NAME");
   const publicUrl = requiredEnv("R2_PUBLIC_URL").replace(/\/$/, "");
-  const sql = neon(databaseUrl);
+  const sql = getDb();
   const s3 = new S3Client({
     region: "auto",
     endpoint: `https://${accountId}.r2.cloudflarestorage.com`,

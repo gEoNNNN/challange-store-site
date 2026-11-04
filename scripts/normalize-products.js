@@ -1,4 +1,4 @@
-const { neon } = require("@neondatabase/serverless");
+const { getDb } = require("../src/lib/db.ts");
 const { inferProductBrand, inferProductCategory, normalizeProductName } = require("../src/lib/productNormalization.ts");
 
 const APPLY = process.argv.includes("--apply");
@@ -16,8 +16,7 @@ async function mapConcurrent(items, concurrency, worker) {
 }
 
 async function main() {
-  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL lipsește");
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = getDb();
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS source_name TEXT`;
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS category TEXT`;
 

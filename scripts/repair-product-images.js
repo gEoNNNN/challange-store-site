@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { neon } = require("@neondatabase/serverless");
+const { getDb } = require("../src/lib/db.ts");
 
 const PLACEHOLDER = "/img/candypack.png";
 const APPLY = process.argv.includes("--apply");
@@ -144,9 +144,8 @@ async function restoreFromLog(sql, products) {
 }
 
 async function main() {
-  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL lipsește");
   if (!RESTORE_LOG && !process.env.SERPER_API_KEY) throw new Error("SERPER_API_KEY lipsește");
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = getDb();
   const products = await sql`
     SELECT uid, name, image_url
     FROM products

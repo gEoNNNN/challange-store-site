@@ -74,16 +74,36 @@ async function runSync() {
 
     // Verifică cache-ul listei de produse (TTL = 30 min)
     const cacheRows = await sql`
-      SELECT data, EXTRACT(EPOCH FROM (NOW() - cached_at)) * 1000 AS age_ms
+      SELECT
+        EXTRACT(EPOCH FROM (NOW() - cached_at)) * 1000 AS age_ms,
+        (
+          SELECT COUNT(*)::int
+          FROM jsonb_array_elements(api_cache.data::jsonb) AS cached(product)
+          WHERE COALESCE((cached.product->>'Remain')::numeric, 0) > 0
+        ) AS in_stock_count
       FROM api_cache WHERE key = 'products'
-    ` as { data: string; age_ms: string }[];
+    ` as { age_ms: string; in_stock_count: number }[];
 
-    let inStock: SEProduct[];
+    // Cursor persistent
+    const cursorRows = await sql`SELECT pos FROM sync_cursor WHERE id = 1`;
+    let pos = Number((cursorRows as { pos: number }[])[0]?.pos ?? 0);
+    let slice: SEProduct[];
+    let inStockCount: number;
 
     if (cacheRows.length > 0 && Number(cacheRows[0].age_ms) < CACHE_TTL_MS) {
-      const all: SEProduct[] = JSON.parse(cacheRows[0].data);
-      inStock = all.filter((p) => p.Remain > 0);
-      console.log(`[sync] Cache hit: ${inStock.length} în stoc (${Date.now() - t0}ms)`);
+      inStockCount = Number(cacheRows[0].in_stock_count);
+      if (pos >= inStockCount) pos = 0;
+      const pageRows = await sql`
+        SELECT cached.product
+        FROM api_cache
+        CROSS JOIN LATERAL jsonb_array_elements(api_cache.data::jsonb)
+          WITH ORDINALITY AS cached(product, position)
+        WHERE key = 'products' AND COALESCE((cached.product->>'Remain')::numeric, 0) > 0
+        ORDER BY cached.position
+        LIMIT ${CHUNK_SIZE} OFFSET ${pos}
+      ` as { product: SEProduct }[];
+      slice = pageRows.map((row) => row.product);
+      console.log(`[sync] Cache hit: ${inStockCount} în stoc (${Date.now() - t0}ms)`);
     } else {
       const res = await fetch(`${SE_URL}/GetAssortimentFromGroup?group=${ROOT_GROUP}`, {
         headers: { Authorization: AUTH },
@@ -91,23 +111,20 @@ async function runSync() {
       if (!res.ok) throw new Error(`GetAssortimentFromGroup: ${res.status}`);
       const data = await res.json();
       const all: SEProduct[] = data.Assortiment ?? [];
-      inStock = all.filter((p) => p.Remain > 0);
+      const inStock = all.filter((p) => p.Remain > 0);
+      inStockCount = inStock.length;
+      if (pos >= inStockCount) pos = 0;
+      slice = inStock.slice(pos, pos + CHUNK_SIZE);
 
       const jsonStr = JSON.stringify(all);
       await sql`
         INSERT INTO api_cache (key, data, cached_at) VALUES ('products', ${jsonStr}, NOW())
         ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, cached_at = NOW()
       `;
-      console.log(`[sync] API: ${all.length} total, ${inStock.length} cu stoc (${Date.now() - t0}ms)`);
+      console.log(`[sync] API: ${all.length} total, ${inStockCount} cu stoc (${Date.now() - t0}ms)`);
     }
 
-    // Cursor persistent
-    const cursorRows = await sql`SELECT pos FROM sync_cursor WHERE id = 1`;
-    let pos = Number((cursorRows as { pos: number }[])[0]?.pos ?? 0);
-    if (pos >= inStock.length) pos = 0;
-
-    const slice = inStock.slice(pos, pos + CHUNK_SIZE);
-    const isLastChunk = pos + slice.length >= inStock.length;
+    const isLastChunk = pos + slice.length >= inStockCount;
     console.log(`[sync] Procesez ${slice.length} produse de la poziția ${pos}`);
 
     // Stoc centru + UPSERT (batching paralel)
@@ -167,10 +184,17 @@ async function runSync() {
     // La finalul ciclului: zero produsele dispărute din API
     let zeroed = 0;
     if (isLastChunk) {
-      const seenUids = inStock.map((p) => p.Uid);
       const result = await sql`
-        UPDATE products SET depot_stock = 0
-        WHERE NOT (uid = ANY(${seenUids})) AND depot_stock > 0
+        UPDATE products
+        SET depot_stock = 0
+        WHERE depot_stock > 0 AND NOT EXISTS (
+          SELECT 1
+          FROM api_cache
+          CROSS JOIN LATERAL jsonb_array_elements(api_cache.data::jsonb) AS cached(product)
+          WHERE key = 'products'
+            AND COALESCE((product->>'Remain')::numeric, 0) > 0
+            AND product->>'Uid' = products.uid
+        )
       `;
       zeroed = (result as unknown as { count?: number }).count ?? 0;
     }
@@ -178,7 +202,7 @@ async function runSync() {
     const nextPos = isLastChunk ? 0 : pos + slice.length;
     await sql`UPDATE sync_cursor SET pos = ${nextPos} WHERE id = 1`;
 
-    console.log(`[sync] ✅ DONE: ${pos}–${pos + slice.length} din ${inStock.length}, upserted: ${upserted}, failed: ${failed}, zeroed: ${zeroed}, ms: ${Date.now() - t0}`);
+    console.log(`[sync] ✅ DONE: ${pos}–${pos + slice.length} din ${inStockCount}, upserted: ${upserted}, failed: ${failed}, zeroed: ${zeroed}, ms: ${Date.now() - t0}`);
   } catch (err) {
     console.error(`[sync] ❌ Error după ${Date.now() - t0}ms:`, err);
   }
