@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb, ensureSchema } from "@/lib/db";
+import { isAdminSessionValid } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
 
 /** Lista produselor pentru panoul de admin (cu stoc, inclusiv cele epuizate). */
 export async function GET(req: NextRequest) {
+  if (!isAdminSessionValid(req)) {
+    return NextResponse.json({ error: "Neautentificat." }, { status: 401 });
+  }
   try {
     const sql = getDb();
     await ensureSchema(sql);
