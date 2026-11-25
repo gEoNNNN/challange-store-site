@@ -36,7 +36,7 @@ function unitizeCopy(text, size) {
   let out = String(text || "");
   out = out.replace(new RegExp(`\\(?\\s*\\d{1,3}\\s*[x×х]\\s*(\\d+(?:[.,]\\d+)?)\\s*(${UNIT})\\s*\\)?`, "gi"),
     (_, qty, unit) => `${qty.replace(",", ".")} ${cleanUnit(unit)}`);
-  out = out.replace(/\b(\d{1,3})\s*[x×х]\s*(\d+(?:[.,]\d+)?)\s*(ml|g|gr|kg|l|oz)\b/gi,
+  out = out.replace(new RegExp(`(\\d{1,3})\\s*[x×х]\\s*(\\d+(?:[.,]\\d+)?)\\s*(${UNIT})`, "gi"),
     (_, _n, qty, unit) => `${qty.replace(",", ".")} ${cleanUnit(unit)}`);
   out = out.replace(/\b(?:master\s*carton|mastercarton|inner\s*box|display\s*box)\b/gi, " ");
   out = out.replace(/\s*[-–,]?\s*\b(?:case|bax)\b\.?/gi, " ");
