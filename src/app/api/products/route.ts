@@ -7,7 +7,9 @@ const PLACEHOLDER_IMG = "/img/candypack.png";
 const PAGE_SIZE = 16;
 const PRICE_EXPRESSION = "CASE WHEN promotion_price > 0 THEN promotion_price ELSE price END";
 const PRODUCT_COLUMNS = "uid, name, price, promotion_price, depot_stock, brand, category, description, has_image, image_url";
-const CACHE_HEADERS = { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" };
+// Cache scurt la CDN: stocul se schimbă la fiecare sync (30 min), dar un cache lung
+// ținea pe site o listă veche (uneori golă) timp de minute după fiecare modificare.
+const CACHE_HEADERS = { "Cache-Control": "public, s-maxage=15, stale-while-revalidate=30" };
 type ProductRow = Pick<DbProduct, "uid" | "name" | "price" | "promotion_price" | "depot_stock" | "brand" | "category" | "description" | "has_image" | "image_url">;
 
 function getImageUrl(product: ProductRow) {

@@ -72,7 +72,9 @@ async function runSync() {
       cached_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )`;
 
-    // Verifică cache-ul listei de produse (TTL = 30 min)
+    // Verifică cache-ul listei de produse (TTL = 30 min).
+    // `total_count` = câte produse sunt în cache (cursorul le parcurge pe toate);
+    // `in_stock_count` = câte au Remain > 0 (doar informativ, pentru log).
     const cacheRows = await sql`
       SELECT
         EXTRACT(EPOCH FROM (NOW() - cached_at)) * 1000 AS age_ms,
@@ -80,9 +82,10 @@ async function runSync() {
           SELECT COUNT(*)::int
           FROM jsonb_array_elements(api_cache.data::jsonb) AS cached(product)
           WHERE COALESCE((cached.product->>'Remain')::numeric, 0) > 0
-        ) AS in_stock_count
+        ) AS in_stock_count,
+        jsonb_array_length(data::jsonb) AS total_count
       FROM api_cache WHERE key = 'products'
-    ` as { age_ms: string; in_stock_count: number }[];
+    ` as { age_ms: string; in_stock_count: number; total_count: number }[];
 
     // Cursor persistent
     const cursorRows = await sql`SELECT pos FROM sync_cursor WHERE id = 1`;
@@ -91,19 +94,22 @@ async function runSync() {
     let inStockCount: number;
 
     if (cacheRows.length > 0 && Number(cacheRows[0].age_ms) < CACHE_TTL_MS) {
-      inStockCount = Number(cacheRows[0].in_stock_count);
+      inStockCount = Number(cacheRows[0].total_count);
       if (pos >= inStockCount) pos = 0;
+      // Procesăm TOATE produsele din cache, nu doar cele cu Remain > 0: altfel cele
+      // epuizate rămâneau cu stocul vechi, iar pasul final le punea brusc la 0
+      // (catalogul „pulsea” la fiecare sync).
       const pageRows = await sql`
         SELECT cached.product
         FROM api_cache
         CROSS JOIN LATERAL jsonb_array_elements(api_cache.data::jsonb)
           WITH ORDINALITY AS cached(product, position)
-        WHERE key = 'products' AND COALESCE((cached.product->>'Remain')::numeric, 0) > 0
+        WHERE key = 'products'
         ORDER BY cached.position
         LIMIT ${CHUNK_SIZE} OFFSET ${pos}
       ` as { product: SEProduct }[];
       slice = pageRows.map((row) => row.product);
-      console.log(`[sync] Cache hit: ${inStockCount} în stoc (${Date.now() - t0}ms)`);
+      console.log(`[sync] Cache hit: ${inStockCount} produse în cache (${Date.now() - t0}ms)`);
     } else {
       const res = await fetch(`${SE_URL}/GetAssortimentFromGroup?group=${ROOT_GROUP}`, {
         headers: { Authorization: AUTH },
@@ -112,16 +118,18 @@ async function runSync() {
       const data = await res.json();
       const all: SEProduct[] = data.Assortiment ?? [];
       const inStock = all.filter((p) => p.Remain > 0);
-      inStockCount = inStock.length;
+      // Cursorul parcurge TOATЕ produsele (inclusiv epuizate), ca stocul lor să fie
+      // actualizat la 0 în loc să rămână la valoarea veche.
+      inStockCount = all.length;
       if (pos >= inStockCount) pos = 0;
-      slice = inStock.slice(pos, pos + CHUNK_SIZE);
+      slice = all.slice(pos, pos + CHUNK_SIZE);
 
       const jsonStr = JSON.stringify(all);
       await sql`
         INSERT INTO api_cache (key, data, cached_at) VALUES ('products', ${jsonStr}, NOW())
         ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, cached_at = NOW()
       `;
-      console.log(`[sync] API: ${all.length} total, ${inStockCount} cu stoc (${Date.now() - t0}ms)`);
+      console.log(`[sync] API: ${all.length} total, ${inStock.length} cu stoc (${Date.now() - t0}ms)`);
     }
 
     const isLastChunk = pos + slice.length >= inStockCount;
