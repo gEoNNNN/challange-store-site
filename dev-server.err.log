@@ -53,3 +53,622 @@ Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (f
 Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
 [browser] Image with src "/img/photo3.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
 Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Uncaught ReferenceError: useTranslations is not defined
+    at ProduseePage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/Desktop_New%20folder_my-app_src_app_produse_page_tsx_0qe_jn6._.js?id=%255Bproject%255D%252FDesktop%252FNew+folder%252Fmy-app%252Fsrc%252Fapp%252Fproduse%252Fpage.tsx+%255Bapp-client%255D+%2528ecmascript%2529:134:15)
+    at Object.react_stack_bottom_frame (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:15037:24)
+    at renderWithHooks (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:4620:24)
+    at updateFunctionComponent (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:6081:21)
+    at beginWork (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:6691:24)
+    at runWithFiberInDEV (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:965:74)
+    at performUnitOfWork (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9555:97)
+    at workLoopSync (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9449:40)
+    at renderRootSync (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9433:13)
+    at performWorkOnRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9061:186)
+    at performSyncWorkOnRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10179:316)
+    at processRootScheduleInMicrotask (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10200:106)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10274:158)
+    at ClientPageRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_19e3w0t._.js:8618:50)
+[browser] Uncaught ReferenceError: useTranslations is not defined
+    at ProduseePage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/Desktop_New%20folder_my-app_src_app_produse_page_tsx_0qe_jn6._.js?id=%255Bproject%255D%252FDesktop%252FNew+folder%252Fmy-app%252Fsrc%252Fapp%252Fproduse%252Fpage.tsx+%255Bapp-client%255D+%2528ecmascript%2529:134:15)
+    at Object.react_stack_bottom_frame (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:15037:24)
+    at renderWithHooks (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:4620:24)
+    at updateFunctionComponent (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:6081:21)
+    at beginWork (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:6691:24)
+    at runWithFiberInDEV (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:965:74)
+    at performUnitOfWork (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9555:97)
+    at workLoopSync (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9449:40)
+    at renderRootSync (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9433:13)
+    at performWorkOnRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:9061:186)
+    at performSyncWorkOnRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10179:316)
+    at processRootScheduleInMicrotask (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10200:106)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_compiled_react-dom_1q-mf8r._.js:10274:158)
+    at ClientPageRoot (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_19e3w0t._.js:8618:50)
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_05fcdhv._.js:13951:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_05fcdhv._.js:14014:21)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_05fcdhv._.js:13458:52) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_05fcdhv._.js:13951:21)
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m489 |[0m     </div>
+  [90m490 |[0m   );
+[31m[1m>[0m [90m491 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m492 |[0m
+  [90m493 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m494 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:491:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  489 |     </div>
+  490 |   );
+> 491 | }
+      | ^
+  492 |
+  493 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  494 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m490 |[0m     </div>
+  [90m491 |[0m   );
+[31m[1m>[0m [90m492 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m493 |[0m
+  [90m494 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m495 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+⨯ ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m490 |[0m     </div>
+  [90m491 |[0m   );
+[31m[1m>[0m [90m492 |[0m }
+  [90m    |[0m [31m[1m^[0m
+  [90m493 |[0m
+  [90m494 |[0m [36mfunction[0m [33mProductCard[0m({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  [90m495 |[0m   product: [33mProduct[0m; isFav: boolean; onFav: () => [36mvoid[0m;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+[browser] Uncaught Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+    at <unknown> (Error: (./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1)
+[browser] ./Desktop/New folder/my-app/src/app/produse/page.tsx:492:1
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  490 |     </div>
+  491 |   );
+> 492 | }
+      | ^
+  493 |
+  494 | function ProductCard({ product: p, isFav, onFav, onAddToCart, viewMode, index }: {
+  495 |   product: Product; isFav: boolean; onFav: () => void;
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component Browser]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Client Component SSR]
+    ./Desktop/New folder/my-app/src/app/produse/page.tsx [Server Component] 
+    at handleErrors (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+    at processMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2835:28)
+    at <unknown> (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2325:17) (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_client_0bxkeil._.js:2774:21)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/2a8430e2-6cba-4a10-827f-e192b7e2a829-1341f68bfe7f.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
