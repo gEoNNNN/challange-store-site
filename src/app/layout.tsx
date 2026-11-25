@@ -1,12 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Geist, Geist_Mono, Poppins,
-  Alfa_Slab_One, Chivo,
-  DM_Serif_Display, Nunito,
-  Alegreya_Sans, Alegreya,
-  Raleway,
-  Fira_Sans, PT_Serif,
-} from "next/font/google";
 import "./globals.css";
 import Providers from "./components/Providers";
 import Navbar from "./components/Navbar";
@@ -14,75 +6,26 @@ import JsonLd from "./components/JsonLd";
 import { SITE_URL } from "../lib/site";
 import { isSiteLocked } from "../lib/siteLock";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const alfaSlabOne = Alfa_Slab_One({
-  variable: "--font-alfa-slab-one",
-  subsets: ["latin"],
-  weight: "400",
-});
-
-const chivo = Chivo({
-  variable: "--font-chivo",
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
-});
-
-const dmSerifDisplay = DM_Serif_Display({
-  variable: "--font-dm-serif-display",
-  subsets: ["latin"],
-  weight: "400",
-});
-
-const nunito = Nunito({
-  variable: "--font-nunito",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const alegreyaSans = Alegreya_Sans({
-  variable: "--font-alegreya-sans",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-});
-
-const alegreya = Alegreya({
-  variable: "--font-alegreya",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
-
-const raleway = Raleway({
-  variable: "--font-raleway",
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "600", "700", "800"],
-});
-
-const firaSans = Fira_Sans({
-  variable: "--font-fira-sans",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-});
-
-const ptSerif = PT_Serif({
-  variable: "--font-pt-serif",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
+/**
+ * Fonturile se încarcă din Google Fonts la runtime (link), nu la build cu next/font:
+ * build-ul de pe Vercel pica la rezolvarea fonturilor (Turbopack + next/font/google).
+ * Variabilele CSS (--font-*) sunt definite în globals.css.
+ */
+const GOOGLE_FONTS_HREF =
+  "https://fonts.googleapis.com/css2" +
+  "?family=Geist:wght@100..900" +
+  "&family=Geist+Mono:wght@100..900" +
+  "&family=Poppins:wght@400;500;600;700;800;900" +
+  "&family=Alfa+Slab+One:wght@400" +
+  "&family=Chivo:wght@400;500;700;900" +
+  "&family=DM+Serif+Display:wght@400" +
+  "&family=Nunito:wght@400;500;600;700;800" +
+  "&family=Alegreya+Sans:wght@400;700;900" +
+  "&family=Alegreya:wght@400;500;700" +
+  "&family=Raleway:wght@100;300;400;600;700;800" +
+  "&family=Fira+Sans:wght@400;700;900" +
+  "&family=PT+Serif:wght@400;700" +
+  "&display=swap";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -186,13 +129,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className={[
-        geistSans.variable, geistMono.variable, poppins.variable,
-        alfaSlabOne.variable, chivo.variable,
-        dmSerifDisplay.variable, nunito.variable,
-        alegreyaSans.variable, alegreya.variable,
-        raleway.variable, firaSans.variable, ptSerif.variable,
-      ].join(" ")}>
+    <html lang="ro">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={GOOGLE_FONTS_HREF} />
+      </head>
       <body>
         <JsonLd />
         <Providers><Navbar />{children}</Providers>
