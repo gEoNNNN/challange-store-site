@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
-import { getDb, ensureSchema } from "@/lib/db";
+import { getDb, ensureSchemaOnce } from "@/lib/db";
 import { inferProductBrand, inferProductCategory, normalizeProductName } from "@/lib/productNormalization";
 import productMedia from "@/lib/productMedia.json";
 
@@ -61,7 +61,7 @@ async function runSync() {
   const sql = getDb();
 
   try {
-    await ensureSchema(sql);
+    await ensureSchemaOnce(sql);
 
     await sql`CREATE TABLE IF NOT EXISTS sync_cursor (id INT PRIMARY KEY, pos INT NOT NULL DEFAULT 0)`;
     await sql`INSERT INTO sync_cursor (id, pos) VALUES (1, 0) ON CONFLICT (id) DO NOTHING`;
@@ -192,7 +192,6 @@ async function runSync() {
           FROM api_cache
           CROSS JOIN LATERAL jsonb_array_elements(api_cache.data::jsonb) AS cached(product)
           WHERE key = 'products'
-            AND COALESCE((product->>'Remain')::numeric, 0) > 0
             AND product->>'Uid' = products.uid
         )
       `;

@@ -122,10 +122,13 @@ export function createSqlClient(connectionString: string): Sql {
   const pool = new pg.Pool({
     connectionString: stripSslMode(connectionString),
     ssl: sslConfigFor(connectionString),
-    max: Number(process.env.DATABASE_POOL_MAX ?? 10),
-    idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 15_000,
-    keepAlive: true,
+    // Serverless: fiecare instanță Vercel ține propriul pool. Cu pool mare și idle lung,
+    // conexiunile ocupă sloturile poolerului Supabase și requesturile primesc 500
+    // (catalogul gol) până se eliberează un slot. Mic + idle scurt = starea de mai sus.
+    max: Number(process.env.DATABASE_POOL_MAX ?? 3),
+    idleTimeoutMillis: 10_000,
+    connectionTimeoutMillis: 10_000,
+    keepAlive: false,
     allowExitOnIdle: true,
   });
   pool.on("error", (error) => console.error("[db] idle client error:", error.message));
@@ -183,6 +186,22 @@ export function getDb(): Sql {
     console.log(`[db] using Postgres at ${host}`);
   }
   return globalForDb.__challengeStoreSql;
+}
+
+/**
+ * Rulează DDL-ul o singură dată pe instanță. Pe serverless, `ensureSchema` la fiecare
+ * request însemna ~7 comenzi extra la fiecare listare — încărcau poolerul și duceau
+ * la 500-uri în perioadele de vârf.
+ */
+let schemaReady: Promise<void> | null = null;
+export function ensureSchemaOnce(sql: Sql): Promise<void> {
+  if (!schemaReady) {
+    schemaReady = ensureSchema(sql).catch((error) => {
+      schemaReady = null; // permite reîncercarea la următorul request
+      throw error;
+    });
+  }
+  return schemaReady;
 }
 
 export async function ensureSchema(sql: Sql) {

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import sharp from "sharp";
-import { getDb, ensureSchema } from "@/lib/db";
+import { getDb, ensureSchemaOnce } from "@/lib/db";
 import { isAdminSessionValid } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     }));
 
     const sql = getDb();
-    await ensureSchema(sql);
+    await ensureSchemaOnce(sql);
     await sql`
       UPDATE products
       SET image_url = ${url}, has_image = TRUE, updated_at = NOW()

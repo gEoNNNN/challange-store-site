@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb, ensureSchema, DbProduct } from "@/lib/db";
+import { getDb, ensureSchemaOnce, DbProduct } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
   const t0 = Date.now();
   try {
     const sql = getDb();
-    await ensureSchema(sql);
+    await ensureSchemaOnce(sql);
 
     const facets = req.nextUrl.searchParams.get("facets");
     if (facets === "brands") {
