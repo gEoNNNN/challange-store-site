@@ -126,6 +126,7 @@ function removePackaging(value: string) {
     .replace(/\b\d+(?:[.,]\d+)?\s*(?:mg|kg|ml|cl|oz)\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\s*g\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\s*l\b/gi, " ")
+    .replace(/\b(?:\d+\s*[x×х]\s*){1,3}\d+(?:[.,]\d+)?\s*(?:mg|g|gr|kg|ml|cl|l|oz)\b\.?/gi, " ")
     .replace(/\b\d+\s*(?:x|×|х)\s*\d*\b/gi, " ")
     .replace(/\b\d+\s*(?:pack|pk|ct|buc)\.?\b/gi, " ")
     .replace(/\b\d+\s*p\b/gi, " ")
@@ -143,6 +144,7 @@ export function normalizeProductName(sourceName: string) {
     .replace(/\(\s*\)/g, " ")
     .replace(/\s*[-–—]+\s*$/g, "")
     .replace(/\s+([,.)])/g, "$1")
+    .replace(/[\s,;.\-–—]+$/g, "")
     .replace(/\s{2,}/g, " ")
     .trim();
   const rule = matchingBrandRule(name);

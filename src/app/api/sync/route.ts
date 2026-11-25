@@ -165,7 +165,7 @@ async function runSync() {
                 depot_stock     = EXCLUDED.depot_stock,
                 brand           = EXCLUDED.brand,
                 category        = EXCLUDED.category,
-                description     = EXCLUDED.description,
+                description     = COALESCE(NULLIF(EXCLUDED.description, ''), products.description),
                 unit_name       = EXCLUDED.unit_name,
                 has_image       = EXCLUDED.has_image,
                 image_url       = COALESCE(products.image_url, EXCLUDED.image_url),
