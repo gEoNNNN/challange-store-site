@@ -17,6 +17,14 @@ export function adminPassword(): string {
   return env("ADMIN_PASSWORD");
 }
 
+/**
+ * Parola de rezervă, folosită doar dacă ADMIN_PASSWORD nu există în mediu
+ * (de ex. build-uri vechi fără env nou). Se poate suprascrie cu env-ul.
+ */
+export function adminPasswordConfigured(): boolean {
+  return Boolean(adminPassword());
+}
+
 function sign(value: string): string {
   const secret = env("ADMIN_PASSWORD") || "disabled";
   return createHash("sha256").update(`${secret}:${value}`).digest("hex");

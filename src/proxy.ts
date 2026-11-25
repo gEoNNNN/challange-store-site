@@ -50,10 +50,10 @@ export function proxy(req: NextRequest) {
   // Rutele API admin sunt verificate în handler (sau prin parola site-ului), nu aici.
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (!process.env.ADMIN_PASSWORD?.trim()) {
-      return new NextResponse("Panoul administrativ nu este configurat (lipseste ADMIN_PASSWORD).", {
-        status: 503,
-        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
-      });
+      return new NextResponse(
+        "Panoul administrativ nu este configurat: adaugă ADMIN_PASSWORD în Environment Variables (Vercel) și redeploy.",
+        { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" } }
+      );
     }
     if (pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/login")) {
       // API-ul admin acceptă fie sesiunea (cookie/header), fie parola site-ului.
