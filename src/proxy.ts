@@ -22,6 +22,9 @@ const PASSWORD_FREE_PATHS = [
   // beats a 401, which crawlers treat as "no instruction given".
   "/robots.txt",
   "/sitemap.xml",
+  // Panoul de admin are parolă proprie (ADMIN_PASSWORD) și sesiune cu cookie.
+  "/api/admin/login",
+  "/api/admin/session",
 ];
 
 function unauthorized(): NextResponse {
@@ -41,10 +44,35 @@ function digest(value: string): Buffer {
 }
 
 export function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Panoul /admin are parolă proprie (ADMIN_PASSWORD) și sesiune cu cookie.
+  // Rutele API admin sunt verificate în handler (sau prin parola site-ului), nu aici.
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    if (!process.env.ADMIN_PASSWORD?.trim()) {
+      return new NextResponse("Panoul administrativ nu este configurat (lipseste ADMIN_PASSWORD).", {
+        status: 503,
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
+      });
+    }
+    if (pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/login")) {
+      // API-ul admin acceptă fie sesiunea (cookie/header), fie parola site-ului.
+      const bearer = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+      if (!bearer) {
+        const sitePassword = process.env.SITE_LOCK_PASSWORD?.trim();
+        if (!sitePassword) return NextResponse.next();
+        const expected = `Basic ${Buffer.from(`${process.env.SITE_LOCK_USER?.trim() || "challenge"}:${sitePassword}`).toString("base64")}`;
+        if (digest(req.headers.get("authorization") ?? "").equals(digest(expected))) {
+          return NextResponse.next();
+        }
+      }
+    }
+    return NextResponse.next();
+  }
+
   const password = process.env.SITE_LOCK_PASSWORD?.trim();
   if (!password) return NextResponse.next();
 
-  const { pathname } = req.nextUrl;
   if (PASSWORD_FREE_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
     return NextResponse.next();
   }
