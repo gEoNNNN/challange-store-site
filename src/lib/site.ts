@@ -10,6 +10,7 @@ export const COMPANY = {
   email: "contact@challengestore.md",
   city: "Chișinău",
   country: "Moldova",
+  legalAddress: "mun. Chișinău, Republica Moldova",
   countryCode: "MD",
   latitude: 47.0105,
   longitude: 28.8638,

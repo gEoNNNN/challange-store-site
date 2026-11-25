@@ -13,6 +13,7 @@ import { useCart } from "../context/CartContext";
 import { useFavorites } from "../context/FavoritesContext";
 import { CATEGORIES, COUNTRIES, ATTRIBUTES, Product } from "./productsData";
 import { useTranslations } from "../context/LanguageContext";
+import Footer from "../components/Footer";
 import styles from "./page.module.css";
 
 const PRICE_MAX_DEFAULT = 5000;
@@ -217,8 +218,8 @@ export default function ProduseePage() {
   }, [allProducts.length, hasMore, loadProducts, loading, loadingMore]);
 
   return (
-    <div className={styles.page}>
-
+    <>
+      <div className={styles.page}>
       {/* ── Hero ── */}
       <div className={styles.heroBar}>
         <div className={styles.heroBarInner}>
@@ -486,7 +487,9 @@ export default function ProduseePage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }
 

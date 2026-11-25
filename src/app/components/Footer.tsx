@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "./AnimateIn";
 import { BsInstagram, BsFacebook, BsTiktok, BsEnvelope, BsTelephone, BsGeoAlt } from "react-icons/bs";
 import { useTranslations } from "../context/LanguageContext";
+import { COMPANY, SITE_NAME } from "../../lib/site";
+import PaymentLogos from "./PaymentLogos";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
@@ -95,8 +97,17 @@ export default function Footer() {
       </motion.div>
 
       {/* Bottom bar */}
+      <div className={styles.paymentsBar}>
+        <span className={styles.paymentsLabel}>Plăți acceptate</span>
+        <PaymentLogos />
+      </div>
       <div className={styles.bottom}>
-        <span>© {new Date().getFullYear()} Challenge Store. {t.footer.copyright}</span>
+        <div className={styles.bottomInfo}>
+          <span>© {new Date().getFullYear()} {SITE_NAME}. {t.footer.copyright}</span>
+          <span className={styles.legal}>
+            {COMPANY.legalName} · IDNO {COMPANY.idno} · Adresa juridică: {COMPANY.legalAddress}
+          </span>
+        </div>
         <span className={styles.madeWith}>{t.footer.madeWith}</span>
       </div>
     </footer>

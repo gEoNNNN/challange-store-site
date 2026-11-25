@@ -1,5 +1,5 @@
 import { after, NextRequest, NextResponse } from "next/server";
-import { notifyOrderById, reconcileMaibOrder } from "@/lib/order-payments";
+import { getOrderSummary, notifyOrderById, reconcileMaibOrder } from "@/lib/order-payments";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +16,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "Comanda nu a fost găsită." }, { status: 404 });
     }
     if (result.status === "paid") after(() => notifyOrderById(result.orderId as string));
+    const summary = result.status === "paid" ? await getOrderSummary(code, checkoutId) : null;
     return NextResponse.json(
-      { ok: true, status: result.status, code },
+      { ok: true, status: result.status, code, order: summary },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {

@@ -17,6 +17,7 @@ interface PaymentOrderRow {
   status: string;
   payment_method: string;
   payment_status: string;
+  paid_at: string | Date | null;
   maib_checkout_id: string | null;
   stock_released_at: string | null;
   email_sent_at: string | null;
@@ -41,7 +42,7 @@ async function getPaymentOrder(code: string, checkoutId: string) {
   await ensureOrderSchema(sql);
   const rows = await sql`
     SELECT id, code, customer_name, email, phone, address, city, comment,
-      subtotal, shipping, total, status, payment_method, payment_status,
+      subtotal, shipping, total, status, payment_method, payment_status, paid_at,
       maib_checkout_id, stock_released_at, email_sent_at, telegram_sent_at
     FROM orders
     WHERE code = ${code} AND maib_checkout_id = ${checkoutId} AND payment_method = 'maib'
@@ -60,7 +61,7 @@ export async function notifyOrderById(orderId: string) {
       AND notifications_sent_at IS NULL
       AND (notifications_claimed_at IS NULL OR notifications_claimed_at < NOW() - INTERVAL '10 minutes')
     RETURNING id, code, customer_name, email, phone, address, city, comment,
-      subtotal, shipping, total, status, payment_method, payment_status,
+      subtotal, shipping, total, status, payment_method, payment_status, paid_at,
       maib_checkout_id, stock_released_at, email_sent_at, telegram_sent_at
   ` as PaymentOrderRow[];
   const order = claimedRows[0];
@@ -87,6 +88,8 @@ export async function notifyOrderById(orderId: string) {
       subtotal: Number(order.subtotal),
       shipping: Number(order.shipping),
       total: Number(order.total),
+      paymentMethod: order.payment_method === "maib" ? "maib" : "cod",
+      paidAt: order.paid_at,
       items: items.map((item) => ({
         name: item.product_name,
         unitPrice: Number(item.unit_price),
@@ -205,6 +208,51 @@ export async function reconcileMaibOrder(code: string, checkoutId: string): Prom
     return { status: "failed", orderId: order.id };
   }
   return { status: "pending", orderId: order.id };
+}
+
+export interface PublicOrderSummary {
+  code: string;
+  total: number;
+  currency: "MDL";
+  paidAt: string | null;
+  paymentMethod: "cod" | "maib";
+  subtotal: number;
+  shipping: number;
+  items: { name: string; quantity: number; unitPrice: number }[];
+}
+
+function toIsoDate(value: string | Date | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+export async function getOrderSummary(code: string, checkoutId: string): Promise<PublicOrderSummary | null> {
+  const order = await getPaymentOrder(code, checkoutId);
+  if (!order) return null;
+
+  const sql = getDb();
+  const items = await sql`
+    SELECT product_name, unit_price, quantity
+    FROM order_items
+    WHERE order_id = ${order.id}
+    ORDER BY line_number
+  ` as Pick<PaymentItemRow, "product_name" | "unit_price" | "quantity">[];
+
+  return {
+    code: order.code,
+    total: Number(order.total),
+    currency: "MDL",
+    paidAt: toIsoDate(order.paid_at),
+    paymentMethod: order.payment_method === "maib" ? "maib" : "cod",
+    subtotal: Number(order.subtotal),
+    shipping: Number(order.shipping),
+    items: items.map((item) => ({
+      name: item.product_name,
+      quantity: Number(item.quantity),
+      unitPrice: Number(item.unit_price),
+    })),
+  };
 }
 
 export async function getPendingMaibOrders(limit = 25) {

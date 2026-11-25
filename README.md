@@ -45,7 +45,7 @@ Variabile de mediu (server-side, **fără** `NEXT_PUBLIC_`):
 
 | Variabilă | Rol |
 | --- | --- |
-| `SUPABASE_DB_URL` | Șirul de conectare Supabase (Connect → **Session pooler**, port 5432). Dacă e setat, `getDb()` îl folosește. |
+| `SUPABASE_DB_URL` | Șirul de conectare Supabase (Connect → **Transaction pooler**, port **6543**). Dacă e setat, `getDb()` îl folosește. |
 | `DATABASE_URL` | Baza Neon; rămâne fallback până muți tot pe Supabase. |
 | `DATABASE_POOL_MAX` | Mărimea pool-ului (implicit 10). |
 | `DATABASE_SSL_REJECT_UNAUTHORIZED` | `true` pentru verificarea completă a certificatului (implicit: criptare fără verificare CA, cum documentează Supabase pentru pooler). |

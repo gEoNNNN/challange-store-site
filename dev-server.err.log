@@ -1,0 +1,55 @@
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Eugen Ostafi\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Eugen Ostafi\Desktop\New folder\my-app\package-lock.json
+
+⨯ ./Desktop/New folder/my-app/src/app/admin/products/productsAdmin.tsx:8:1
+Module not found: Can't resolve './admin.module.css'
+  [90m 6 |[0m   [33mBsBoxSeam[0m, [33mBsCheckCircleFill[0m, [33mBsGrid3X3Gap[0m, [33mBsImage[0m, [33mBsListUl[0m, [33mBsSearch[0m, [33mBsX[0m,
+  [90m 7 |[0m } [36mfrom[0m [32m"react-icons/bs"[0m;
+[31m[1m>[0m [90m 8 |[0m [36mimport[0m styles [36mfrom[0m [32m"./admin.module.css"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m 9 |[0m
+  [90m10 |[0m [36minterface[0m [33mAdminProduct[0m {
+  [90m11 |[0m   uid: string;
+
+
+
+Import trace:
+  Server Component:
+    ./Desktop/New folder/my-app/src/app/admin/products/productsAdmin.tsx
+    ./Desktop/New folder/my-app/src/app/admin/products/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/3dbdd03c-630a-49be-84ca-a45a988092f6-29fcff5ccd7a.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/c87dff60-9b47-48e3-b4a4-dbb990e5ca0c-2e4b60c4c42f.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/2a8430e2-6cba-4a10-827f-e192b7e2a829-e361c9804b72.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/361c3906-3517-404f-b29e-e772b5414fe4-13ec59f3518a.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/2a8430e2-6cba-4a10-827f-e192b7e2a829-e361c9804b72.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/56deec3b-2953-49de-a65a-fe525324accf-b6fb5b15077b.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/2a8430e2-6cba-4a10-827f-e192b7e2a829-e361c9804b72.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "https://pub-af376cceb001450d8d519141f2a40128.r2.dev/products/bbc6105f-26cc-48d1-ad83-ff6e550de1b6-813bae192f36.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)
+[browser] Image with src "/img/photo3.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (file://C:/Users/Eugen Ostafi/Desktop/New folder/my-app/.next/dev/static/chunks/0wyh_next_dist_1nadu1a._.js:2477:13)

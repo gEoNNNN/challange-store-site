@@ -1,7 +1,16 @@
 "use client";
 import Footer from "../components/Footer";
 import styles from "../legal.module.css";
-import { BsFileEarmarkText, BsTelephone, BsEnvelope, BsGeoAlt } from "react-icons/bs";
+import {
+  BsFileEarmarkText,
+  BsCreditCard2Front,
+  BsTruck,
+  BsArrowCounterclockwise,
+  BsTelephone,
+  BsEnvelope,
+  BsGeoAlt,
+  BsShieldCheck,
+} from "react-icons/bs";
 
 type Section = {
   id: string;
@@ -16,122 +25,93 @@ const SECTIONS: Section[] = [
     id: "dispozitii-generale",
     title: "Dispoziții generale",
     paragraphs: [
-      "Prezenții Termeni și Condiții reglementează utilizarea site-ului challengestore.md (în continuare — „Site-ul”) și condițiile de achiziționare a produselor comercializate prin intermediul acestuia.",
-      "Site-ul este administrat de CG CAPITAL TRADING S.R.L., persoană juridică înregistrată în Republica Moldova, IDNO 1025600025386 (în continuare — „Vânzătorul”, „Noi”), proprietarul magazinului Challenge Store.",
-      "Prin accesarea Site-ului, crearea unei comenzi sau utilizarea oricărui serviciu oferit, confirmați că ați citit, ați înțeles și acceptați integral acești Termeni și Condiții. Dacă nu sunteți de acord cu aceștia, vă rugăm să nu utilizați Site-ul.",
+      "Acest site este deținut de CG CAPITAL TRADING S.R.L., persoană juridică înregistrată în Republica Moldova, IDNO 1025600025386 (în continuare — „Vânzătorul”, „Noi”), proprietarul magazinului online Challenge Store, disponibil la adresa challengestore.md.",
+      "La înregistrarea comenzii în magazinul online, Cumpărătorul acceptă Termenii și Condițiile de vânzare a bunurilor/produselor și/sau prestare a serviciilor care sunt bazați pe legislația Republicii Moldova (în continuare — Termeni și Condiții) prezentate mai jos.",
+      "Utilizarea website-ului presupune acceptarea Termenilor și Condițiilor propuse de către CG CAPITAL TRADING S.R.L., în conformitate cu Legea nr. 284/2004 privind comerțul electronic. Relațiile dintre client și vânzător sunt stabilite în baza Legii nr. 105/2003 cu privire la protecția drepturilor consumatorilor, a Codului civil al Republicii Moldova și a altor acte normative adoptate în conformitate cu acestea.",
+      "Vânzătorul își rezervă dreptul de a modifica Termenii și Condițiile date, fără o notificare prealabilă, iar Cumpărătorul este obligat să monitorizeze modificările. Versiunea aplicabilă este cea publicată pe această pagină la momentul plasării comenzii.",
+      "Comenzile pot fi plasate de persoane care au împlinit 18 ani. Minorii pot achiziționa produse doar cu acordul părinților sau al reprezentantului legal.",
     ],
-  },
-  {
-    id: "definitii",
-    title: "Definiții",
     list: [
-      "Client — persoana fizică sau juridică care plasează o comandă pe Site;",
-      "Comandă — solicitarea Clientului de a achiziționa produse de pe Site;",
-      "Produs — orice articol alimentar sau nealimentar comercializat pe Site (dulciuri, snacks-uri, băuturi și alte produse de import);",
-      "Contract — înțelegerea dintre Vânzător și Client, încheiată la distanță, care intră în vigoare la confirmarea comenzii.",
+      "Cumpărător/Client — persoana fizică sau juridică ce plasează o comandă pe site;",
+      "Vânzător — CG CAPITAL TRADING S.R.L., operatorul magazinului online Challenge Store;",
+      "Comandă — solicitarea Clientului de a achiziționa produse de pe site, transmisă prin formularul de checkout;",
+      "Produs — orice articol alimentar sau nealimentar comercializat pe site (dulciuri, snacks-uri, băuturi și alte produse de import);",
+      "Contract — înțelegerea la distanță dintre Vânzător și Client, care intră în vigoare la confirmarea comenzii.",
     ],
   },
   {
-    id: "produse",
-    title: "Produse și disponibilitate",
+    id: "protectia-datelor",
+    title: "Protecția datelor cu caracter personal",
     paragraphs: [
-      "Challenge Store comercializează produse alimentare importate — dulciuri exotice, snacks-uri, băuturi și specialități de la branduri internaționale (Lay's, Nerds, Arizona, Reese's și altele), provenite din SUA, Japonia, Coreea, China și Europa.",
-      "Depunem toate eforturile ca descrierile, imaginile și specificațiile produselor să fie exacte. Imaginile au caracter ilustrativ; ambalajul real poate diferi ușor în funcție de lotul importat. Lista de ingrediente, valorile nutriționale și alergenii sunt cele indicate de producător pe ambalaj — vă rugăm să consultați eticheta produsului înainte de consum.",
-      "Stocul afișat pe Site este sincronizat automat cu sistemul nostru de gestiune și este actualizat periodic. În cazuri excepționale, un produs poate deveni indisponibil după plasarea comenzii — în această situație vă vom contacta pentru a vă propune un produs similar, modificarea sau anularea comenzii.",
+      "Prin utilizarea site-ului challengestore.md, sunteți de acord cu colectarea și prelucrarea datelor cu caracter personal care sunt necesare pentru procesarea, confirmarea și executarea comenzilor.",
+      "Datele personale se prelucrează doar pentru scopuri legitime, precum furnizarea produselor comandate, livrarea, comunicările privind comanda, promoțiile, analiza traficului (Google Analytics), cookie-urile și notificările/newsletterul.",
+      "Toată informația ce conține date cu caracter personal este stocată și utilizată doar pentru perioada necesară atingerii scopurilor pentru care a fost colectată, în conformitate cu prevederile Legii nr. 133/2011 privind protecția datelor cu caracter personal.",
+      "Folosim măsuri de securitate comerciale pentru a preveni accesul neautorizat, pentru a menține exactitatea datelor și pentru a asigura utilizarea corectă a informației de pe site. Transmiterea datelor pe internet sau prin rețea wireless nu poate fi protejată în totalitate. Prin urmare, la fel ca alte companii, nu putem garanta securitatea absolută a informației transmise, astfel încât Cumpărătorul face acest lucru pe propria răspundere.",
+      "Nu colectăm și nu stocăm date bancare ale cardului (număr de card, data expirării, cod CVV). Acestea sunt introduse exclusiv pe pagina securizată a procesatorului de plăți.",
+    ],
+    note: "Datele cu caracter personal pot fi prelucrate și utilizate de către Vânzător în scopuri statistice și de promovare ulterioară, cu respectarea legislației în vigoare.",
+  },
+  {
+    id: "confidentialitate",
+    title: "Politica de confidențialitate",
+    paragraphs: [
+      "În conformitate cu prevederile Legii nr. 133/2011 privind protecția datelor cu caracter personal, furnizorul de servicii prelucrează date cu caracter personal cu bună-credință, în temeiul și în conformitate cu prevederile legale. Prelucrarea se realizează prin mijloace mixte (automate și manuale), cu respectarea cerințelor legale și în condiții care să asigure securitatea, confidențialitatea și respectarea drepturilor persoanelor vizate.",
+      "Furnizorul colectează și prelucrează doar datele personale oferite de consumatori la efectuarea comenzii: nume, prenume, număr de telefon, adresă, adresă poștală și, opțional, adresa de e-mail.",
+      "Datele personale sunt utilizate exclusiv în scopul administrării site-ului, pentru a permite accesul la informațiile disponibile, pentru livrarea comenzilor sau pentru a contacta consumatorul în vederea executării livrării. Prin prezenta informare, utilizatorii și consumatorii iau cunoștință despre faptul că li se vor prelucra și utiliza datele cu caracter personal furnizate prin navigarea, folosirea și înregistrarea pe site-ul challengestore.md.",
+      "Orice informație furnizată de către utilizatorii și consumatorii site-ului va fi considerată și va reprezenta consimțământul expres ca datele personale să fie folosite de Furnizor în scopurile descrise mai sus.",
+      "Furnizorul nu va dezvălui unei terțe părți niciuna dintre datele deținute, fără acordul persoanelor vizate, și nu va comercializa, schimba sau divulga aceste date cu alte persoane, cu excepțiile prevăzute de legislația în vigoare (la solicitarea instituțiilor publice, a organelor de drept sau a instanțelor de judecată, de asemenea autorizate să prelucreze date cu caracter personal).",
+      "Datele pot fi transmise strict în măsura necesară către servicii de curierat (pentru livrare), furnizori de servicii IT și găzduire (pentru funcționarea site-ului) și procesatorul de plăți (pentru achitarea online).",
+      "Furnizorul de servicii îndeplinește cerințele de securitate a datelor cu caracter personal și asigură protecția datelor consumatorilor împotriva pierderii, distrugerii, denaturării/falsificării sau divulgării către terțe persoane. Angajații furnizorului sunt obligați să respecte confidențialitatea datelor personale ale consumatorilor, iar prelucrarea este realizată de persoana împuternicită a Furnizorului.",
+      "Site-ul utilizează cookie-uri și tehnologii similare pentru funcționarea corectă (coș de cumpărături, preferințe de limbă și temă) și pentru analiza traficului. Datele despre coș și favorite sunt păstrate local, în browserul dumneavoastră. Puteți dezactiva cookie-urile din setările browserului, însă unele funcții ale site-ului ar putea deveni indisponibile.",
+      "În calitate de persoană vizată, aveți dreptul de acces, de rectificare, de ștergere, de opoziție și de a depune plângere la Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP). Pentru exercitarea acestor drepturi ne puteți scrie la contact@challengestore.md sau ne puteți suna la +373 60 000 000.",
     ],
   },
   {
-    id: "preturi",
-    title: "Prețuri",
+    id: "comanda-si-plata",
+    title: "Înregistrarea și achitarea comenzii",
     paragraphs: [
-      "Toate prețurile sunt exprimate în lei moldovenești (MDL) și includ TVA, dacă nu este menționat altfel.",
-      "Prețurile afișate la momentul plasării comenzii sunt definitive pentru acea comandă. Ne rezervăm dreptul de a modifica prețurile fără notificare prealabilă, însă modificările nu afectează comenzile deja confirmate.",
-      "În cazul unei erori evidente de afișare a prețului (de exemplu, o eroare tehnică), ne rezervăm dreptul de a anula comanda afectată, cu informarea prealabilă a Clientului.",
+      "Comenzile se plasează direct pe site, prin completarea formularului de checkout cu datele de contact și adresa de livrare. După plasarea comenzii, un operator vă contactează telefonic pentru confirmarea detaliilor și a termenului de livrare. Contractul de vânzare-cumpărare se consideră încheiat la momentul confirmării comenzii de către operator.",
+      "Este responsabilitatea Cumpărătorului să furnizeze date corecte și complete (nume, telefon, adresă). Nu ne asumăm răspunderea pentru imposibilitatea livrării cauzată de date eronate. Ne rezervăm dreptul de a refuza sau anula comenzi în caz de suspiciune de fraudă, comportament abuziv sau date incomplete.",
+      "Achitarea comenzilor este posibilă prin următoarele metode:",
     ],
-  },
-  {
-    id: "comenzi",
-    title: "Plasarea și confirmarea comenzii",
-    paragraphs: [
-      "Comenzile se plasează direct pe Site, prin completarea formularului de checkout cu datele de contact și adresa de livrare.",
-      "După plasarea comenzii, aceasta este transmisă automat în sistemul nostru de gestiune, iar un operator vă va contacta telefonic pentru confirmarea detaliilor și a termenului de livrare. Contractul de vânzare-cumpărare se consideră încheiat la momentul confirmării telefonice.",
-      "Este responsabilitatea Clientului să furnizeze date corecte și complete (nume, telefon, adresă). Nu ne facem responsabili pentru imposibilitatea livrării cauzată de date eronate.",
-      "Ne rezervăm dreptul de a refuza sau anula comenzi în caz de suspiciune de fraudă, comportament abuziv sau date incomplete.",
+    list: [
+      "Plată online cu cardul sau prin MIA QR — procesată prin maib, cu redirecționare pe pagina securizată a procesatorului;",
+      "Plată la livrare — în numerar sau cu cardul, la primirea comenzii, pe baza bonului fiscal.",
     ],
-  },
-  {
-    id: "plata",
-    title: "Modalități de plată",
-    paragraphs: [
-      "În prezent, plata se efectuează în numerar sau cu cardul la primirea produselor (la livrare sau la ridicarea din magazin).",
-      "Plata online cu cardul va fi disponibilă în curând — vă vom anunța pe Site la lansarea acestei opțiuni.",
-      "Factura fiscală este emisă și predată împreună cu produsele.",
-    ],
+    note: "Plata online se face în condiții de siguranță maximă, folosind cardul bancar, care permite efectuarea de tranzacții online. După efectuarea plății primiți o confirmare pe adresa de e-mail indicată la comandă.",
   },
   {
     id: "livrare",
-    title: "Livrare",
-    list: [
-      "Livrăm pe teritoriul municipiului Chișinău și, în funcție de comandă, în toată Republica Moldova;",
-      "Costul livrării în Chișinău este de 50 MDL; livrarea este GRATUITĂ pentru comenzile de 500 MDL și mai mari;",
-      "Termenul de livrare este, de regulă, de 1–2 zile lucrătoare de la confirmarea comenzii;",
-      "La primire, vă rugăm să verificați integritatea ambalajelor și conformitatea produselor cu comanda.",
+    title: "Condiții de livrare",
+    paragraphs: [
+      "După înregistrarea comenzii, Cumpărătorului i se oferă informația privind data preconizată de transmitere a comenzii de către curieri/serviciul de livrare.",
+      "Livrarea în raza municipiului Chișinău se efectuează în termen de 1–2 zile lucrătoare de la confirmarea comenzii de către operatorii noștri. Livrarea este gratuită pentru comenzile de minim 500 MDL; pentru comenzile cu valoare mai mică se achită livrarea de 50 MDL, inclusă în suma totală a tranzacției.",
+      "Pentru alte localități din Republica Moldova, condițiile și termenul de livrare se confirmă individual de către operator la prelucrarea comenzii.",
+      "În zilele de duminică sau sărbătoare națională nu se efectuează livrări. Termenul de livrare se poate extinde în anumite situații izolate (de exemplu: condiții meteo nefavorabile, perioadele sărbătorilor legale, probleme tehnice neprevăzute). Vă notificăm în prealabil în cazul în care întâmpinăm una dintre aceste situații.",
+      "Puteți alege orice adresă pentru livrare — acasă, în oficiu sau oricare altă adresă, fără achitări suplimentare. Acceptăm o singură adresă de livrare pentru fiecare comandă; dacă aveți nevoie de livrare pe adrese diferite, vă rugăm să înregistrați comenzi separate.",
+      "La primirea produselor, vă rugăm ca, în prezența curierului, să verificați integritatea ambalajului și prezența bonului fiscal. Eventualele pretenții ulterioare cu privire la aceste aspecte nu vor fi acceptate.",
     ],
   },
   {
     id: "retur",
-    title: "Anulare și retur",
+    title: "Politica de retur",
     paragraphs: [
+      "Conform Legii nr. 105/2003 privind protecția consumatorilor, Cumpărătorul are dreptul de a returna un produs procurat la distanță în termen de 14 zile de la ziua achitării, cu excepția produselor pentru care acest drept nu se aplică. Mijloacele bănești se returnează pe cardul de pe care s-a efectuat cumpărătura sau, pentru comenzile achitate la livrare, prin transfer bancar.",
+      "Produsele alimentare de calitate corespunzătoare nu pot fi schimbate sau returnate, în conformitate cu Anexa nr. 2 a Hotărârii Guvernului nr. 1465 din 08.12.2003 (MO 248-253/19.12.2003), în redacția Hotărârii Guvernului nr. 1188 din 02.11.2007 (MO 175/09.11.2007), având în vedere natura și condițiile speciale de păstrare a acestora.",
+      "Dacă ați primit un produs neconform (expirat, deteriorat, greșit sau cu ambalajul compromis), vă rugăm să ne contactați în termen de 24 de ore de la primire, cu o fotografie a produsului. Vom înlocui produsul sau vă vom rambursa integral contravaloarea acestuia, inclusiv costul livrării.",
       "Puteți anula comanda fără nicio penalitate înainte de expedierea acesteia, contactându-ne telefonic sau prin e-mail.",
-      "Conform legislației în vigoare a Republicii Moldova privind protecția consumatorilor, produsele alimentare de calitate corespunzătoare NU pot fi returnate sau schimbate, având în vedere natura și condițiile speciale de păstrare a acestora.",
-      "Dacă ați primit un produs neconform (expirat, deteriorat, greșit sau cu ambalajul compromis), vă rugăm să ne contactați în termen de 24 de ore de la primire, cu o fotografie a produsului. Vom înlocui produsul sau vă vom rambursa integral contravaloarea acestuia.",
     ],
-    note: "Important: dreptul de retur în 14 zile, prevăzut pentru cumpărăturile online, NU se aplică produselor alimentare și altor produse care, prin natura lor, nu pot fi returnate din motive de igienă și siguranță alimentară.",
-  },
-  {
-    id: "calitate",
-    title: "Garanția calității",
-    paragraphs: [
-      "Toate produsele comercializate sunt originale, importate prin canale oficiale, se află în termenul de valabilitate și sunt păstrate și transportate în condiții corespunzătoare standardelor de siguranță alimentară.",
-      "Termenul de valabilitate este indicat pe ambalajul fiecărui produs. Vă recomandăm să respectați condițiile de păstrare indicate de producător (temperatură, umiditate, ferire de lumina directă).",
+    list: [
+      "Contacte în caz de retur: +373 60 000 000 sau contact@challengestore.md;",
+      "Termenul de procesare a cererii de retur: până la 14 zile calendaristice de la recepționarea cererii;",
+      "Condiții de retur: ambalajul original intact, produsul nefolosit și nedeteriorat de Cumpărător, bonul fiscal sau confirmarea comenzii;",
+      "Pentru produsele neconforme, fotografia produsului și numărul comenzii sunt obligatorii pentru soluționarea rapidă a cererii.",
     ],
-  },
-  {
-    id: "raspundere",
-    title: "Limitarea răspunderii",
-    paragraphs: [
-      "Nu ne facem responsabili pentru reacții alergice sau intoleranțe individuale la ingredientele produselor. Verificați întotdeauna eticheta produsului înainte de consum, mai ales dacă aveți alergii cunoscute (nuci, arahide, gluten, lactoză etc.).",
-      "Site-ul este oferit „ca atare”. Nu garantăm funcționarea neîntreruptă a Site-ului și nu răspundem pentru întreruperi tehnice temporare, erori de afișare sau indisponibilitate cauzată de mentenanță.",
-      "Răspunderea noastră totală față de Client este limitată la valoarea comenzii în cauză.",
-    ],
-  },
-  {
-    id: "proprietate",
-    title: "Proprietate intelectuală",
-    paragraphs: [
-      "Întregul conținut al Site-ului (texte, design, logo-uri, fotografii proprii) este proprietatea CG CAPITAL TRADING S.R.L. și este protejat de legislația privind drepturile de autor.",
-      "Mărcile comerciale ale produselor prezentate (Lay's, Nerds, Reese's, Arizona și altele) aparțin deținătorilor lor legitimi și sunt utilizate exclusiv în scopul identificării produselor comercializate.",
-    ],
-  },
-  {
-    id: "modificari",
-    title: "Modificarea termenilor",
-    paragraphs: [
-      "Ne rezervăm dreptul de a actualiza acești Termeni și Condiții în orice moment. Versiunea curentă este întotdeauna disponibilă pe această pagină, cu data ultimei actualizări.",
-      "Continuarea utilizării Site-ului după publicarea modificărilor constituie acceptarea acestora.",
-    ],
-  },
-  {
-    id: "lege",
-    title: "Legea aplicabilă și litigii",
-    paragraphs: [
-      "Prezenții Termeni și Condiții sunt guvernați de legislația Republicii Moldova.",
-      "Orice litigiu va fi soluționat pe cale amiabilă. În caz contrar, litigiul va fi înaintat instanțelor judecătorești competente de la sediul Vânzătorului.",
-    ],
+    note: "Dreptul de retur în 14 zile, prevăzut pentru cumpărăturile online, nu se aplică produselor alimentare și altor produse care, prin natura lor, nu pot fi returnate din motive de igienă și siguranță alimentară.",
   },
 ];
 
-const LAST_UPDATED = "5 august 2026";
+const LAST_UPDATED = "25 noiembrie 2026";
 
 export default function TermeniPage() {
   return (
@@ -169,13 +149,62 @@ export default function TermeniPage() {
               </li>
             ))}
             <li>
-              <a href="#contact">15. Contacte</a>
+              <a href="#contact">{SECTIONS.length + 1}. Datele de contact</a>
             </li>
           </ul>
         </aside>
 
         {/* Sections */}
         <div className={styles.content}>
+          {/* Intro + key facts */}
+          <section className={styles.introCard}>
+            <p className={styles.introLead}>
+              Prezenții Termeni și Condiții de utilizare a magazinului online
+              challengestore.md sunt aplicabili comenzilor pentru achiziționarea
+              produselor oferite de CG CAPITAL TRADING S.R.L. prin intermediul
+              site-ului.
+            </p>
+            <p className={styles.introText}>
+              Challenge Store comercializează produse alimentare importate —
+              dulciuri, snacks-uri, băuturi și specialități de la branduri
+              internaționale — cu livrare în municipiul Chișinău. Pentru
+              folosirea în bune condiții a site-ului, vă recomandăm
+              familiarizarea cu atenție a Termenilor și Condițiilor prezentate.
+              Ne rezervăm dreptul de a face modificări ale acestor prevederi,
+              fără o notificare prealabilă.
+            </p>
+            <div className={styles.facts}>
+              <div className={styles.fact}>
+                <BsCreditCard2Front size={18} />
+                <span className={styles.factLabel}>Plată</span>
+                <span className={styles.factValue}>
+                  Card online prin maib sau la livrare
+                </span>
+              </div>
+              <div className={styles.fact}>
+                <BsTruck size={18} />
+                <span className={styles.factLabel}>Livrare</span>
+                <span className={styles.factValue}>
+                  1–2 zile lucrătoare în Chișinău
+                </span>
+              </div>
+              <div className={styles.fact}>
+                <BsArrowCounterclockwise size={18} />
+                <span className={styles.factLabel}>Retur</span>
+                <span className={styles.factValue}>
+                  14 zile pentru produsele nealimentare
+                </span>
+              </div>
+              <div className={styles.fact}>
+                <BsShieldCheck size={18} />
+                <span className={styles.factLabel}>Date personale</span>
+                <span className={styles.factValue}>
+                  Protejate conform Legii nr. 133/2011
+                </span>
+              </div>
+            </div>
+          </section>
+
           {SECTIONS.map((s, i) => (
             <section key={s.id} id={s.id} className={styles.section}>
               <div className={styles.sectionHead}>
@@ -200,7 +229,9 @@ export default function TermeniPage() {
 
           {/* Contact */}
           <section id="contact" className={styles.contactCard}>
-            <h2 className={styles.contactTitle}>15. Contacte</h2>
+            <h2 className={styles.contactTitle}>
+              {SECTIONS.length + 1}. Datele de contact
+            </h2>
             <p className={styles.contactText}>
               Pentru orice întrebare legată de acești Termeni și Condiții, de
               comenzile tale sau de produsele noastre, ne poți contacta:
@@ -208,7 +239,14 @@ export default function TermeniPage() {
             <div className={styles.contactRows}>
               <div className={styles.contactRow}>
                 <BsGeoAlt size={17} />
-                <span>CG CAPITAL TRADING S.R.L. — mun. Chișinău, Republica Moldova</span>
+                <span>
+                  Denumirea juridică: CG CAPITAL TRADING S.R.L. · IDNO
+                  1025600025386
+                </span>
+              </div>
+              <div className={styles.contactRow}>
+                <BsGeoAlt size={17} />
+                <span>Adresa juridică și fizică: mun. Chișinău, Republica Moldova</span>
               </div>
               <div className={styles.contactRow}>
                 <BsTelephone size={17} />
@@ -216,7 +254,9 @@ export default function TermeniPage() {
               </div>
               <div className={styles.contactRow}>
                 <BsEnvelope size={17} />
-                <a href="mailto:contact@challengestore.md">contact@challengestore.md</a>
+                <a href="mailto:contact@challengestore.md">
+                  contact@challengestore.md
+                </a>
               </div>
             </div>
           </section>

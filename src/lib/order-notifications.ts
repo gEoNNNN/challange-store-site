@@ -1,3 +1,5 @@
+import { COMPANY, SITE_NAME, SITE_URL } from "@/lib/site";
+
 export interface OrderNotificationItem {
   name: string;
   unitPrice: number;
@@ -16,6 +18,8 @@ export interface OrderNotification {
   shipping: number;
   total: number;
   items: OrderNotificationItem[];
+  paymentMethod: "cod" | "maib";
+  paidAt: string | Date | null;
 }
 
 export type NotificationChannel = "email" | "telegram";
@@ -36,6 +40,33 @@ function formatMoney(value: number) {
   return moneyFormatter.format(value);
 }
 
+const paidAtFormatter = new Intl.DateTimeFormat("ro-MD", {
+  dateStyle: "long",
+  timeStyle: "short",
+  timeZone: "Europe/Chisinau",
+});
+
+function formatPaidAt(value: string | Date | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : paidAtFormatter.format(date);
+}
+
+const amountFormatter = new Intl.NumberFormat("ro-MD", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const MERCHANT = COMPANY.legalName;
+const MERCHANT_IDNO = COMPANY.idno;
+const SITE_DOMAIN = SITE_URL.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+const SITE_LABEL = `${SITE_NAME} (${SITE_DOMAIN})`;
+
+const PAYMENT_METHOD_LABELS = {
+  cod: "Plata la livrare (numerar sau card)",
+  maib: "Card bancar / MIA QR, procesat de maib",
+} as const;
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -51,11 +82,28 @@ function cleanTelegramText(value: string, maxLength = 240) {
 }
 
 function createEmailHtml(order: OrderNotification) {
+  const paidAt = formatPaidAt(order.paidAt);
+  const isOnlinePaid = order.paymentMethod === "maib" && !!paidAt;
   const itemRows = order.items.map((item) => `
     <tr>
       <td style="padding:12px 0;border-bottom:1px solid #e8ece9;color:#2b2b2b;">${escapeHtml(item.name)}</td>
       <td style="padding:12px 8px;border-bottom:1px solid #e8ece9;text-align:center;color:#6b7280;">${item.quantity}</td>
       <td style="padding:12px 0;border-bottom:1px solid #e8ece9;text-align:right;color:#2b2b2b;font-weight:600;">${escapeHtml(formatMoney(item.unitPrice * item.quantity))}</td>
+    </tr>`).join("");
+
+  const paymentRows = [
+    ["Număr comandă", `#${order.code}`],
+    ["Status plată", isOnlinePaid ? "Confirmată" : order.paymentMethod === "maib" ? "În procesare" : "Plata la livrare"],
+    ["Metodă de plată", PAYMENT_METHOD_LABELS[order.paymentMethod]],
+    ...(paidAt ? [["Data achitării", paidAt]] : []),
+    ["Sumă", amountFormatter.format(order.total)],
+    ["Valută", "MDL"],
+    ["Comerciant", `${MERCHANT} (IDNO ${MERCHANT_IDNO})`],
+    ["Website / App", SITE_LABEL],
+  ].map(([label, value]) => `
+    <tr>
+      <td style="padding:7px 0;color:#6b7280;vertical-align:top;">${escapeHtml(label)}</td>
+      <td style="padding:7px 0;text-align:right;color:#2b2b2b;font-weight:600;">${escapeHtml(value)}</td>
     </tr>`).join("");
 
   return `<!doctype html>
@@ -64,14 +112,18 @@ function createEmailHtml(order: OrderNotification) {
     <div style="max-width:640px;margin:0 auto;padding:32px 16px;">
       <div style="background:#071a0d;border-radius:20px 20px 0 0;padding:28px 32px;color:#fff;">
         <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7ee2aa;">Challenge Store</div>
-        <h1 style="margin:10px 0 6px;font-size:28px;line-height:1.2;">Comanda ta a fost înregistrată</h1>
-        <p style="margin:0;color:#b9c8bf;line-height:1.5;">Îți mulțumim, ${escapeHtml(order.customerName)}. Te vom contacta pentru confirmarea livrării.</p>
+        <h1 style="margin:10px 0 6px;font-size:28px;line-height:1.2;">${isOnlinePaid ? "Plata a fost confirmată" : "Comanda ta a fost înregistrată"}</h1>
+        <p style="margin:0;color:#b9c8bf;line-height:1.5;">Îți mulțumim, ${escapeHtml(order.customerName)}. ${isOnlinePaid ? "Comanda ta este achitată și va fi pregătită pentru livrare." : "Te vom contacta pentru confirmarea livrării."}</p>
       </div>
       <div style="background:#fff;padding:28px 32px;border:1px solid #e3e8e5;border-top:0;border-radius:0 0 20px 20px;">
         <div style="margin-bottom:24px;padding:16px 18px;background:#eff8f2;border-radius:12px;">
           <div style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;">Numărul comenzii</div>
           <div style="margin-top:4px;font-size:22px;font-weight:800;color:#01934a;">#${escapeHtml(order.code)}</div>
         </div>
+        <table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;padding:0 4px;">
+          <tbody>${paymentRows}</tbody>
+        </table>
+        <div style="margin-bottom:10px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;">Descrierea comenzii — produse și cantități</div>
         <table role="presentation" style="width:100%;border-collapse:collapse;font-size:14px;">
           <thead>
             <tr>
@@ -92,6 +144,10 @@ function createEmailHtml(order: OrderNotification) {
           ${escapeHtml(order.address)}, ${escapeHtml(order.city)}<br>
           Telefon: ${escapeHtml(order.phone)}
         </div>
+        <div style="margin-top:22px;font-size:12px;line-height:1.6;color:#9ca3af;">
+          ${MERCHANT} · IDNO ${MERCHANT_IDNO} · ${SITE_DOMAIN}<br>
+          mun. Chișinău, Republica Moldova
+        </div>
       </div>
     </div>
   </body>
@@ -99,6 +155,8 @@ function createEmailHtml(order: OrderNotification) {
 }
 
 function createEmailText(order: OrderNotification) {
+  const paidAt = formatPaidAt(order.paidAt);
+  const isOnlinePaid = order.paymentMethod === "maib" && !!paidAt;
   const items = order.items
     .map((item) => `${item.quantity} × ${item.name} — ${formatMoney(item.unitPrice * item.quantity)}`)
     .join("\n");
@@ -106,8 +164,21 @@ function createEmailText(order: OrderNotification) {
   return [
     `Bună, ${order.customerName}!`,
     "",
-    `Comanda #${order.code} a fost înregistrată. Te vom contacta pentru confirmarea livrării.`,
+    isOnlinePaid
+      ? `Plata pentru comanda #${order.code} a fost confirmată, iar comanda va fi pregătită pentru livrare.`
+      : `Comanda #${order.code} a fost înregistrată. Te vom contacta pentru confirmarea livrării.`,
     "",
+    "Detalii plată:",
+    `Număr comandă: #${order.code}`,
+    `Status: ${isOnlinePaid ? "Confirmată" : order.paymentMethod === "maib" ? "În procesare" : "Plata la livrare"}`,
+    `Metodă: ${PAYMENT_METHOD_LABELS[order.paymentMethod]}`,
+    ...(paidAt ? [`Data achitării: ${paidAt}`] : []),
+    `Sumă: ${amountFormatter.format(order.total)}`,
+    "Valută: MDL",
+    `Comerciant: ${MERCHANT} (IDNO ${MERCHANT_IDNO})`,
+    `Website / App: ${SITE_LABEL}`,
+    "",
+    "Descrierea comenzii (produse și cantități):",
     items,
     "",
     `Subtotal: ${formatMoney(order.subtotal)}`,
@@ -116,6 +187,9 @@ function createEmailText(order: OrderNotification) {
     "",
     `Livrare la: ${order.address}, ${order.city}`,
     `Telefon: ${order.phone}`,
+    "",
+    `${MERCHANT} · IDNO ${MERCHANT_IDNO} · ${SITE_DOMAIN}`,
+    "mun. Chișinău, Republica Moldova",
   ].join("\n");
 }
 
@@ -123,6 +197,10 @@ async function sendCustomerEmail(order: OrderNotification) {
   const apiKey = requireEnv("BREVO_API_KEY");
   const senderEmail = requireEnv("ORDER_FROM_EMAIL");
   const senderName = process.env.ORDER_FROM_NAME?.trim() || "Challenge Store";
+  const isOnlinePaid = order.paymentMethod === "maib" && !!formatPaidAt(order.paidAt);
+  const subject = isOnlinePaid
+    ? `Plată confirmată – comanda #${order.code} | Challenge Store`
+    : `Confirmare comandă #${order.code} | Challenge Store`;
   const response = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: {
@@ -133,7 +211,7 @@ async function sendCustomerEmail(order: OrderNotification) {
     body: JSON.stringify({
       sender: { name: senderName, email: senderEmail },
       to: [{ name: order.customerName, email: order.email }],
-      subject: `Confirmare comandă #${order.code} | Challenge Store`,
+      subject,
       htmlContent: createEmailHtml(order),
       textContent: createEmailText(order),
     }),

@@ -12,6 +12,7 @@ import {
 import { useCart } from "../../context/CartContext";
 import { useFavorites } from "../../context/FavoritesContext";
 import { PRODUCTS, Product } from "../productsData";
+import Footer from "../../components/Footer";
 import styles from "./page.module.css";
 
 function StarRating({ rating }: { rating: number }) {
@@ -113,6 +114,7 @@ export default function ProductDetailPage() {
     : null;
 
   return (
+    <>
     <div className={styles.page}>
 
       {/* ── Top bar ── */}
@@ -343,5 +345,7 @@ export default function ProductDetailPage() {
       )}
 
     </div>
+    <Footer />
+    </>
   );
 }

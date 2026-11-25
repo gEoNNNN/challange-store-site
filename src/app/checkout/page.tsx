@@ -12,6 +12,7 @@ import {
 import { useCart } from "../context/CartContext";
 import { useLanguage } from "../context/LanguageContext";
 import { ordersEnabled } from "../../lib/siteLock";
+import PaymentLogos from "../components/PaymentLogos";
 import styles from "./page.module.css";
 
 // Next staticly replaces the NEXT_PUBLIC_ env at build time, so this is safe client-side.
@@ -479,6 +480,7 @@ export default function CheckoutPage() {
                 ? "Datele de plată sunt procesate direct de maib și nu ajung pe site."
                 : "Prețul și stocul sunt reverificate securizat înainte de confirmare."}
             </p>
+            {paymentMethod === "maib" && <PaymentLogos label="Plăți procesate securizat de maib" />}
           </form>
 
         </div>

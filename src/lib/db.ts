@@ -139,14 +139,32 @@ export function createSqlClient(connectionString: string): Sql {
  */
 export function resolveConnectionString(): string {
   const supabase = process.env.SUPABASE_DB_URL?.trim();
-  if (supabase) return supabase;
+  if (supabase) {
+    // Port 5432 is Supabase's *session* pooler: one slot per client, capped at the plan's pool
+    // size (free plans: 15). Serverless functions and every dev restart hold a slot, and once
+    // they are all taken Postgres refuses the connection and every page shows zero products.
+    // The transaction pooler (:6543) multiplexes instead and is what `pg` should point at.
+    try {
+      const { hostname, port } = new URL(supabase);
+      if (port === "5432" && /\.pooler\.supabase\.(co|com)$/i.test(hostname)) {
+        console.warn(
+          "[db] SUPABASE_DB_URL uses the session pooler (:5432). Switch it to the transaction " +
+            "pooler (:6543) — a saturated session pooler fails with 'max clients reached in " +
+            "session mode', which the catalog shows as 0 products."
+        );
+      }
+    } catch {
+      // Not a URL-shaped string; let the connection attempt report the problem.
+    }
+    return supabase;
+  }
 
   const url = process.env.DATABASE_URL?.trim();
   if (url) return url;
 
   throw new Error(
     "No database connection string found. Set SUPABASE_DB_URL (recommended) or DATABASE_URL " +
-      "to the Supabase session pooler string: postgresql://postgres.<ref>:<password>@<pooler-host>:5432/postgres"
+      "to the Supabase transaction pooler string: postgresql://postgres.<ref>:<password>@<pooler-host>:6543/postgres"
   );
 }
 

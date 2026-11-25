@@ -141,6 +141,75 @@
   color: #01934a;
 }
 
+.tocList a:focus-visible,
+.contactRow a:focus-visible {
+  outline: 2px solid #01934a;
+  outline-offset: 2px;
+}
+
+/* ── Intro / key facts ── */
+.introCard {
+  background: linear-gradient(160deg, #ffffff 0%, #f4fbf6 100%);
+  border: 1px solid #dcefe2;
+  border-radius: 20px;
+  padding: 32px 34px;
+}
+
+.introLead {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: #14351f;
+  margin: 0 0 12px;
+}
+
+.introText {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #4a5a50;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #e2efe6;
+  border-radius: 14px;
+}
+
+.fact svg {
+  grid-row: span 2;
+  color: #01934a;
+}
+
+.factLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #01934a;
+}
+
+.factValue {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #34443a;
+  overflow-wrap: anywhere;
+}
+
 /* ── Sections ── */
 .content {
   display: flex;
@@ -314,7 +383,17 @@
     padding: 26px 22px;
   }
 
+  .introCard {
+    padding: 26px 22px;
+  }
+
   .hero {
     padding: 100px 20px 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .facts {
+    grid-template-columns: 1fr;
   }
 }

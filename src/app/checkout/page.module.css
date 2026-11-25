@@ -91,6 +91,52 @@
 }
 .successBtn:hover { background: #017a3d; }
 
+/* ── Payment result details ── */
+.resultDetails {
+  width: 100%;
+  margin-top: 4px;
+  padding: 16px 18px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  text-align: left;
+  font-size: 13.5px;
+  color: #374151;
+}
+.resultDetailsRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+}
+.resultDetailsRow span { color: #6B7280; }
+.resultDetailsRow strong { color: #111827; font-weight: 600; text-align: right; }
+.resultItems {
+  list-style: none;
+  margin: 8px 0;
+  padding: 8px 0;
+  border-top: 1px dashed #E5E7EB;
+  border-bottom: 1px dashed #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.resultItems li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.resultItems li span:first-child { color: #374151; min-width: 0; overflow-wrap: anywhere; }
+.resultItems li span:last-child { color: #111827; font-weight: 600; white-space: nowrap; }
+.resultTotalRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  font-size: 15px;
+}
+.resultTotalRow strong { color: #01934A; font-weight: 800; }
+
 /* ── Empty ── */
 .emptyPage {
   min-height: 70vh;

@@ -1,0 +1,18 @@
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.label {
+  font-size: 10.5px;
+  color: #7B8981;
+}
+
+.logo {
+  height: 18px;
+  width: auto;
+  object-fit: contain;
+}
