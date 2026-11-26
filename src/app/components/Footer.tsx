@@ -80,7 +80,7 @@ export default function Footer() {
             </li>
             <li>
               <BsTelephone size={15} className={styles.contactIcon} />
-              <a href="tel:+37360000000">+373 60 000 000</a>
+              <a href="tel:067524390">067524390</a>
             </li>
             <li>
               <BsEnvelope size={15} className={styles.contactIcon} />

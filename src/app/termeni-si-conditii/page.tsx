@@ -63,7 +63,7 @@ const SECTIONS: Section[] = [
       "Datele pot fi transmise strict în măsura necesară către servicii de curierat (pentru livrare), furnizori de servicii IT și găzduire (pentru funcționarea site-ului) și procesatorul de plăți (pentru achitarea online).",
       "Furnizorul de servicii îndeplinește cerințele de securitate a datelor cu caracter personal și asigură protecția datelor consumatorilor împotriva pierderii, distrugerii, denaturării/falsificării sau divulgării către terțe persoane. Angajații furnizorului sunt obligați să respecte confidențialitatea datelor personale ale consumatorilor, iar prelucrarea este realizată de persoana împuternicită a Furnizorului.",
       "Site-ul utilizează cookie-uri și tehnologii similare pentru funcționarea corectă (coș de cumpărături, preferințe de limbă și temă) și pentru analiza traficului. Datele despre coș și favorite sunt păstrate local, în browserul dumneavoastră. Puteți dezactiva cookie-urile din setările browserului, însă unele funcții ale site-ului ar putea deveni indisponibile.",
-      "În calitate de persoană vizată, aveți dreptul de acces, de rectificare, de ștergere, de opoziție și de a depune plângere la Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP). Pentru exercitarea acestor drepturi ne puteți scrie la contact@challengestore.md sau ne puteți suna la +373 60 000 000.",
+      "În calitate de persoană vizată, aveți dreptul de acces, de rectificare, de ștergere, de opoziție și de a depune plângere la Centrul Național pentru Protecția Datelor cu Caracter Personal (CNPDCP). Pentru exercitarea acestor drepturi ne puteți scrie la contact@challengestore.md sau ne puteți suna la 067524390.",
     ],
   },
   {
@@ -102,7 +102,7 @@ const SECTIONS: Section[] = [
       "Puteți anula comanda fără nicio penalitate înainte de expedierea acesteia, contactându-ne telefonic sau prin e-mail.",
     ],
     list: [
-      "Contacte în caz de retur: +373 60 000 000 sau contact@challengestore.md;",
+      "Contacte în caz de retur: 067524390 sau contact@challengestore.md;",
       "Termenul de procesare a cererii de retur: până la 14 zile calendaristice de la recepționarea cererii;",
       "Condiții de retur: ambalajul original intact, produsul nefolosit și nedeteriorat de Cumpărător, bonul fiscal sau confirmarea comenzii;",
       "Pentru produsele neconforme, fotografia produsului și numărul comenzii sunt obligatorii pentru soluționarea rapidă a cererii.",
@@ -250,7 +250,7 @@ export default function TermeniPage() {
               </div>
               <div className={styles.contactRow}>
                 <BsTelephone size={17} />
-                <a href="tel:+37360000000">+373 60 000 000</a>
+                <a href="tel:067524390">067524390</a>
               </div>
               <div className={styles.contactRow}>
                 <BsEnvelope size={17} />

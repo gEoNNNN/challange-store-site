@@ -48,6 +48,8 @@ export default function CheckoutPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "maib">("maib");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState("");
   const [orderNum] = useState(() => Math.floor(10000 + Math.random() * 90000));
   const [orderCode, setOrderCode] = useState<string | null>(null);
 
@@ -72,6 +74,11 @@ export default function CheckoutPage() {
     if (!ORDERS_OPEN) return;
     setSubmitError("");
     if (!validate()) return;
+    if (!termsAccepted) {
+      setTermsError("Bifează acceptarea Termenilor și Condițiilor pentru a continua.");
+      return;
+    }
+    setTermsError("");
 
     const lines = items
       .filter((i) => !!i.product.uid)
@@ -369,7 +376,7 @@ export default function CheckoutPage() {
                   id="checkout-phone"
                   type="tel"
                   className={`${styles.input} ${errors.phone ? styles.inputError : ""}`}
-                  placeholder="+373 60 000 000"
+                  placeholder="067524390"
                   autoComplete="tel"
                   inputMode="tel"
                   maxLength={24}
@@ -460,6 +467,29 @@ export default function CheckoutPage() {
                 </span>
               </label>
             </fieldset>
+
+            <label className={styles.termsCheck}>
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                aria-invalid={!!termsError}
+                onChange={(e) => {
+                  setTermsAccepted(e.target.checked);
+                  if (e.target.checked) setTermsError("");
+                }}
+              />
+              <span>
+                Accept{" "}
+                <Link href="/termeni-si-conditii" target="_blank" onClick={(e) => e.stopPropagation()}>
+                  Termenii și Condițiile
+                </Link>{" "}
+                și{" "}
+                <Link href="/politica-de-confidentialitate" target="_blank" onClick={(e) => e.stopPropagation()}>
+                  Politica de confidențialitate
+                </Link>.
+              </span>
+            </label>
+            {termsError && <span className={styles.error} role="alert">{termsError}</span>}
 
             {!ORDERS_OPEN && (
               <div className={styles.submitError} role="alert">

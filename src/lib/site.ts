@@ -6,7 +6,7 @@ export const SITE_NAME = "Challenge Store";
 export const COMPANY = {
   legalName: "CG CAPITAL TRADING S.R.L.",
   idno: "1025600025386",
-  phone: "+373 60 000 000",
+  phone: "067524390",
   email: "contact@challengestore.md",
   city: "Chișinău",
   country: "Moldova",

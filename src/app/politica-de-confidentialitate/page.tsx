@@ -205,7 +205,7 @@ export default function ConfidentialitatePage() {
               </div>
               <div className={styles.contactRow}>
                 <BsTelephone size={17} />
-                <a href="tel:+37360000000">+373 60 000 000</a>
+                <a href="tel:067524390">067524390</a>
               </div>
               <div className={styles.contactRow}>
                 <BsEnvelope size={17} />
